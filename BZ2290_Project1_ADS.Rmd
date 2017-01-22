@@ -15,6 +15,7 @@ library(RColorBrewer)
 library(dplyr)
 library(tidytext)
 library(RCurl)
+
 ##PREPRCESSIONING OF THE DATA##
 
 folder.path="D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data/InauguralSpeeches"
@@ -32,10 +33,40 @@ ff.all<-tm_map(ff.all, removeWords, stopwords("english"))
 ff.all<-tm_map(ff.all, removeWords, character(0))
 #REMOVE PUNCTIONS
 ff.all<-tm_map(ff.all, removePunctuation)
+#REMOVE NUMBERS
+ff.all = tm_map(ff.all,removeNumbers)
+
 #TURN INTO A DOCUMENT MATRIX
-tdm.all<-TermDocumentMatrix(ff.all)
+dtm<-DocumentTermMatrix(ff.all)
+#REMOVE SPASRE WORD
+#dtms = removeSparseTerms(dtm,0.1)
+#WRITE is into a CSV
+write.csv(as.matrix(dtm),file="dtm.csv")
+
 tdm.tidy=tidy(tdm.all)
 tdm.overall=summarise(group_by(tdm.tidy, term), sum(count))
+```
+
+```{r}
+###Sentiment analysis###
+
+table = read.csv("dtm.csv",header=TRUE)
+dates = read.table("InauguationDatesEdit.txt",header = TRUE)
+positives= readLines("positive-words.txt")
+negatives = readLines("negative-words.txt")
+#Sentiment Score Function#
+sntiment_scores = function(speech,pos,neg)
+{
+  scores  = c()
+  #2:9351
+  for(i in 1:dim(table)[1])
+  {
+    index = speech[i,2:9351]>0
+    paste
+    woords = colnames(table)
+    pos.matches = match()
+  }
+}
 ```
 
 
