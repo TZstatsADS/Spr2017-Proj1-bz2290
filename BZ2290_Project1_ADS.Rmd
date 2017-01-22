@@ -4,15 +4,46 @@ output:
   html_document: default
   html_notebook: default
 ---
-
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
-
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
-
 ```{r}
-plot(cars)
+#Before we start to analysis the inaugration speech given by each president, we have to read in and preprecess our data to ease our analysis that will be carried out later.
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+```{r}
+library(tm)
+library(wordcloud)
+library(RColorBrewer)
+library(dplyr)
+library(tidytext)
+library(RCurl)
+##PREPRCESSIONING OF THE DATA##
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+folder.path="D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data/InauguralSpeeches"
+speeches=list.files(path = folder.path, pattern = "*.txt")
+prez.out=substr(speeches, 6, nchar(speeches)-4)
+length.speeches=rep(NA, length(speeches))
+ff.all<-Corpus(DirSource(folder.path))
+#REMOVE WHITE SPACE FROM CORPUS
+ff.all<-tm_map(ff.all, stripWhitespace)
+#TRANSFORM LETTERS TO LOWER CASE TO WAS OUR ANALYSIS
+ff.all<-tm_map(ff.all, content_transformer(tolower))
+#REMOVE COMMON STOPWORDS IN ENGLISH
+ff.all<-tm_map(ff.all, removeWords, stopwords("english"))
+#REMOVE EMPTY CHARATERS
+ff.all<-tm_map(ff.all, removeWords, character(0))
+#REMOVE PUNCTIONS
+ff.all<-tm_map(ff.all, removePunctuation)
+#TURN INTO A DOCUMENT MATRIX
+tdm.all<-TermDocumentMatrix(ff.all)
+tdm.tidy=tidy(tdm.all)
+tdm.overall=summarise(group_by(tdm.tidy, term), sum(count))
+```
+
+```{r}
+path="D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data/InauguralDates.txt"
+Dates = read.table("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data/InauguralDates.txt/")
+Dates = read.table("InauguralDates.txt")
+
+setwd("D:/Columbia University/Spring2017-Applied DataScience/Project_1_Bz2290/Spr2017-Proj1-bz2290/data")
+d= read.table("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data/InauguralDates.txt")
+```
+
