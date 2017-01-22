@@ -38,12 +38,4 @@ tdm.tidy=tidy(tdm.all)
 tdm.overall=summarise(group_by(tdm.tidy, term), sum(count))
 ```
 
-```{r}
-path="D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data/InauguralDates.txt"
-Dates = read.table("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data/InauguralDates.txt/")
-Dates = read.table("InauguralDates.txt")
-
-setwd("D:/Columbia University/Spring2017-Applied DataScience/Project_1_Bz2290/Spr2017-Proj1-bz2290/data")
-d= read.table("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data/InauguralDates.txt")
-```
 
