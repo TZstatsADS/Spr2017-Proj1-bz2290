@@ -15,7 +15,8 @@ library(RColorBrewer)
 library(dplyr)
 library(tidytext)
 library(RCurl)
-
+library(dplyr)
+library(ggplot2)
 ##PREPRCESSIONING OF THE DATA##
 
 folder.path="D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data/InauguralSpeeches"
@@ -55,18 +56,31 @@ dates = read.table("InauguationDatesEdit.txt",header = TRUE)
 positives= readLines("positive-words.txt")
 negatives = readLines("negative-words.txt")
 #Sentiment Score Function#
-sntiment_scores = function(speech,pos,neg)
+
+    score.sentiment =  function(lines, pos.words, neg.words) {
+        # split into words. str_split is in the stringr package
+        words = unlist(strsplit(lines, '\\s+'))
+        # compare our words to the dictionaries of positive & negative terms
+        pos.matches = match(words, pos.words)
+        neg.matches = match(words, neg.words)
+        # match() returns the position of the matched term or NA
+        # we just want a TRUE/FALSE:
+        pos.matches = !is.na(pos.matches)
+        neg.matches = !is.na(neg.matches)
+        # and conveniently enough, TRUE/FALSE will be treated as 1/0 by sum():
+        score = sum(pos.matches) - sum(neg.matches)
+        return(score)
+      }
+    senti_scores = c()
+for(i in 1 : dim(table)[1])
 {
-  scores  = c()
-  #2:9351
-  for(i in 1:dim(table)[1])
-  {
-    index = speech[i,2:9351]>0
-    paste
-    woords = colnames(table)
-    pos.matches = match()
-  }
+  lines = unlist(strsplit(ff.all[[i]]$content,"\\s+"))
+  senti_scores[i] = score.sentiment(lines,positives,negatives)
 }
+table$sentiscores=senti_scores
+ggplot(table,aes(x=factor(table$X),y=table$sentiscores))+
+  geom_point()
+plot(factor(table$X),table$sentiscores)
 ```
 
 
