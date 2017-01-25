@@ -44,15 +44,32 @@ dtm<-DocumentTermMatrix(ff.all)
 #WRITE is into a CSV
 write.csv(as.matrix(dtm),file="dtm.csv")
 
-tdm.tidy=tidy(tdm.all)
-tdm.overall=summarise(group_by(tdm.tidy, term), sum(count))
+#tdm.tidy=tidy(tdm.all)
+#tdm.overall=summarise(group_by(tdm.tidy, term), sum(count))
 ```
 
 ```{r}
 ###Sentiment analysis###
 
 table = read.csv("dtm.csv",header=TRUE)
-dates = read.table("InauguationDatesEdit.txt",header = TRUE)
+table$Presdient = gsub("inaug|.txt","",table$X)
+#dates = read.table("InauguationDatesEdit.txt",header = TRUE)
+#dates$FIRST = gsub("[0-9]+[/][0-9]+[/]","",dates$FIRST)
+#dates$SECOND = gsub("[0-9]+[/][0-9]+[/]","",dates$SECOND)
+#dates$THIRD = gsub("[0-9]+[/][0-9]+[/]","",dates$THIRD)
+#dates$FOURTH = gsub("[0-9]+[/][0-9]+[/]","",dates$FOURTH)
+#dates=dates[order(dates$PRESIDENT),]
+#for(i in 1:45)
+{
+#  if(is.na(dates[i,3]))
+  {
+#     dates$PRESIDENT[i] = paste(dates$PRESIDENT,"-1",sep="")
+  }
+#  else
+  {
+#    rbind(dates,)
+  }
+}
 positives= readLines("positive-words.txt")
 negatives = readLines("negative-words.txt")
 #Sentiment Score Function#
@@ -78,9 +95,13 @@ for(i in 1 : dim(table)[1])
   senti_scores[i] = score.sentiment(lines,positives,negatives)
 }
 table$sentiscores=senti_scores
-ggplot(table,aes(x=factor(table$X),y=table$sentiscores))+
-  geom_point()
-plot(factor(table$X),table$sentiscores)
+
+#Plot the sentiment scores against President
+plot.data.senti = as.data.frame(table[,9352:9353])
+ggplot(plot.data.senti,aes(x=factor(plot.data.senti$Presdient),y=plot.data.senti$sentiscores))+
+  geom_point()+
+  labs(title="Snetiment Scores for Presidential Inaugration Speech",y="Sentiment Scores",x = "Years")+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
 
