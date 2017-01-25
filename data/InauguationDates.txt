@@ -1,4 +1,3 @@
-
 PRESIDENT	FIRST	SECOND	THIRD	FOURTH
 George Washington	4/30/1789	3/4/1793		
 John Adams	3/4/1797			
