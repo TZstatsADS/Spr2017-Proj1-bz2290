@@ -59,17 +59,6 @@ table$Presdient = gsub("inaug|.txt","",table$X)
 #dates$THIRD = gsub("[0-9]+[/][0-9]+[/]","",dates$THIRD)
 #dates$FOURTH = gsub("[0-9]+[/][0-9]+[/]","",dates$FOURTH)
 #dates=dates[order(dates$PRESIDENT),]
-#for(i in 1:45)
-{
-#  if(is.na(dates[i,3]))
-  {
-#     dates$PRESIDENT[i] = paste(dates$PRESIDENT,"-1",sep="")
-  }
-#  else
-  {
-#    rbind(dates,)
-  }
-}
 positives= readLines("positive-words.txt")
 negatives = readLines("negative-words.txt")
 #Sentiment Score Function#
