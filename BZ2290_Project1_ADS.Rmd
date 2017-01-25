@@ -1,5 +1,5 @@
 ---
-title: "R Notebook"
+title: "R Notebook For Applied Data Science-Project I"
 output:
   html_document: default
   html_notebook: default
@@ -43,7 +43,8 @@ dtm<-DocumentTermMatrix(ff.all)
 #dtms = removeSparseTerms(dtm,0.1)
 #WRITE is into a CSV
 write.csv(as.matrix(dtm),file="dtm.csv")
-
+dates = read.table("InauguationDatesEdit.txt",header = TRUE)
+#Add Year Column to classify years this speech is given
 #tdm.tidy=tidy(tdm.all)
 #tdm.overall=summarise(group_by(tdm.tidy, term), sum(count))
 ```
@@ -51,9 +52,8 @@ write.csv(as.matrix(dtm),file="dtm.csv")
 ```{r}
 ###Sentiment analysis###
 
-table = read.csv("dtm.csv",header=TRUE)
+table = read.csv("dtmedits.csv",header=TRUE)
 table$Presdient = gsub("inaug|.txt","",table$X)
-#dates = read.table("InauguationDatesEdit.txt",header = TRUE)
 #dates$FIRST = gsub("[0-9]+[/][0-9]+[/]","",dates$FIRST)
 #dates$SECOND = gsub("[0-9]+[/][0-9]+[/]","",dates$SECOND)
 #dates$THIRD = gsub("[0-9]+[/][0-9]+[/]","",dates$THIRD)
@@ -95,13 +95,49 @@ for(i in 1 : dim(table)[1])
   senti_scores[i] = score.sentiment(lines,positives,negatives)
 }
 table$sentiscores=senti_scores
+table = table[order(table$Year),]
 
 #Plot the sentiment scores against President
-plot.data.senti = as.data.frame(table[,9352:9353])
-ggplot(plot.data.senti,aes(x=factor(plot.data.senti$Presdient),y=plot.data.senti$sentiscores))+
+plot.data.senti = as.data.frame(table[,9353:9354])
+plot.data.senti$Year = table$Year
+ggplot(plot.data.senti,aes(x=plot.data.senti$Year,y=plot.data.senti$sentiscores))+
   geom_point()+
+  geom_line()+
   labs(title="Snetiment Scores for Presidential Inaugration Speech",y="Sentiment Scores",x = "Years")+
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))+
+  annotate("text",x=1861,y=20,label="Civil War",size=4,color=2)+
+  annotate("point",x=1861,y=10,size=2,color=2)+
+  annotate("point",x=1865,y=1,size=2,color=2)+
+  annotate("text",x=1913,y=48,label="WWI",size=4,color=3)+
+  annotate("point",x=1913,y=38,size=2,color=3)+
+  annotate("text",x=1933,y=10,label="Big Depression & WWII",size=4,color=4)+
+  annotate("point",x=1933,y=24,size=2,color=4)+
+  annotate("point",x=1937,y=18,size=2,color=4)+
+  annotate("point",x=1941,y=20,size=2,color=4)+
+  annotate("point",x=1945,y=27,size=2,color=4)+
+  annotate("text",x=1947,y=119,label="Cold War",size=4,color=5)+
+  annotate("point",x=1945,y=109,size=2,color=5)+
+  annotate("point",x=1953,y=98,size=2,color=5)+
+  annotate("point",x=1957,y=44,size=2,color=5)+
+  annotate("point",x=1961,y=15,size=2,color=5)+
+  annotate("point",x=1963,y=34,size=2,color=5)+
+  annotate("point",x=1969,y=66,size=2,color=5)+
+  annotate("point",x=1973,y=82,size=2,color=5)+
+  annotate("point",x=1977,y=60,size=2,color=5)+
+  annotate("point",x=1981,y=44,size=2,color=5)+
+  annotate("point",x=1985,y=85,size=2,color=5)+
+  annotate("point",x=1989,y=121,size=2,color=5)+
+  annotate("text",x=2001,y=84,label="911",size=4,color=6)+
+  annotate("point",x=2001,y=64,size=2,color=6)+
+  annotate("point",x=2005,y=73,size=2,color=6)+
+  annotate("text",x=2009,y=34,label="FirstPresident",size=4,color=7)+
+  annotate("point",x=2009,y=44,size=2,color=7)+
+  annotate("point",x=2013,y=54,size=2,color=7)+
+  annotate("text",x=2017,y=67,label="MAGA",size=4,color=11)+
+  annotate("point",x=2017,y=57,size=2,color=11)
+ 
+  
+  
 ```
 
 
