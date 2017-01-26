@@ -5,10 +5,11 @@ output:
   html_notebook: default
 ---
 ```{r}
-#Before we start to analysis the inaugration speech given by each president, we have to read in and preprecess our data to ease our analysis that will be carried out later.
+#Before We start to analysis, we will have to process the data first to make sure the data is good to be analyzed.
 ```
 
 ```{r}
+#NECESSARY PACKAGES
 library(tm)
 library(wordcloud)
 library(RColorBrewer)
@@ -17,6 +18,7 @@ library(tidytext)
 library(RCurl)
 library(dplyr)
 library(ggplot2)
+
 ##PREPRCESSIONING OF THE DATA##
 
 folder.path="D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data/InauguralSpeeches"
@@ -39,9 +41,18 @@ ff.all = tm_map(ff.all,removeNumbers)
 
 #TURN INTO A DOCUMENT MATRIX
 dtm<-DocumentTermMatrix(ff.all)
+
+
+#REFERENCE:
+#LINCOLN-1 1 LINCOLN-2 2 
+#WoodrowWilson-1 56 WoodrowWilson-2 57
+#FranklinDroosevelt-2 13 FranklinDroosevelt-3 14 FranklinDroosevelt-4 15
+#JohnFKenndy-1 35
+
 #REMOVE SPASRE WORD
 #dtms = removeSparseTerms(dtm,0.1)
-#WRITE is into a CSV
+
+#WRITE IT INTO A CSV
 write.csv(as.matrix(dtm),file="dtm.csv")
 dates = read.table("InauguationDatesEdit.txt",header = TRUE)
 #Add Year Column to classify years this speech is given
@@ -129,4 +140,8 @@ ggplot(plot.data.senti,aes(x=plot.data.senti$Year,y=plot.data.senti$sentiscores)
   
 ```
 
+
+```{r}
+
+```
 
