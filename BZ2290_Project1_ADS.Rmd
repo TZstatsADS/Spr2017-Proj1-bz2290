@@ -70,7 +70,8 @@ dates = read.table("InauguationDatesEdit.txt",header = TRUE)
 ###SENTIMENT ANALYSIS###
 
 #WE FIRST PERFORM A LEXICONED-BASED SENTIMENT ANALYSIS TO SHED SOME LIGHT INTO OUR ANALYSIS
-table = read.csv("dtmedits.csv",header=TRUE)
+table = read.csv("dtm.csv",header = TRUE)
+table$Year=c(1861,1865,1829,1833,2009,2013,1889,1923,2017,1953,1957,1933,1937,1941,1945,1853,1989,1789,1793,2001,2005,1885,1893,1945,1929,1857,1881,1845,1809,1813,1817,1821,1977,1797,1961,1825,1963,1837,1969,1973,1981,1985,1877,1901,1801,1805,1869,1873,1921,1841,1909,1993,1997,1897,1901,1913,1917,1849)
 table$Presdient = gsub("inaug|.txt","",table$X)
 #dates$FIRST = gsub("[0-9]+[/][0-9]+[/]","",dates$FIRST)
 #dates$SECOND = gsub("[0-9]+[/][0-9]+[/]","",dates$SECOND)
