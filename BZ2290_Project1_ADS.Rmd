@@ -26,28 +26,34 @@ speeches=list.files(path = folder.path, pattern = "*.txt")
 prez.out=substr(speeches, 6, nchar(speeches)-4)
 length.speeches=rep(NA, length(speeches))
 ff.all<-Corpus(DirSource(folder.path))
+
 #REMOVE WHITE SPACE FROM CORPUS
 ff.all<-tm_map(ff.all, stripWhitespace)
+
 #TRANSFORM LETTERS TO LOWER CASE TO WAS OUR ANALYSIS
 ff.all<-tm_map(ff.all, content_transformer(tolower))
+
 #REMOVE COMMON STOPWORDS IN ENGLISH
 ff.all<-tm_map(ff.all, removeWords, stopwords("english"))
+
 #REMOVE EMPTY CHARATERS
 ff.all<-tm_map(ff.all, removeWords, character(0))
+
 #REMOVE PUNCTIONS
 ff.all<-tm_map(ff.all, removePunctuation)
+
 #REMOVE NUMBERS
 ff.all = tm_map(ff.all,removeNumbers)
 
 #TURN INTO A DOCUMENT MATRIX
 dtm<-DocumentTermMatrix(ff.all)
 
-
 #REFERENCE:
 #LINCOLN-1 1 LINCOLN-2 2 
 #WoodrowWilson-1 56 WoodrowWilson-2 57
 #FranklinDroosevelt-2 13 FranklinDroosevelt-3 14 FranklinDroosevelt-4 15
 #JohnFKenndy-1 35
+#RonaldReagan-1 41
 
 #REMOVE SPASRE WORD
 #dtms = removeSparseTerms(dtm,0.1)
@@ -61,8 +67,9 @@ dates = read.table("InauguationDatesEdit.txt",header = TRUE)
 ```
 
 ```{r}
-###Sentiment analysis###
+###SENTIMENT ANALYSIS###
 
+#WE FIRST PERFORM A LEXICONED-BASED SENTIMENT ANALYSIS TO SHED SOME LIGHT INTO OUR ANALYSIS
 table = read.csv("dtmedits.csv",header=TRUE)
 table$Presdient = gsub("inaug|.txt","",table$X)
 #dates$FIRST = gsub("[0-9]+[/][0-9]+[/]","",dates$FIRST)
@@ -70,26 +77,28 @@ table$Presdient = gsub("inaug|.txt","",table$X)
 #dates$THIRD = gsub("[0-9]+[/][0-9]+[/]","",dates$THIRD)
 #dates$FOURTH = gsub("[0-9]+[/][0-9]+[/]","",dates$FOURTH)
 #dates=dates[order(dates$PRESIDENT),]
+
+#READ IN POSITIVE AND NEGATIVE WORDS
 positives= readLines("positive-words.txt")
 negatives = readLines("negative-words.txt")
-#Sentiment Score Function#
+
+#SENTIMENT SCORE FUNCTION#
 
     score.sentiment =  function(lines, pos.words, neg.words) {
-        # split into words. str_split is in the stringr package
+        #SPLIT INTO WORDS
         words = unlist(strsplit(lines, '\\s+'))
-        # compare our words to the dictionaries of positive & negative terms
+        #COMPARE WORDS TO THE POSTIVE WORDS AS WELL AS NEGATIVE ONES
         pos.matches = match(words, pos.words)
         neg.matches = match(words, neg.words)
-        # match() returns the position of the matched term or NA
-        # we just want a TRUE/FALSE:
+        #CONVERT INTO TRUE OR FALSE VALUES
         pos.matches = !is.na(pos.matches)
         neg.matches = !is.na(neg.matches)
-        # and conveniently enough, TRUE/FALSE will be treated as 1/0 by sum():
+        #CALCULATE THE SCORE
         score = sum(pos.matches) - sum(neg.matches)
         return(score)
       }
-    senti_scores = c()
-for(i in 1 : dim(table)[1])
+senti_scores = c()
+  for(i in 1 : dim(table)[1])
 {
   lines = unlist(strsplit(ff.all[[i]]$content,"\\s+"))
   senti_scores[i] = score.sentiment(lines,positives,negatives)
@@ -98,6 +107,7 @@ table$sentiscores=senti_scores
 table = table[order(table$Year),]
 
 #Plot the sentiment scores against President
+par(mfrow=c(1,1))
 plot.data.senti = as.data.frame(table[,9353:9354])
 plot.data.senti$Year = table$Year
 ggplot(plot.data.senti,aes(x=plot.data.senti$Year,y=plot.data.senti$sentiscores))+
@@ -110,38 +120,79 @@ ggplot(plot.data.senti,aes(x=plot.data.senti$Year,y=plot.data.senti$sentiscores)
   annotate("point",x=1865,y=1,size=2,color=2)+
   annotate("text",x=1913,y=48,label="WWI",size=4,color=3)+
   annotate("point",x=1913,y=38,size=2,color=3)+
-  annotate("text",x=1933,y=10,label="Big Depression & WWII",size=4,color=4)+
-  annotate("point",x=1933,y=24,size=2,color=4)+
+  annotate("text",x=1933,y=10,label="WWII",size=4,color=4)+
+  #annotate("point",x=1933,y=24,size=2,color=4)+
   annotate("point",x=1937,y=18,size=2,color=4)+
   annotate("point",x=1941,y=20,size=2,color=4)+
   annotate("point",x=1945,y=27,size=2,color=4)+
-  annotate("text",x=1947,y=119,label="Cold War",size=4,color=5)+
-  annotate("point",x=1945,y=109,size=2,color=5)+
-  annotate("point",x=1953,y=98,size=2,color=5)+
-  annotate("point",x=1957,y=44,size=2,color=5)+
-  annotate("point",x=1961,y=15,size=2,color=5)+
-  annotate("point",x=1963,y=34,size=2,color=5)+
-  annotate("point",x=1969,y=66,size=2,color=5)+
-  annotate("point",x=1973,y=82,size=2,color=5)+
-  annotate("point",x=1977,y=60,size=2,color=5)+
-  annotate("point",x=1981,y=44,size=2,color=5)+
-  annotate("point",x=1985,y=85,size=2,color=5)+
-  annotate("point",x=1989,y=121,size=2,color=5)+
-  annotate("text",x=2001,y=84,label="911",size=4,color=6)+
-  annotate("point",x=2001,y=64,size=2,color=6)+
-  annotate("point",x=2005,y=73,size=2,color=6)+
-  annotate("text",x=2009,y=34,label="FirstPresident",size=4,color=7)+
-  annotate("point",x=2009,y=44,size=2,color=7)+
-  annotate("point",x=2013,y=54,size=2,color=7)+
-  annotate("text",x=2017,y=67,label="MAGA",size=4,color=11)+
-  annotate("point",x=2017,y=57,size=2,color=11)
+  annotate("text",x=1977,y=12,label="Arm&Space Race",size=4,color=14)+
+  #annotate("point",x=1945,y=109,size=2,color=5)+
+  #annotate("point",x=1953,y=98,size=2,color=5)+
+  #annotate("point",x=1957,y=44,size=2,color=5)+
+  annotate("point",x=1961,y=15,size=2,color=14)+
+  #annotate("point",x=1963,y=34,size=2,color=5)+
+  #annotate("point",x=1969,y=66,size=2,color=5)+
+  #annotate("point",x=1973,y=82,size=2,color=5)+
+  #annotate("point",x=1977,y=60,size=2,color=5)+
+  annotate("point",x=1981,y=44,size=2,color=20)+
+  annotate("text",x=1985,y=34,label="Afganistan War",size=4,color=20)
+  #annotate("point",x=1985,y=85,size=2,color=5)+
+  #annotate("point",x=1989,y=121,size=2,color=5)
+  #annotate("text",x=2001,y=84,label="911",size=4,color=6)+
+  #annotate("point",x=2001,y=64,size=2,color=6)+
+  #annotate("point",x=2005,y=73,size=2,color=6)+
+  #annotate("text",x=2009,y=34,label="FirstPresident",size=4,color=7)+
+  #annotate("point",x=2009,y=44,size=2,color=7)+
+  #annotate("point",x=2013,y=54,size=2,color=7)+
+  #annotate("text",x=2017,y=67,label="MAGA",size=4,color=11)+
+  #annotate("point",x=2017,y=57,size=2,color=11)
  
-  
+#NOTE: THERE ARE SEVERAL PRESIDENTS DURING THE COLD WAR, BUT BEOFRE KENNDY'S SPEECH WAS GIVEN, THE THEART FROM THE SOVIET HAVE REACHED A HIGHER LEVEL WITH THE LANUACH OF ITS ICBM MISSLE AND SATELLLITE. THERE ARE ALSO EVENTS HAPPENED IN CUBA THAT INTENSIFIED THE RELATIONSHIP BETWEEN U.S. AND CUBAN. HENCE HIS SPEECH WAS ADOPTED.
+
+#REGAN'S SPEECH WAS SELECTED BECAUSE OF THE AFGANSITAN WAR
+
   
 ```
 
 
 ```{r}
+#CLEARLY WE SEE THAT DURING THESE TIMES, THE LEXICON-BASED SENTIMENT ANALYSIS SHOW THAT PRESIDENT DURING THESE TIMES UTLIZED MORE NEGATIVE WORDS THAN OTHER TIME, WHICH IS A REASONABLE RESULT.
+
+#NOW WE START TO PERFORM OTHER ANALYSIS
+```
+
+```{r}
+#REFERENCE:
+#LINCOLN-1 1 LINCOLN-2 2 
+#WoodrowWilson-1 56 WoodrowWilson-2 57
+#FranklinDroosevelt-2 13 FranklinDroosevelt-3 14 FranklinDroosevelt-4 15
+#JohnFKenndy-1 35
+#RonaldReagan-1 41
+#FREQUENT TERM ANALYSIS
+Lincoln.dtm=DocumentTermMatrix(ff.all[1:2])
+WoodrowWilson.dtm=DocumentTermMatrix(ff.all[56:57])
+FranklinDroosevelt.dtm=DocumentTermMatrix(ff.all[13:15])
+JohnFKenndy.dtm=DocumentTermMatrix(ff.all[35])
+RonaldRegan.dtm=DocumentTermMatrix(ff.all[41])
+sort(colSums(as.matrix(Lincoln.dtm)),decreasing = TRUE)[1:20]
+```
+
+```{r}
+sort(colSums(as.matrix(WoodrowWilson.dtm)),decreasing = TRUE)[1:20]
+
+```
+```{r}
+sort(colSums(as.matrix(FranklinDroosevelt.dtm)),decreasing = TRUE)[1:20]
+
+```
+
+```{r}
+sort(colSums(as.matrix(JohnFKenndy.dtm)),decreasing = TRUE)[1:20]
+
+```
+
+```{r}
+sort(colSums(as.matrix(RonaldRegan.dtm)),decreasing = TRUE)[1:20]
 
 ```
 
