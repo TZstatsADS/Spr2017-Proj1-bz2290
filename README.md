@@ -23,6 +23,9 @@ FranklinDroosevelt-3
 FranklinDroosevelt-4
 JohnFKenndy-1
 
+#Folder Layout#
+You will find my blog about presidential speech in the notebook named "BZ2290_Project1_ADS", and related code will be stored in a seperate script file in the "lib" folder.
+
 #Contribution Statement#
 This Project is solely done by Boxuan Zhao, including data processing, analysis, as well as the compostion of this repo or any other related part of this project.
 
