@@ -59,9 +59,11 @@ dtm<-DocumentTermMatrix(ff.all)
 #REMOVE SPASRE WORD
 #dtms = removeSparseTerms(dtm,0.1)
 
+setwd("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data")
+
 #WRITE IT INTO A CSV
 write.csv(as.matrix(dtm),file="dtm.csv")
-dates = read.table("InauguationDatesEdit.txt",header = TRUE)
+#dates = read.table("InauguationDatesEdit.txt",header = TRUE)
 #Add Year Column to classify years this speech is given
 #tdm.tidy=tidy(tdm.all)
 #tdm.overall=summarise(group_by(tdm.tidy, term), sum(count))
