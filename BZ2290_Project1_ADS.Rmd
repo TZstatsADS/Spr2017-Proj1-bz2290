@@ -204,4 +204,3 @@ sort(colSums(as.matrix(RonaldRegan.dtm)),decreasing = TRUE)[1:20]
 #Class Notes
 #
 ```
-#aweawasdasda 
