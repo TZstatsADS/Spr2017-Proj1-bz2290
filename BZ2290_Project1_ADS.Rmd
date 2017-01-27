@@ -19,7 +19,7 @@ library(RCurl)
 library(dplyr)
 library(ggplot2)
 
-##PREPRCESSIONING OF THE DATA##
+2##PREPRCESSIONING OF THE DATA##
 
 folder.path="D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data/InauguralSpeeches"
 speeches=list.files(path = folder.path, pattern = "*.txt")
@@ -195,5 +195,9 @@ sort(colSums(as.matrix(JohnFKenndy.dtm)),decreasing = TRUE)[1:20]
 ```{r}
 sort(colSums(as.matrix(RonaldRegan.dtm)),decreasing = TRUE)[1:20]
 
+```
+```{r}
+#Class Notes
+#
 ```
 
