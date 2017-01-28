@@ -6,6 +6,10 @@ output:
 ---
 ```{r}
 #Before We start to analysis, we will have to process the data first to make sure the data is good to be analyzed.
+
+#MOst Words they used  WOrldCloud
+#THe Emotion of their speech
+#length of their speech
 ```
 
 ```{r}
@@ -16,11 +20,25 @@ library(RColorBrewer)
 library(dplyr)
 library(tidytext)
 library(RCurl)
-library(dplyr)
 library(ggplot2)
+library(rvest)
+library(tibble)
+library(qdap)
+library(sentimentr)
+library(gplots)
+library(syuzhet)
+library(factoextra)
+library(beeswarm)
+library(scales)
+library(RANN)
+library(topicmodels)
+library(wordcloud)
+library(tidytext)
+library(wordcloud2)
+```
 
-2##PREPRCESSIONING OF THE DATA##
-
+```{r}
+##PREPRCESSIONING OF THE DATA##
 folder.path="D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data/InauguralSpeeches"
 #Replace to your own path 
 speeches=list.files(path = folder.path, pattern = "*.txt")
@@ -47,7 +65,12 @@ ff.all<-tm_map(ff.all, removePunctuation)
 ff.all = tm_map(ff.all,removeNumbers)
 
 #TURN INTO A DOCUMENT MATRIX
-dtm<-DocumentTermMatrix(ff.all)
+dtm <- DocumentTermMatrix(ff.all,
+                          control = list(weighting = function(x)
+                                             weightTfIdf(x, 
+                                                         normalize =FALSE),
+                                         stopwords = TRUE))
+ff.dtm=tidy(dtm)
 
 #REFERENCE:
 #LINCOLN-1 1 LINCOLN-2 2 
@@ -55,23 +78,175 @@ dtm<-DocumentTermMatrix(ff.all)
 #FranklinDroosevelt-2 13 FranklinDroosevelt-3 14 FranklinDroosevelt-4 15
 #JohnFKenndy-1 35
 #RonaldReagan-1 41
-
+speech_selected=c("AbrahamLincoln-1","AbrahamLincoln-2","WoodrowWilson-1","WoodrowWilson-2","FranklinDroosevelt-2","FranklinDroosevelt-3","FranklinDroosevelt-4","JohnFKenndy-1","RonaldReagan-1")
 #REMOVE SPASRE WORD
 #dtms = removeSparseTerms(dtm,0.1)
 
-setwd("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data")
-
 #WRITE IT INTO A CSV
-write.csv(as.matrix(dtm),file="dtm.csv")
+#write.csv(as.matrix(dtm),file="dtm.csv")
 #dates = read.table("InauguationDatesEdit.txt",header = TRUE)
 #Add Year Column to classify years this speech is given
 #tdm.tidy=tidy(tdm.all)
 #tdm.overall=summarise(group_by(tdm.tidy, term), sum(count))
+#source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data/negative-words.txt")
+#source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data/negative-words.txt")
 ```
 
 ```{r}
+library(shiny)
+
+shinyApp(
+    ui = fluidPage(
+      fluidRow(style = "padding-bottom: 20px;",
+        column(4, selectInput('speech1', 'Speech 1',
+                              speech_selected,
+                              selected=speech_selected[1])),
+        column(4, selectInput('speech2', 'Speech 2', speech_selected,
+                              selected=speech_selected[1])),
+        column(4, sliderInput('nwords', 'Number of words', 3,
+                               min = 20, max = 200, value=100, step = 20))
+      ),
+      fluidRow(
+        plotOutput('wordclouds', height = "400px")
+      )
+    ),
+
+    server = function(input, output, session) {
+
+      # Combine the selected variables into a new data frame
+      selectedData <- reactive({
+        list(dtm.term1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(input$speech1)],
+             dtm.count1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(input$speech1)],
+             dtm.term2=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(input$speech2)],
+             dtm.count2=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(input$speech2)])
+      })
+
+      output$wordclouds <- renderPlot(height = 400, {
+        par(mfrow=c(1,2), mar = c(0, 0, 3, 0))
+        wordcloud(selectedData()$dtm.term1, 
+                  selectedData()$dtm.count1,
+              scale=c(4,0.5),
+              max.words=input$nwords,
+              min.freq=1,
+              random.order=FALSE,
+              rot.per=0,
+              use.r.layout=FALSE,
+              random.color=FALSE,
+              colors=brewer.pal(10,"Blues"), 
+            main=input$speech1,
+            shape='star')
+        wordcloud(selectedData()$dtm.term2, 
+                  selectedData()$dtm.count2,
+              scale=c(4,0.5),
+              max.words=input$nwords,
+              min.freq=1,
+              random.order=FALSE,
+              rot.per=0,
+              use.r.layout=FALSE,
+              random.color=FALSE,
+              colors=brewer.pal(10,"Blues"), 
+            main=input$speech2)
+      })
+    },
+
+    options = list(height = 600)
+)
+```
+
+```{r,eval=FALSE,include=FALSE}
+library(shiny)
+
+shinyApp(
+  ui=fluidPage( 
+    fluidRow(
+      column(4,selectInput("speech1","Speech 1", speech_selected,selected = speech_selected[1])),
+    column(4,selectInput("speech2","Speech 2", speech_selected,selected = speech_selected[2]))
+    ),
+    fluidRow(plotOutput("wordclouds"),height = "400px")
+    ),
+  server = function(input, output, session)
+  {
+    data = reactive(
+      {
+        list(dtm.term1 = ff.dtm$term[ff.dtm$document==as.character(input$speech1)],
+             dtm.count1 = ff.dtm$count[ff.dtm$document==as.character(input$speech1)],
+             dtm.term2 = ff.dtm$term[ff.dtm$document == as.character(input$speech2)],
+             dtm.count2 = ff.dtm$count[ff.dtm$document == as.character(input$speech2)])
+      }
+    )
+  output$wordclouds <- renderPlot(height = 100, {
+       #par(mfrow=c(1,2), mar = c(0, 0, 3, 0))
+      wordcloud2(data()$dtm.term1, 
+               data()$dtm.count1,
+              scale=c(4,0.5),
+              max.words=input$nwords,
+              min.freq=1,
+              #random.order=FALSE,
+              #rot.per=0,
+              #use.r.layout=FALSE,
+             # random.color=FALSE,
+              colors=brewer.pal(10,"Blues"), 
+            main=input$speech1)
+        wordcloud2(data()$dtm.term2, 
+                  data()$dtm.count2,
+              scale=c(4,0.5),
+              max.words=input$nwords,
+              min.freq=1,
+             # random.order=FALSE,
+             # rot.per=0,
+             # use.r.layout=FALSE,
+             # random.color=FALSE,
+              colors=brewer.pal(10,"Blues"), 
+            main=input$speech2)
+      })
+    
+  }
+)
+#shinyApp(
+ #   ui = fluidPage(
+  #    fluidRow(style = "padding-bottom: 20px;",
+   #     column(4, selectInput('speech1', 'Speech 1',
+    #                          speeches,
+     #                         selected=speeches[5])),
+      #  column(4, selectInput('speech2', 'Speech 2', speeches,
+       #                       selected=speeches[9])),
+        #column(4, sliderInput('nwords', 'Number of words', 3,
+         #                      min = 20, max = 200, value=100, step = 20))
+      #),
+      #fluidRow(
+      #  plotOutput('wordclouds', height = "400px")
+      #)
+  #  ),
+
+   # server = function(input, output, session) {
+
+      # Combine the selected variables into a new data frame
+    #  selectedData <- reactive({
+     #   list(dtm.term1=ff.dtm$term[ff.dtm$document==as.character(input$speech1)],
+      #       dtm.count1=ff.dtm$count[ff.dtm$document==as.character(input$speech1)],
+       #      dtm.term2=ff.dtm$term[ff.dtm$document==as.character(input$speech2)],
+        #     dtm.count2=ff.dtm$count[ff.dtm$document==as.character(input$speech2)])
+      #})
+
+      
+    
+
+    #options = list(height = 600)
+#)
+
+```
+
+
+
+
+
+
+
+
+```{r, eval=FALSE, include=FALSE}
 ###SENTIMENT ANALYSIS###
 
+setwd("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data")
 #WE FIRST PERFORM A LEXICONED-BASED SENTIMENT ANALYSIS TO SHED SOME LIGHT INTO OUR ANALYSIS
 table = read.csv("dtm.csv",header = TRUE)
 table$Year=c(1861,1865,1829,1833,2009,2013,1889,1923,2017,1953,1957,1933,1937,1941,1945,1853,1989,1789,1793,2001,2005,1885,1893,1945,1929,1857,1881,1845,1809,1813,1817,1821,1977,1797,1961,1825,1963,1837,1969,1973,1981,1985,1877,1901,1801,1805,1869,1873,1921,1841,1909,1993,1997,1897,1901,1913,1917,1849)
@@ -159,19 +334,22 @@ ggplot(plot.data.senti,aes(x=plot.data.senti$Year,y=plot.data.senti$sentiscores)
 ```
 
 
-```{r}
+```{r, eval=FALSE, include=FALSE}
 #CLEARLY WE SEE THAT DURING THESE TIMES, THE LEXICON-BASED SENTIMENT ANALYSIS SHOW THAT PRESIDENT DURING THESE TIMES UTLIZED MORE NEGATIVE WORDS THAN OTHER TIME, WHICH IS A REASONABLE RESULT.
 
 #NOW WE START TO PERFORM OTHER ANALYSIS
 ```
 
-```{r}
+```{r, eval=FALSE, include=FALSE}
 #REFERENCE:
 #LINCOLN-1 1 LINCOLN-2 2 
 #WoodrowWilson-1 56 WoodrowWilson-2 57
 #FranklinDroosevelt-2 13 FranklinDroosevelt-3 14 FranklinDroosevelt-4 15
 #JohnFKenndy-1 35
 #RonaldReagan-1 41
+#inaugRichardNixon-1 39
+#inaugRichardNixon-1 40  VIetnam War
+#GeorgeBush-2 21 Iraq War
 #FREQUENT TERM ANALYSIS
 Lincoln.dtm=DocumentTermMatrix(ff.all[1:2])
 WoodrowWilson.dtm=DocumentTermMatrix(ff.all[56:57])
@@ -181,26 +359,27 @@ RonaldRegan.dtm=DocumentTermMatrix(ff.all[41])
 sort(colSums(as.matrix(Lincoln.dtm)),decreasing = TRUE)[1:20]
 ```
 
-```{r}
+```{r, eval=FALSE, include=FALSE}
 sort(colSums(as.matrix(WoodrowWilson.dtm)),decreasing = TRUE)[1:20]
 
 ```
-```{r}
+
+```{r, eval=FALSE, include=FALSE}
 sort(colSums(as.matrix(FranklinDroosevelt.dtm)),decreasing = TRUE)[1:20]
 
 ```
 
-```{r}
+```{r,eval=FALSE,include=FALSE}
 sort(colSums(as.matrix(JohnFKenndy.dtm)),decreasing = TRUE)[1:20]
 
 ```
 
-```{r}
+```{r,eval=FALSE, include=FALSE}
 sort(colSums(as.matrix(RonaldRegan.dtm)),decreasing = TRUE)[1:20]
 
 ```
 
-```{r}
+```{r,eval=FALSE, include=FALSE}
 #Class Notes
 #
 ```
