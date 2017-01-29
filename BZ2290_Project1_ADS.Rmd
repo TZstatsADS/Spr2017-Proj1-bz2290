@@ -45,7 +45,56 @@ speeches=list.files(path = folder.path, pattern = "*.txt")
 prez.out=substr(speeches, 6, nchar(speeches)-4)
 length.speeches=rep(NA, length(speeches))
 ff.all<-Corpus(DirSource(folder.path))
+#SPEECH SELECTED
+speech_selected=c("AbrahamLincoln-1","AbrahamLincoln-2","WoodrowWilson-1","WoodrowWilson-2","FranklinDroosevelt-2","FranklinDroosevelt-3","FranklinDroosevelt-4","JohnFKenndy-1","RonaldReagan-1")
+#SPLIT SPEECH INTO SENTENCES
 
+
+#REFERENCE:
+#LINCOLN-1 1 LINCOLN-2 2 
+#WoodrowWilson-1 56 WoodrowWilson-2 57
+#FranklinDroosevelt-2 13 FranklinDroosevelt-3 14 FranklinDroosevelt-4 15
+#JohnFKenndy-1 35
+#RonaldReagan-1 41
+L1=sent_detect(ff.all[[1]]$content,endmarks = c("?", ".", "!", "|",";"))
+L2=sent_detect(ff.all[[2]]$content,endmarks = c("?", ".", "!", "|",";"))
+W1=sent_detect(ff.all[[56]]$content,endmarks = c("?", ".", "!", "|",";"))
+W2=sent_detect(ff.all[[57]]$content,endmarks = c("?", ".", "!", "|",";"))
+F2=sent_detect(ff.all[[13]]$content,endmarks = c("?", ".", "!", "|",";"))
+F3=sent_detect(ff.all[[14]]$content,endmarks = c("?", ".", "!", "|",";"))
+F4=sent_detect(ff.all[[15]]$content,endmarks = c("?", ".", "!", "|",";"))
+J1=sent_detect(ff.all[[35]]$content,endmarks = c("?", ".", "!", "|",";"))
+R1=sent_detect(ff.all[[41]]$content,endmarks = c("?", ".", "!", "|",";"))
+#Create Emotion Matrix
+sentence.list = list(L1,L2,W1,W2,F2,F3,F4,J1,R1)
+title.list = c(rep("AbrahamLincoln-1",length(L1)),rep("AbrahamLincoln-2",length(L2)),rep("WoodrowWilson-1",length(W1)),rep("WoodrowWilson-1",length(W2)),rep("FranklinDroosevelt-2",length(F2)),rep("FranklinDroosevelt-3",length(F3)),rep("FranklinDroosevelt-4",length(F4)),rep("JohnFKenndy-1",length(J1)),rep("RonaldRegan-2",length(R1)))
+emotion.matrix = cbind(title.list,c(L1,L2,W1,W2,F2,F3,F4,J1,R1))
+colnames(emotion.matrix)=c("President","Sentences")
+interm.matrix = NULL
+for(i in 1 : length(sentence.list))
+{
+  emotions=diag(1/(word_count(sentence.list[[i]])+0.01))%*%as.matrix(get_nrc_sentiment(sentence.list[[i]]))
+  colnames(emotions)=c( "anger", "anticipation", "disgust", "fear", "joy", "sadness", "surprise", "trust", "negative", "positive")
+ interm.matrix = rbind(interm.matrix,cbind(sent.id=as.numeric(1:length(sentence.list[[i]])),nword=as.numeric(word_count(sentence.list[[i]])),as.matrix(emotions)))
+}
+emotion.matrix = as.data.frame(cbind(emotion.matrix,interm.matrix))
+```
+
+```{r}
+return_short_sentence=function(df=emotion.matrix,Presidents,nwords=5)
+{
+  return(df$Sentences[which(df$President==Presidents && as.numeric(df$nword) <= nwords)])
+}
+return_short_sentence(President = "AbrahamLincoln-1")
+return_short_sentence(President = "AbrahamLincoln-2")
+#WoodrowWilson-1
+return_short_sentence(President = "WoodrnowWilson-1")
+return_short_sentence(President = "WoodrowWilson-2")
+
+```
+
+
+```{r}
 #REMOVE WHITE SPACE FROM CORPUS
 ff.all<-tm_map(ff.all, stripWhitespace)
 
@@ -93,6 +142,16 @@ speech_selected=c("AbrahamLincoln-1","AbrahamLincoln-2","WoodrowWilson-1","Woodr
 ```
 
 ```{r}
+#SPLIT SPEECH INTO SENTNECES
+
+```
+
+
+
+
+
+```{r}
+#WORD CLOUD#
 library(shiny)
 
 shinyApp(
@@ -104,7 +163,7 @@ shinyApp(
         column(4, selectInput('speech2', 'Speech 2', speech_selected,
                               selected=speech_selected[1])),
         column(4, sliderInput('nwords', 'Number of words', 3,
-                               min = 20, max = 200, value=100, step = 20))
+                               min = 20, max = 200, value=30, step = 20))
       ),
       fluidRow(
         plotOutput('wordclouds', height = "400px")
@@ -121,7 +180,7 @@ shinyApp(
              dtm.count2=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(input$speech2)])
       })
 
-      output$wordclouds <- renderPlot(height = 400, {
+     output$wordclouds <- renderPlot(height = 400, {
         par(mfrow=c(1,2), mar = c(0, 0, 3, 0))
         wordcloud(selectedData()$dtm.term1, 
                   selectedData()$dtm.count1,
@@ -133,8 +192,7 @@ shinyApp(
               use.r.layout=FALSE,
               random.color=FALSE,
               colors=brewer.pal(10,"Blues"), 
-            main=input$speech1,
-            shape='star')
+            main=input$speech1)
         wordcloud(selectedData()$dtm.term2, 
                   selectedData()$dtm.count2,
               scale=c(4,0.5),
@@ -149,98 +207,13 @@ shinyApp(
       })
     },
 
-    options = list(height = 600)
+    options = list(height = 300)
 )
 ```
 
-```{r,eval=FALSE,include=FALSE}
-library(shiny)
-
-shinyApp(
-  ui=fluidPage( 
-    fluidRow(
-      column(4,selectInput("speech1","Speech 1", speech_selected,selected = speech_selected[1])),
-    column(4,selectInput("speech2","Speech 2", speech_selected,selected = speech_selected[2]))
-    ),
-    fluidRow(plotOutput("wordclouds"),height = "400px")
-    ),
-  server = function(input, output, session)
-  {
-    data = reactive(
-      {
-        list(dtm.term1 = ff.dtm$term[ff.dtm$document==as.character(input$speech1)],
-             dtm.count1 = ff.dtm$count[ff.dtm$document==as.character(input$speech1)],
-             dtm.term2 = ff.dtm$term[ff.dtm$document == as.character(input$speech2)],
-             dtm.count2 = ff.dtm$count[ff.dtm$document == as.character(input$speech2)])
-      }
-    )
-  output$wordclouds <- renderPlot(height = 100, {
-       #par(mfrow=c(1,2), mar = c(0, 0, 3, 0))
-      wordcloud2(data()$dtm.term1, 
-               data()$dtm.count1,
-              scale=c(4,0.5),
-              max.words=input$nwords,
-              min.freq=1,
-              #random.order=FALSE,
-              #rot.per=0,
-              #use.r.layout=FALSE,
-             # random.color=FALSE,
-              colors=brewer.pal(10,"Blues"), 
-            main=input$speech1)
-        wordcloud2(data()$dtm.term2, 
-                  data()$dtm.count2,
-              scale=c(4,0.5),
-              max.words=input$nwords,
-              min.freq=1,
-             # random.order=FALSE,
-             # rot.per=0,
-             # use.r.layout=FALSE,
-             # random.color=FALSE,
-              colors=brewer.pal(10,"Blues"), 
-            main=input$speech2)
-      })
-    
-  }
-)
-#shinyApp(
- #   ui = fluidPage(
-  #    fluidRow(style = "padding-bottom: 20px;",
-   #     column(4, selectInput('speech1', 'Speech 1',
-    #                          speeches,
-     #                         selected=speeches[5])),
-      #  column(4, selectInput('speech2', 'Speech 2', speeches,
-       #                       selected=speeches[9])),
-        #column(4, sliderInput('nwords', 'Number of words', 3,
-         #                      min = 20, max = 200, value=100, step = 20))
-      #),
-      #fluidRow(
-      #  plotOutput('wordclouds', height = "400px")
-      #)
-  #  ),
-
-   # server = function(input, output, session) {
-
-      # Combine the selected variables into a new data frame
-    #  selectedData <- reactive({
-     #   list(dtm.term1=ff.dtm$term[ff.dtm$document==as.character(input$speech1)],
-      #       dtm.count1=ff.dtm$count[ff.dtm$document==as.character(input$speech1)],
-       #      dtm.term2=ff.dtm$term[ff.dtm$document==as.character(input$speech2)],
-        #     dtm.count2=ff.dtm$count[ff.dtm$document==as.character(input$speech2)])
-      #})
-
-      
-    
-
-    #options = list(height = 600)
-#)
+```{r}
 
 ```
-
-
-
-
-
-
 
 
 ```{r, eval=FALSE, include=FALSE}
