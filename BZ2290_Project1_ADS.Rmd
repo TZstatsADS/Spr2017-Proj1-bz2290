@@ -10,6 +10,7 @@ output:
 #MOst Words they used  WOrldCloud
 #THe Emotion of their speech
 #length of their speech
+install.packages("d3heatmap")
 ```
 
 ```{r}
@@ -34,6 +35,7 @@ library(RANN)
 library(topicmodels)
 library(wordcloud)
 library(tidytext)
+library(d3heatmap)
 library(wordcloud2)
 ```
 
@@ -67,7 +69,7 @@ J1=sent_detect(ff.all[[35]]$content,endmarks = c("?", ".", "!", "|",";"))
 R1=sent_detect(ff.all[[41]]$content,endmarks = c("?", ".", "!", "|",";"))
 #Create Emotion Matrix
 sentence.list = list(L1,L2,W1,W2,F2,F3,F4,J1,R1)
-title.list = c(rep("AbrahamLincoln-1",length(L1)),rep("AbrahamLincoln-2",length(L2)),rep("WoodrowWilson-1",length(W1)),rep("WoodrowWilson-1",length(W2)),rep("FranklinDroosevelt-2",length(F2)),rep("FranklinDroosevelt-3",length(F3)),rep("FranklinDroosevelt-4",length(F4)),rep("JohnFKenndy-1",length(J1)),rep("RonaldRegan-2",length(R1)))
+title.list = c(rep("AbrahamLincoln-1",length(L1)),rep("AbrahamLincoln-2",length(L2)),rep("WoodrowWilson-1",length(W1)),rep("WoodrowWilson-2",length(W2)),rep("FranklinDroosevelt-2",length(F2)),rep("FranklinDroosevelt-3",length(F3)),rep("FranklinDroosevelt-4",length(F4)),rep("JohnFKenndy-1",length(J1)),rep("RonaldReagan-1",length(R1)))
 emotion.matrix = cbind(title.list,c(L1,L2,W1,W2,F2,F3,F4,J1,R1))
 colnames(emotion.matrix)=c("President","Sentences")
 interm.matrix = NULL
@@ -75,26 +77,105 @@ for(i in 1 : length(sentence.list))
 {
   emotions=diag(1/(word_count(sentence.list[[i]])+0.01))%*%as.matrix(get_nrc_sentiment(sentence.list[[i]]))
   colnames(emotions)=c( "anger", "anticipation", "disgust", "fear", "joy", "sadness", "surprise", "trust", "negative", "positive")
- interm.matrix = rbind(interm.matrix,cbind(sent.id=as.numeric(1:length(sentence.list[[i]])),nword=as.numeric(word_count(sentence.list[[i]])),as.matrix(emotions)))
+ interm.matrix = rbind(interm.matrix,cbind(sent.id=as.numeric(1:length(sentence.list[[i]])),nword=word_count(sentence.list[[i]]),as.matrix(emotions)))
 }
 emotion.matrix = as.data.frame(cbind(emotion.matrix,interm.matrix))
+
+Factor_to_Numeric=function(df)
+{
+  for(i in 3:14)
+  {
+    df[,i] = as.numeric(as.character(df[,i]))
+  }
+  return(df)
+}
+emotion.matrix = Factor_to_Numeric(emotion.matrix)
 ```
 
 ```{r}
-return_short_sentence=function(df=emotion.matrix,Presidents,nwords=5)
+#Return Short Sentence
+return_short_sentence=function(df=emotion.matrix,Presidents,nwords=8)
 {
-  return(df$Sentences[which(df$President==Presidents && as.numeric(df$nword) <= nwords)])
+  return(df$Sentences[which(df$President==Presidents & df$nword <= nwords)])
 }
 return_short_sentence(President = "AbrahamLincoln-1")
 return_short_sentence(President = "AbrahamLincoln-2")
 #WoodrowWilson-1
-return_short_sentence(President = "WoodrnowWilson-1")
+return_short_sentence(President = "WoodrowWilson-1")
 return_short_sentence(President = "WoodrowWilson-2")
+
+return_short_sentence(President = "FranklinDroosevelt-2")
+return_short_sentence(President = "FranklinDroosevelt-3")
+return_short_sentence(President = "FranklinDroosevelt-4")
+
+return_short_sentence(President = "JohnFKenndy-1")
+
+return_short_sentence(President = "RonaldReagan-1")
+
+```
+```{r}
+#Length of Sentences
+sel.comparison=c("AbrahamLincoln-1",
+                 "AbrahamLincoln-2",
+                 "WoodrowWilson-1",
+                 "WoodrowWilson-2",
+                 "FranklinDroosevelt-2",
+                 "FranklinDroosevelt-3",
+                 "FranklinDroosevelt-4",
+                 "JohnFKenndy-1",
+                 "RonaldReagan-1")
+sentence.length = emotion.matrix[,1:4]
+sentence.length$PoP = factor(sentence.length$President)
+sentence.length$Ordered=reorder(sentence.length$PoP, 
+                                  sentence.length$nword, 
+                                  mean, 
+                                  order=T)
+beeswarm(nword~Ordered, 
+         data=sentence.length,
+         horizontal = TRUE, 
+         pch=16, col=alpha(brewer.pal(9, "Set1"), 0.6), 
+         cex=0.55, cex.axis=0.8, cex.lab=0.8,
+         spacing=5/nlevels(sentence.length$Ordered),
+         las=2, xlab="Number of words in a sentence.", ylab="",
+         main="Nomination speeches")
+```
+```{r}
+#Clustering of emotions#
+heatmap.2(cor(emotion.matrix%>%filter(President==speech_selected[6])%>%select(anger:trust)), 
+          scale = "none", 
+          col = bluered(100), , margin=c(6, 6), key=F,
+          trace = "none", density.info = "none")
+```
+
+```{r}
+heatmap.2(cor(emotion.matrix%>%filter(President==speech_selected[8])%>%select(anger:trust)), 
+          scale = "none", 
+          col = bluered(100), , margin=c(6, 6), key=F,
+          trace = "none", density.info = "none")
+```
+```{r}
+d3heatmap(cor(emotion.matrix%>%filter(President==speech_selected[9])%>%select(anger:trust)),Rowv = FALSE, Colv=FALSE)
+```
+```{r}
+#write.csv(as.matrix(dtm),file="dtm.csv")
+A = emotion.matrix[emotion.matrix$President==speech_selected[4],5:14]
+B = emotion.matrix[emotion.matrix$President==speech_selected[6],5:14]
+C = emotion.matrix[emotion.matrix$President==speech_selected[8],5:14]
+D = emotion.matrix[emotion.matrix$President==speech_selected[9],5:14]
+write.csv(as.matrix(A),file="A4.csv")
+write.csv(as.matrix(B),file="B6.csv")
+write.csv(as.matrix(C),file="C8.csv")
+write.csv(as.matrix(D),file="D9.csv")
+emotion.matrix$anger[emotion.matrix$President=="RonaldReagan-1"]
 
 ```
 
 
+
+
+
 ```{r}
+#Topic Modeling
 #REMOVE WHITE SPACE FROM CORPUS
 ff.all<-tm_map(ff.all, stripWhitespace)
 
