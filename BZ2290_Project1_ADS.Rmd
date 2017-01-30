@@ -3,118 +3,22 @@ title: "R Notebook For Applied Data Science-Project I"
 output:
   html_document: default
   html_notebook: default
+runtime: shiny
 ---
-```{r}
-
-```
 
 ```{r}
 #NECESSARY PACKAGES
-library(tm)
-library(wordcloud)
-library(RColorBrewer)
-library(dplyr)
-library(tidytext)
-library(RCurl)
-library(ggplot2)
-library(rvest)
-library(tibble)
-library(qdap)
-library(sentimentr)
-library(gplots)
-library(syuzhet)
-library(factoextra)
-library(beeswarm)
-library(scales)
-library(RANN)
-library(topicmodels)
-library(wordcloud)
-library(tidytext)
-library(d3heatmap)
-library(wordcloud2)
-library(shinythemes)
+source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/lib/Package.R")
+#Functions needed
+source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/lib/Functions.R")
 ```
 
 ```{r}
 ##PREPRCESSIONING OF THE DATA##
-folder.path="D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data/InauguralSpeeches"
-#Replace to your own path 
-speeches=list.files(path = folder.path, pattern = "*.txt")
-prez.out=substr(speeches, 6, nchar(speeches)-4)
-length.speeches=rep(NA, length(speeches))
-ff.all<-Corpus(DirSource(folder.path))
-#SPEECH SELECTED
-speech_selected=c("AbrahamLincoln-1","AbrahamLincoln-2","WoodrowWilson-1","WoodrowWilson-2","FranklinDroosevelt-2","FranklinDroosevelt-3","FranklinDroosevelt-4","JohnFKenndy-1","RonaldReagan-1","GeorgeWBush-2")
-#SPLIT SPEECH INTO SENTENCES
-
-
-#REFERENCE:
-#LINCOLN-1 1 LINCOLN-2 2 
-#WoodrowWilson-1 56 WoodrowWilson-2 57
-#FranklinDroosevelt-2 13 FranklinDroosevelt-3 14 FranklinDroosevelt-4 15
-#JohnFKenndy-1 35
-#RonaldReagan-1 41
-#GeorgeWBush-2 21
-L1=sent_detect(ff.all[[1]]$content,endmarks = c("?", ".", "!", "|",";"))
-L2=sent_detect(ff.all[[2]]$content,endmarks = c("?", ".", "!", "|",";"))
-W1=sent_detect(ff.all[[56]]$content,endmarks = c("?", ".", "!", "|",";"))
-W2=sent_detect(ff.all[[57]]$content,endmarks = c("?", ".", "!", "|",";"))
-F2=sent_detect(ff.all[[13]]$content,endmarks = c("?", ".", "!", "|",";"))
-F3=sent_detect(ff.all[[14]]$content,endmarks = c("?", ".", "!", "|",";"))
-F4=sent_detect(ff.all[[15]]$content,endmarks = c("?", ".", "!", "|",";"))
-J1=sent_detect(ff.all[[35]]$content,endmarks = c("?", ".", "!", "|",";"))
-R1=sent_detect(ff.all[[41]]$content,endmarks = c("?", ".", "!", "|",";"))
-G2=sent_detect(ff.all[[21]]$content,endmarks= c("?", ".", "!", "|",";"))
-#Create Emotion Matrix
-sentence.list = list(L1,L2,W1,W2,F2,F3,F4,J1,R1,G2)
-title.list = c(rep("AbrahamLincoln-1",length(L1)),rep("AbrahamLincoln-2",length(L2)),rep("WoodrowWilson-1",length(W1)),rep("WoodrowWilson-2",length(W2)),rep("FranklinDroosevelt-2",length(F2)),rep("FranklinDroosevelt-3",length(F3)),rep("FranklinDroosevelt-4",length(F4)),rep("JohnFKenndy-1",length(J1)),rep("RonaldReagan-1",length(R1)),rep("GeorgeWBush-2",length(G2)))
-emotion.matrix = cbind(title.list,c(L1,L2,W1,W2,F2,F3,F4,J1,R1,G2))
-colnames(emotion.matrix)=c("President","Sentences")
-interm.matrix = NULL
-for(i in 1 : length(sentence.list))
-{
-  emotions=diag(1/(word_count(sentence.list[[i]])+0.01))%*%as.matrix(get_nrc_sentiment(sentence.list[[i]]))
-  colnames(emotions)=c( "anger", "anticipation", "disgust", "fear", "joy", "sadness", "surprise", "trust", "negative", "positive")
- interm.matrix = rbind(interm.matrix,cbind(sent.id=as.numeric(1:length(sentence.list[[i]])),nword=word_count(sentence.list[[i]]),as.matrix(emotions)))
-}
-emotion.matrix = as.data.frame(cbind(emotion.matrix,interm.matrix))
-
-Factor_to_Numeric=function(df)
-{
-  for(i in 3:14)
-  {
-    df[,i] = as.numeric(as.character(df[,i]))
-  }
-  return(df)
-}
-emotion.matrix = Factor_to_Numeric(emotion.matrix)
-
+source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/lib/Preprocess.R")
 ```
 
-```{r}
-#Return Short Sentence
-return_short_sentence=function(df=emotion.matrix,Presidents,nwords=8)
-{
-  return(df$Sentences[which(df$President==Presidents & df$nword <= nwords)])
-}
-return_short_sentence(President = "AbrahamLincoln-1")
-return_short_sentence(President = "AbrahamLincoln-2")
-#WoodrowWilson-1
-return_short_sentence(President = "WoodrowWilson-1")
-return_short_sentence(President = "WoodrowWilson-2")
-
-return_short_sentence(President = "FranklinDroosevelt-2")
-return_short_sentence(President = "FranklinDroosevelt-3")
-return_short_sentence(President = "FranklinDroosevelt-4")
-
-return_short_sentence(President = "JohnFKenndy-1")
-
-return_short_sentence(President = "RonaldReagan-1")
-
-return_short_sentence(Presidents = "GeorgeWBush-2")
-```
-
-```{r}
+```{r, eval=FALSE, include=FALSE}
 #Length of Sentences
 sel.comparison=c("AbrahamLincoln-1",
                  "AbrahamLincoln-2",
@@ -133,26 +37,20 @@ sentence.length$Ordered=reorder(sentence.length$PoP,
                                   mean, 
                                   order=T)
 sentence.length= as.data.frame(sentence.length)
-beeswarm(nword~Ordered, 
-         data=sentence.length,
-         horizontal = TRUE, 
-         pch=16, col=alpha(brewer.pal(9, "Set1"), 0.6), 
-         cex=0.55, cex.axis=0.8, cex.lab=0.8,
-         spacing=5/nlevels(sentence.length$Ordered),
-         las=2, xlab="Number of words in a sentence.", ylab="",
-         main="Nomination speeches")
+
+
 ```
 
-```{r}
+```{r, fig.height=2.5, fig.width=2}
+#Sentence Length
 library(shiny)
 shinyApp(
   ui = fluidPage(
-    sidebarLayout(
-      sidebarPanel(
-      checkboxGroupInput("POP","President",speech_selected,selected = speech_selected[1]),
-      shinythemes::themeSelector()),
-      mainPanel(
-      plotOutput("beeswarm")))
+      fluidRow(
+      column(12,checkboxGroupInput("POP","President",speech_selected,selected = speech_selected,inline = TRUE))),
+      theme=shinytheme("superhero"),
+      fluidRow(
+      column(12,plotOutput("beeswarm")))
   ),
   server = function(input,output,session){
     selected.data = reactive(
@@ -167,69 +65,57 @@ shinyApp(
     )
     output$beeswarm = renderPlot(
       {
+        par(mai=c(2.4,0.82,0.82,0.42))
         beeswarm(nword~Ordered, 
          data=selected.data(),
-         horizontal = TRUE, 
-         pch=16, col=alpha(brewer.pal(9, "Set1"), 0.6), 
-         cex=0.55, cex.axis=0.8, cex.lab=0.8,
-         spacing=5/nlevels(sentence.length$Ordered),
-         las=2, xlab="Number of words in a sentence.", ylab="",
-         main="Nomination speeches")
+         horizontal = FALSE, 
+         pch=19, col=alpha(brewer.pal(9, "Set2"), 0.6),
+         cex=1, cex.axis=1.2, cex.lab=1.2,
+         spacing=5/nlevels(selected.data()$Ordered),
+         las=2,ylab="Number of words",
+         xlab="",
+         main="Inauguartion speeches")
       }
     )
   }
 )
 ```
 
-```{r,eval=FALSE,include=FALSE}
-#Clustering of emotions#
-heatmap.2(cor(emotion.matrix%>%filter(President==speech_selected[6])%>%select(anger:trust)), 
-          scale = "none", 
-          col = bluered(100), , margin=c(6, 6), key=F,
-          trace = "none", density.info = "none")
-```
-
-```{r,eval=FALSE,include=FALSE}
-heatmap.2(cor(emotion.matrix%>%filter(President==speech_selected[8])%>%select(anger:trust)), 
-          scale = "none", 
-          col = bluered(100), , margin=c(6, 6), key=F,
-          trace = "none", density.info = "none")
-```
 ```{r}
-d3heatmap(cor(emotion.matrix%>%filter(President==speech_selected[9])%>%select(anger:trust)),Rowv = FALSE, Colv=FALSE)
-```
-```{r}
-#write.csv(as.matrix(dtm),file="dtm.csv")
-A = emotion.matrix[emotion.matrix$President==speech_selected[4],5:14]
-B = emotion.matrix[emotion.matrix$President==speech_selected[6],5:14]
-C = emotion.matrix[emotion.matrix$President==speech_selected[8],5:14]
-D = emotion.matrix[emotion.matrix$President==speech_selected[9],5:14]
-write.csv(as.matrix(A),file="A4.csv")
-write.csv(as.matrix(B),file="B6.csv")
-write.csv(as.matrix(C),file="C8.csv")
-write.csv(as.matrix(D),file="D9.csv")
-emotion.matrix$anger[emotion.matrix$President=="RonaldReagan-1"]
+#Heatmap & Barplot
+shinyApp(
+  ui=fluidPage(
+    sidebarLayout(
+        sidebarPanel(
+   sliderInput("Pop","President",min=1,max=length(speech_selected),value=1,step=1)),
+    mainPanel(
+      tabsetPanel(
+      tabPanel("Heatmap",uiOutput("ui_heatmap")),
+      tabPanel("Barplot",plotOutput("Barplot"))
+      ))
+     )
+    ),
+  server = function(input,output){
+    output$ui_heatmap <- renderUI({
+    d3heatmapOutput("heatmap")
+  })
 
-```
-
-```{r}
-#Emtion Charged Sentences
-Emotion_Sentences = function(df=emotion.matrix,pop)
-{
-  df=tbl_df(emotion.matrix)%>%
-  filter(President==pop,nword>=4)%>%
-  select(Sentences, anger:trust)
-  df=as.data.frame(df)
-  index=apply(df[,-1], 2, which.max)
-  result = NULL
-  for(i in 1:length(index))
-  {
-    result = rbind(result,as.character(df$Sentences[index[i]]))
+  output$heatmap <- renderD3heatmap({ 
+    d3heatmap(cor(emotion.matrix%>%filter(President==speech_selected[input$Pop])%>%select(anger:trust)),Rowv = FALSE, dendrogram = "row",Colv=FALSE,color="Blues") 
+  })
+      output$Barplot = renderPlot(
+      {
+        Emotion_Barplot(speech_selected[input$Pop])
+      }
+    )
+    
+    
   }
-  result = cbind(c("anger","anticipation","disgust","fear","joy","sadness","surprise","trust"),result)
-  return(result)
-}
+)
+```
 
+```{r, eval=FALSE, include=FALSE}
+#Emtion Charged Sentences
 print(speech_selected[1])
 Emotion_Sentences(pop=speech_selected[1])
 
@@ -260,22 +146,9 @@ Emotion_Sentences(pop=speech_selected[9])
 print(speech_selected[10])
 Emotion_Sentences(pop=speech_selected[10])
 ```
-```{r}
-#Emotion Barplot
-Emotion_Barplot= function(pop)
-{
-  par(mar=c(4, 6, 2, 1))
-  emo.means=colMeans(select(subset(emotion.matrix,emotion.matrix$President==pop), anger:trust)>0.01,na.rm=TRUE)
-  col.use=c("red2", "darkgoldenrod1", 
-            "chartreuse3", "blueviolet",
-            "darkgoldenrod2", "dodgerblue3", 
-            "darkgoldenrod1", "darkgoldenrod1")
-  barplot(emo.means[order(emo.means)], las=2, col=col.use[order(emo.means)], horiz=T, main="Inaugural Speeches")
-}
-Emotion_Barplot(speech_selected[8])
 
-```
-```{r}
+
+```{r, eval=FALSE, include=FALSE}
 corpus.list=emotion.matrix[2:(nrow(emotion.matrix)-1), ]
 sentence.pre=emotion.matrix$Sentences[1:(nrow(emotion.matrix)-2)]
 sentence.post=emotion.matrix$Sentences[3:(nrow(emotion.matrix)-1)]
@@ -286,7 +159,7 @@ corpus.list=corpus.list[-rm.rows, ]
 ```
 
 ## Text mining
-```{r}
+```{r, eval=FALSE, include=FALSE}
 docs <- Corpus(VectorSource(corpus.list$snipets))
 writeLines(as.character(docs[[sample(1:nrow(corpus.list), 1)]]))
 ```
@@ -294,7 +167,7 @@ writeLines(as.character(docs[[sample(1:nrow(corpus.list), 1)]]))
 ### Text basic processing
 Adapted from <https://eight2late.wordpress.com/2015/09/29/a-gentle-introduction-to-topic-modeling-using-r/>.
 
-```{r}
+```{r, eval=FALSE, include=FALSE}
 #remove potentially problematic symbols
 docs <-tm_map(docs,content_transformer(tolower))
 writeLines(as.character(docs[[sample(1:nrow(corpus.list), 1)]]))
@@ -324,7 +197,7 @@ writeLines(as.character(docs[[sample(1:nrow(corpus.list), 1)]]))
 
 Gengerate document-term matrices. 
 
-```{r}
+```{r, eval=FALSE, include=FALSE}
 dtm <- DocumentTermMatrix(docs)
 #convert rownames to filenames#convert rownames to filenames
 rownames(dtm) <- paste(corpus.list$type, corpus.list$File,
@@ -339,7 +212,7 @@ corpus.list=corpus.list[rowTotals>0, ]
 
 Run LDA
 
-```{r}
+```{r, eval=FALSE, include=FALSE}
 #Set parameters for Gibbs sampling
 burnin <- 4000
 iter <- 2000
@@ -371,7 +244,7 @@ topicProbabilities <- as.data.frame(ldaOut@gamma)
 write.csv(topicProbabilities,file=paste("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/LDAGibbs",k,"TopicProbabilities.csv"))
 ```
 
-```{r}
+```{r, eval=FALSE, include=FALSE}
 terms.beta=ldaOut@beta
 terms.beta=scale(terms.beta)
 topics.terms=NULL
@@ -384,7 +257,7 @@ ldaOut.terms
 
 Based on the most popular terms and the most salient terms for each topic, we assign a hashtag to each topic. This part require manual setup as the topics are likely to change. 
 
-```{r}
+```{r, eval=FALSE, include=FALSE}
 topics.hash=c("Government","Spirit","Nation","Democracy","Determination","Freedom","Misc","America","Arm","Justice","Citizen","Fear","Equality","Constitution","Strive")
 corpus.list$ldatopic=as.vector(ldaOut.topics)
 corpus.list$ldahash=topics.hash[ldaOut.topics]
@@ -395,7 +268,7 @@ write.csv(as.matrix(corpus.list.df),file="topic.csv")
 ```
 
 ## Clustering of topics
-```{r, fig.width=3, fig.height=4}
+```{r, eval=FALSE, fig.height=4, fig.width=3, include=FALSE}
 #par(mar=c(1,1,1,1))
 topic.summary=tbl_df(corpus.list.df)%>%
               select(President, Government:Strive)%>%
@@ -422,7 +295,7 @@ heatmap.2(as.matrix(topic.summary[,topic.plot+1]),
 d3heatmap()
 ```
 
-```{r, fig.width=3.3, fig.height=5}
+```{r, eval=FALSE, fig.height=5, fig.width=3.3, include=FALSE}
 # [1] "Economy"         "America"         "Defense"         "Belief"         
 # [5] "Election"        "Patriotism"      "Unity"           "Government"     
 # [9] "Reform"          "Temporal"        "WorkingFamilies" "Freedom"        
@@ -470,7 +343,7 @@ plot.stacked(speech.df[,1], speech.df[,topic.plot+1],
             xlab="Sentences", ylab="Topic share", main="Donald Trump, Nomination")
 ```
 
-```{r, fig.width=3.3, fig.height=5}
+```{r, eval=FALSE, fig.height=5, fig.width=3.3, include=FALSE}
 # [1] "Economy"         "America"         "Defense"         "Belief"         
 # [5] "Election"        "Patriotism"      "Unity"           "Government"     
 # [9] "Reform"          "Temporal"        "WorkingFamilies" "Freedom"        
@@ -483,8 +356,9 @@ par(mfrow=c(5, 1), mar=c(1,1,2,0), bty="n", xaxt="n", yaxt="n")
 topic.plot=c(1, 13, 14, 15, 8, 9, 12)
 print(topics.hash[topic.plot])
 
+```
 
-```{r}
+```{r, eval=FALSE, include=FALSE}
 speech.df=tbl_df(corpus.list.df)%>%filter(type=="nomin", word.count<20)%>%select(sentences, Economy:Legislation)
 
 as.character(speech.df$sentences[apply(as.data.frame(speech.df[,-1]), 2, which.max)])
@@ -493,8 +367,7 @@ names(speech.df)[-1]
 
 ```
 
-
-```{r, fig.width=3, fig.height=3}
+```{r, eval=FALSE, fig.height=3, fig.width=3, include=FALSE}
 presid.summary=tbl_df(corpus.list.df)%>%
   filter(type=="inaug", File%in%sel.comparison)%>%
   select(File, Economy:Legislation)%>%
@@ -511,86 +384,8 @@ fviz_cluster(km.res,
              show.clust.cent=FALSE)
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r,eval=FALSE,include=FALSE}
-#Topic Modeling
-#REMOVE WHITE SPACE FROM CORPUS
-ff.all<-tm_map(ff.all, stripWhitespace)
-
-#TRANSFORM LETTERS TO LOWER CASE TO WAS OUR ANALYSIS
-ff.all<-tm_map(ff.all, content_transformer(tolower))
-
-#REMOVE COMMON STOPWORDS IN ENGLISH
-ff.all<-tm_map(ff.all, removeWords, stopwords("english"))
-
-#REMOVE EMPTY CHARATERS
-ff.all<-tm_map(ff.all, removeWords, character(0))
-
-#REMOVE PUNCTIONS
-ff.all<-tm_map(ff.all, removePunctuation)
-
-#REMOVE NUMBERS
-ff.all = tm_map(ff.all,removeNumbers)
-
-#TURN INTO A DOCUMENT MATRIX
-dtm <- DocumentTermMatrix(ff.all,
-                          control = list(weighting = function(x)
-                                             weightTfIdf(x, 
-                                                         normalize =FALSE),
-                                         stopwords = TRUE))
-ff.dtm=tidy(dtm)
-
-#REFERENCE:
-#LINCOLN-1 1 LINCOLN-2 2 
-#WoodrowWilson-1 56 WoodrowWilson-2 57
-#FranklinDroosevelt-2 13 FranklinDroosevelt-3 14 FranklinDroosevelt-4 15
-#JohnFKenndy-1 35
-#RonaldReagan-1 41
-speech_selected=c("AbrahamLincoln-1","AbrahamLincoln-2","WoodrowWilson-1","WoodrowWilson-2","FranklinDroosevelt-2","FranklinDroosevelt-3","FranklinDroosevelt-4","JohnFKenndy-1","RonaldReagan-1")
-#REMOVE SPASRE WORD
-#dtms = removeSparseTerms(dtm,0.1)
-
-#WRITE IT INTO A CSV
-#write.csv(as.matrix(dtm),file="dtm.csv")
-#dates = read.table("InauguationDatesEdit.txt",header = TRUE)
-#Add Year Column to classify years this speech is given
-#tdm.tidy=tidy(tdm.all)
-#tdm.overall=summarise(group_by(tdm.tidy, term), sum(count))
-#source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data/negative-words.txt")
-#source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data/negative-words.txt")
-```
-
 ```{r}
-#SPLIT SPEECH INTO SENTNECES
-
-```
-
-
-
-
-
-```{r}
-#WORD CLOUD#
+#Word cloud
 library(shiny)
 
 shinyApp(
