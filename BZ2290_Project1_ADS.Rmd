@@ -5,12 +5,7 @@ output:
   html_notebook: default
 ---
 ```{r}
-#Before We start to analysis, we will have to process the data first to make sure the data is good to be analyzed.
 
-#MOst Words they used  WOrldCloud
-#THe Emotion of their speech
-#length of their speech
-install.packages("d3heatmap")
 ```
 
 ```{r}
@@ -37,6 +32,7 @@ library(wordcloud)
 library(tidytext)
 library(d3heatmap)
 library(wordcloud2)
+library(shinythemes)
 ```
 
 ```{r}
@@ -136,6 +132,7 @@ sentence.length$Ordered=reorder(sentence.length$PoP,
                                   sentence.length$nword, 
                                   mean, 
                                   order=T)
+sentence.length= as.data.frame(sentence.length)
 beeswarm(nword~Ordered, 
          data=sentence.length,
          horizontal = TRUE, 
@@ -145,6 +142,45 @@ beeswarm(nword~Ordered,
          las=2, xlab="Number of words in a sentence.", ylab="",
          main="Nomination speeches")
 ```
+
+```{r}
+library(shiny)
+shinyApp(
+  ui = fluidPage(
+    sidebarLayout(
+      sidebarPanel(
+      checkboxGroupInput("POP","President",speech_selected,selected = speech_selected[1]),
+      shinythemes::themeSelector()),
+      mainPanel(
+      plotOutput("beeswarm")))
+  ),
+  server = function(input,output,session){
+    selected.data = reactive(
+      {
+        sentence = emotion.matrix[,1:4]
+        sentence = subset(sentence,as.character(sentence$President) %in% input$POP)
+        sentence$Pop = factor(sentence$President)
+        sentence$Ordered=reorder(sentence$Pop,sentence$nword,mean,order=T)
+        return(sentence)
+
+      }
+    )
+    output$beeswarm = renderPlot(
+      {
+        beeswarm(nword~Ordered, 
+         data=selected.data(),
+         horizontal = TRUE, 
+         pch=16, col=alpha(brewer.pal(9, "Set1"), 0.6), 
+         cex=0.55, cex.axis=0.8, cex.lab=0.8,
+         spacing=5/nlevels(sentence.length$Ordered),
+         las=2, xlab="Number of words in a sentence.", ylab="",
+         main="Nomination speeches")
+      }
+    )
+  }
+)
+```
+
 ```{r,eval=FALSE,include=FALSE}
 #Clustering of emotions#
 heatmap.2(cor(emotion.matrix%>%filter(President==speech_selected[6])%>%select(anger:trust)), 
@@ -153,14 +189,14 @@ heatmap.2(cor(emotion.matrix%>%filter(President==speech_selected[6])%>%select(an
           trace = "none", density.info = "none")
 ```
 
-```{r,eval=FALSE,include=FLASE}
+```{r,eval=FALSE,include=FALSE}
 heatmap.2(cor(emotion.matrix%>%filter(President==speech_selected[8])%>%select(anger:trust)), 
           scale = "none", 
           col = bluered(100), , margin=c(6, 6), key=F,
           trace = "none", density.info = "none")
 ```
 ```{r}
-d3heatmap(cor(emotion.matrix%>%filter(President==speech_selected[10])%>%select(anger:trust)),Rowv = FALSE, Colv=FALSE)
+d3heatmap(cor(emotion.matrix%>%filter(President==speech_selected[9])%>%select(anger:trust)),Rowv = FALSE, Colv=FALSE)
 ```
 ```{r}
 #write.csv(as.matrix(dtm),file="dtm.csv")
@@ -447,82 +483,6 @@ par(mfrow=c(5, 1), mar=c(1,1,2,0), bty="n", xaxt="n", yaxt="n")
 topic.plot=c(1, 13, 14, 15, 8, 9, 12)
 print(topics.hash[topic.plot])
 
-speech.df=tbl_df(corpus.list.df)%>%filter(File=="GeorgeBush", type=="inaug", Term==1)%>%select(sent.id, Economy:Legislation)
-speech.df=as.matrix(speech.df)
-speech.df[,-1]=replace(speech.df[,-1], speech.df[,-1]<1/15, 0.001)
-speech.df[,-1]=f.smooth.topic(x=speech.df[,1], y=speech.df[,-1])
-plot.stacked(speech.df[,1], speech.df[,topic.plot+1],
-             xlab="Sentences", ylab="Topic share", main="George Bush, inaugural Speeches")
-
-speech.df=tbl_df(corpus.list.df)%>%filter(File=="WilliamJClinton", type=="inaug", Term==1)%>%select(sent.id, Economy:Legislation)
-speech.df=as.matrix(speech.df)
-speech.df[,-1]=replace(speech.df[,-1], speech.df[,-1]<1/15, 0.001)
-speech.df[,-1]=f.smooth.topic(x=speech.df[,1], y=speech.df[,-1])
-plot.stacked(speech.df[,1], speech.df[,topic.plot+1],
-             xlab="Sentences", ylab="Topic share", main="William J Clinton, inaugural Speeches")
-
-speech.df=tbl_df(corpus.list.df)%>%filter(File=="GeorgeWBush", type=="inaug", Term==1)%>%select(sent.id, Economy:Legislation)
-speech.df=as.matrix(speech.df)
-speech.df[,-1]=replace(speech.df[,-1], speech.df[,-1]<1/15, 0.001)
-speech.df[,-1]=f.smooth.topic(x=speech.df[,1], y=speech.df[,-1])
-plot.stacked(speech.df[,1], speech.df[,topic.plot+1],
-             xlab="Sentences", ylab="Topic share", main="George W. Bush, inaugural Speeches")
-
-speech.df=tbl_df(corpus.list.df)%>%filter(File=="BarackObama", type=="inaug", Term==1)%>%select(sent.id, Economy:Legislation)
-speech.df=as.matrix(speech.df)
-speech.df[,-1]=replace(speech.df[,-1], speech.df[,-1]<1/15, 0.001)
-speech.df[,-1]=f.smooth.topic(x=speech.df[,1], y=speech.df[,-1])
-plot.stacked(speech.df[,1], speech.df[,topic.plot+1],
-             xlab="Sentences", ylab="Topic share", main="Barack Obama, inaugural Speeches")
-```
-```{r, fig.width=4, fig.height=5}
-# [1] "Economy"         "America"         "Defense"         "Belief"         
-# [5] "Election"        "Patriotism"      "Unity"           "Government"     
-# [9] "Reform"          "Temporal"        "WorkingFamilies" "Freedom"        
-# [13] "Equality"        "Misc"            "Legislation"       
-
-
-par(mfrow=c(5, 1))
-
-topic.plot=c(1, 13, 14, 15, 8, 9, 12)
-print(topics.hash[topic.plot])
-
-speech.df=tbl_df(corpus.list.df)%>%filter(File=="RonaldReagan", type=="farewell")%>%select(sent.id, Economy:Legislation)
-speech.df=as.matrix(speech.df)
-speech.df[,-1]=replace(speech.df[,-1], speech.df[,-1]<1/15, 0.001)
-speech.df[,-1]=f.smooth.topic(x=speech.df[,1], y=speech.df[,-1])
-plot.stacked(speech.df[,1], speech.df[,topic.plot+1],
-             xlab="Sentences", ylab="Topic share", main="Ronald Reagan, Farewell Speeches")
-
-speech.df=tbl_df(corpus.list.df)%>%filter(File=="GeorgeBush", type=="farewell")%>%select(sent.id, Economy:Legislation)
-speech.df=as.matrix(speech.df)
-speech.df[,-1]=replace(speech.df[,-1], speech.df[,-1]<1/15, 0.001)
-speech.df[,-1]=f.smooth.topic(x=speech.df[,1], y=speech.df[,-1])
-plot.stacked(speech.df[,1], speech.df[,topic.plot+1],
-             xlab="Sentences", ylab="Topic share", main="George Bush, Farewell Speeches")
-
-speech.df=tbl_df(corpus.list.df)%>%filter(File=="WilliamJClinton", type=="farewell")%>%select(sent.id, Economy:Legislation)
-speech.df=as.matrix(speech.df)
-speech.df[,-1]=replace(speech.df[,-1], speech.df[,-1]<1/15, 0.001)
-speech.df[,-1]=f.smooth.topic(x=speech.df[,1], y=speech.df[,-1])
-plot.stacked(speech.df[,1], speech.df[,topic.plot+1],
-             xlab="Sentences", ylab="Topic share", main="William J. Clinton, Farewell Speeches")
-
-speech.df=tbl_df(corpus.list.df)%>%filter(File=="GeorgeWBush", type=="farewell")%>%select(sent.id, Economy:Legislation)
-speech.df=as.matrix(speech.df)
-speech.df[,-1]=replace(speech.df[,-1], speech.df[,-1]<1/15, 0.001)
-speech.df[,-1]=f.smooth.topic(x=speech.df[,1], y=speech.df[,-1])
-plot.stacked(speech.df[,1], speech.df[,topic.plot+1],
-             xlab="Sentences", ylab="Topic share", main="George W Bush, Farewell Speeches")
-
-
-speech.df=tbl_df(corpus.list.df)%>%filter(File=="BarackObama", type=="farewell")%>%select(sent.id, Economy:Legislation)
-speech.df=as.matrix(speech.df)
-speech.df[,-1]=replace(speech.df[,-1], speech.df[,-1]<1/15, 0.001)
-speech.df[,-1]=f.smooth.topic(x=speech.df[,1], y=speech.df[,-1])
-plot.stacked(speech.df[,1], speech.df[,topic.plot+1],
-             xlab="Sentences", ylab="Topic share", main="Barack Obama, Farewell Speeches")
-```
 
 ```{r}
 speech.df=tbl_df(corpus.list.df)%>%filter(type=="nomin", word.count<20)%>%select(sentences, Economy:Legislation)
@@ -690,148 +650,3 @@ shinyApp(
 )
 ```
 
-```{r}
-
-```
-
-
-```{r, eval=FALSE, include=FALSE}
-###SENTIMENT ANALYSIS###
-
-setwd("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data")
-#WE FIRST PERFORM A LEXICONED-BASED SENTIMENT ANALYSIS TO SHED SOME LIGHT INTO OUR ANALYSIS
-table = read.csv("dtm.csv",header = TRUE)
-table$Year=c(1861,1865,1829,1833,2009,2013,1889,1923,2017,1953,1957,1933,1937,1941,1945,1853,1989,1789,1793,2001,2005,1885,1893,1945,1929,1857,1881,1845,1809,1813,1817,1821,1977,1797,1961,1825,1963,1837,1969,1973,1981,1985,1877,1901,1801,1805,1869,1873,1921,1841,1909,1993,1997,1897,1901,1913,1917,1849)
-table$Presdient = gsub("inaug|.txt","",table$X)
-#dates$FIRST = gsub("[0-9]+[/][0-9]+[/]","",dates$FIRST)
-#dates$SECOND = gsub("[0-9]+[/][0-9]+[/]","",dates$SECOND)
-#dates$THIRD = gsub("[0-9]+[/][0-9]+[/]","",dates$THIRD)
-#dates$FOURTH = gsub("[0-9]+[/][0-9]+[/]","",dates$FOURTH)
-#dates=dates[order(dates$PRESIDENT),]
-
-#READ IN POSITIVE AND NEGATIVE WORDS
-positives= readLines("positive-words.txt")
-negatives = readLines("negative-words.txt")
-
-#SENTIMENT SCORE FUNCTION#
-
-    score.sentiment =  function(lines, pos.words, neg.words) {
-        #SPLIT INTO WORDS
-        words = unlist(strsplit(lines, '\\s+'))
-        #COMPARE WORDS TO THE POSTIVE WORDS AS WELL AS NEGATIVE ONES
-        pos.matches = match(words, pos.words)
-        neg.matches = match(words, neg.words)
-        #CONVERT INTO TRUE OR FALSE VALUES
-        pos.matches = !is.na(pos.matches)
-        neg.matches = !is.na(neg.matches)
-        #CALCULATE THE SCORE
-        score = sum(pos.matches) - sum(neg.matches)
-        return(score)
-      }
-senti_scores = c()
-  for(i in 1 : dim(table)[1])
-{
-  lines = unlist(strsplit(ff.all[[i]]$content,"\\s+"))
-  senti_scores[i] = score.sentiment(lines,positives,negatives)
-}
-table$sentiscores=senti_scores
-table = table[order(table$Year),]
-
-#Plot the sentiment scores against President
-par(mfrow=c(1,1))
-plot.data.senti = as.data.frame(table[,9353:9354])
-plot.data.senti$Year = table$Year
-ggplot(plot.data.senti,aes(x=plot.data.senti$Year,y=plot.data.senti$sentiscores))+
-  geom_point()+
-  geom_line()+
-  labs(title="Snetiment Scores for Presidential Inaugration Speech",y="Sentiment Scores",x = "Years")+
-  theme(axis.text.x = element_text(angle = 60, hjust = 1))+
-  annotate("text",x=1861,y=20,label="Civil War",size=4,color=2)+
-  annotate("point",x=1861,y=10,size=2,color=2)+
-  annotate("point",x=1865,y=1,size=2,color=2)+
-  annotate("text",x=1913,y=48,label="WWI",size=4,color=3)+
-  annotate("point",x=1913,y=38,size=2,color=3)+
-  annotate("text",x=1933,y=10,label="WWII",size=4,color=4)+
-  #annotate("point",x=1933,y=24,size=2,color=4)+
-  annotate("point",x=1937,y=18,size=2,color=4)+
-  annotate("point",x=1941,y=20,size=2,color=4)+
-  annotate("point",x=1945,y=27,size=2,color=4)+
-  annotate("text",x=1977,y=12,label="Arm&Space Race",size=4,color=14)+
-  #annotate("point",x=1945,y=109,size=2,color=5)+
-  #annotate("point",x=1953,y=98,size=2,color=5)+
-  #annotate("point",x=1957,y=44,size=2,color=5)+
-  annotate("point",x=1961,y=15,size=2,color=14)+
-  #annotate("point",x=1963,y=34,size=2,color=5)+
-  #annotate("point",x=1969,y=66,size=2,color=5)+
-  #annotate("point",x=1973,y=82,size=2,color=5)+
-  #annotate("point",x=1977,y=60,size=2,color=5)+
-  annotate("point",x=1981,y=44,size=2,color=20)+
-  annotate("text",x=1985,y=34,label="Afganistan War",size=4,color=20)
-  #annotate("point",x=1985,y=85,size=2,color=5)+
-  #annotate("point",x=1989,y=121,size=2,color=5)
-  #annotate("text",x=2001,y=84,label="911",size=4,color=6)+
-  #annotate("point",x=2001,y=64,size=2,color=6)+
-  #annotate("point",x=2005,y=73,size=2,color=6)+
-  #annotate("text",x=2009,y=34,label="FirstPresident",size=4,color=7)+
-  #annotate("point",x=2009,y=44,size=2,color=7)+
-  #annotate("point",x=2013,y=54,size=2,color=7)+
-  #annotate("text",x=2017,y=67,label="MAGA",size=4,color=11)+
-  #annotate("point",x=2017,y=57,size=2,color=11)
- 
-#NOTE: THERE ARE SEVERAL PRESIDENTS DURING THE COLD WAR, BUT BEOFRE KENNDY'S SPEECH WAS GIVEN, THE THEART FROM THE SOVIET HAVE REACHED A HIGHER LEVEL WITH THE LANUACH OF ITS ICBM MISSLE AND SATELLLITE. THERE ARE ALSO EVENTS HAPPENED IN CUBA THAT INTENSIFIED THE RELATIONSHIP BETWEEN U.S. AND CUBAN. HENCE HIS SPEECH WAS ADOPTED.
-
-#REGAN'S SPEECH WAS SELECTED BECAUSE OF THE AFGANSITAN WAR
-
-  
-```
-
-
-```{r, eval=FALSE, include=FALSE}
-#CLEARLY WE SEE THAT DURING THESE TIMES, THE LEXICON-BASED SENTIMENT ANALYSIS SHOW THAT PRESIDENT DURING THESE TIMES UTLIZED MORE NEGATIVE WORDS THAN OTHER TIME, WHICH IS A REASONABLE RESULT.
-
-#NOW WE START TO PERFORM OTHER ANALYSIS
-```
-
-```{r, eval=FALSE, include=FALSE}
-#REFERENCE:
-#LINCOLN-1 1 LINCOLN-2 2 
-#WoodrowWilson-1 56 WoodrowWilson-2 57
-#FranklinDroosevelt-2 13 FranklinDroosevelt-3 14 FranklinDroosevelt-4 15
-#JohnFKenndy-1 35
-#RonaldReagan-1 41
-#inaugRichardNixon-1 39
-#inaugRichardNixon-1 40  VIetnam War
-#GeorgeBush-2 21 Iraq War
-#FREQUENT TERM ANALYSIS
-Lincoln.dtm=DocumentTermMatrix(ff.all[1:2])
-WoodrowWilson.dtm=DocumentTermMatrix(ff.all[56:57])
-FranklinDroosevelt.dtm=DocumentTermMatrix(ff.all[13:15])
-JohnFKenndy.dtm=DocumentTermMatrix(ff.all[35])
-RonaldRegan.dtm=DocumentTermMatrix(ff.all[41])
-sort(colSums(as.matrix(Lincoln.dtm)),decreasing = TRUE)[1:20]
-```
-
-```{r, eval=FALSE, include=FALSE}
-sort(colSums(as.matrix(WoodrowWilson.dtm)),decreasing = TRUE)[1:20]
-
-```
-
-```{r, eval=FALSE, include=FALSE}
-sort(colSums(as.matrix(FranklinDroosevelt.dtm)),decreasing = TRUE)[1:20]
-
-```
-
-```{r,eval=FALSE,include=FALSE}
-sort(colSums(as.matrix(JohnFKenndy.dtm)),decreasing = TRUE)[1:20]
-
-```
-
-```{r,eval=FALSE, include=FALSE}
-sort(colSums(as.matrix(RonaldRegan.dtm)),decreasing = TRUE)[1:20]
-
-```
-
-```{r,eval=FALSE, include=FALSE}
-#Class Notes
-#
-```
