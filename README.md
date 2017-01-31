@@ -25,7 +25,12 @@ FranklinDroosevelt-4
 JohnFKenndy-1
 
 #Where You can find my work#
-My blog as well as the Html output will be found in the "Doc" folder, while related source file will be found in the "lib" folder. Please make sure all the paths are adjusted properly and all packages are installed correctly in order to make sure a smooth run of the notebook.
+Data used in this ananlysis can be found in the "data" folder.
+My blog as well as the Html output will be found in the "Doc" folder along with some support scripts.
+Function definitions can be found in the "lib" folder.
+Scripts that process the data for analysis can be found in "output" folder.
+
+Please make sure all the paths are adjusted properly and all packages are installed correctly in order to make sure a smooth run of the notebook.
 
 #Contribution Statement#
 This Project is solely done by Boxuan Zhao, including data processing, analysis, as well as the compostion of this repo or any other related part of this project.

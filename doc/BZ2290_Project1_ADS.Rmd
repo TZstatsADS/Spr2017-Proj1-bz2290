@@ -6,21 +6,21 @@ output:
 runtime: shiny
 ---
 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, include=FALSE}
 #NECESSARY PACKAGES
 source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/doc/Package.R")
 #Functions needed
 source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/lib/Functions.R")
 ```
 
-```{r}
+```{r, include=FALSE}
 ##PREPRCESSIONING OF THE DATA##
 
 #Please modify the path within Preprocess.R
 source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/output/Preprocess.R")
 ```
 
-```{r, fig.height=2.5, fig.width=2}
+```{r, echo=FALSE, fig.height=2.5, fig.width=2}
 #Sentence Length
 library(shiny)
 shinyApp(
@@ -70,7 +70,7 @@ shinyApp(
 #IN order to ease our comparsion, we use number 1 to 10 to denote the ten speeches we selected.
 ```
 
-```{r}
+```{r, echo=FALSE}
 #Heatmap & Barplot
 shinyApp(
   ui=fluidPage(
@@ -111,7 +111,7 @@ shinyApp(
 
 
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, message=FALSE}
 #Emtion Charged Sentences
 print(speech.selected[1])
 Emotion_Sentences(pop=speech.selected[1])
