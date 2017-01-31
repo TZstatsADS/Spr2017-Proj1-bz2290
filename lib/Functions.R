@@ -1,3 +1,4 @@
+#Plot Emotion Barplot
 Emotion_Barplot= function(pop)
 {
   par(mar=c(4, 6, 2, 1))
@@ -8,6 +9,8 @@ Emotion_Barplot= function(pop)
             "darkgoldenrod1", "darkgoldenrod1")
   barplot(emo.means[order(emo.means)], las=2, col=col.use[order(emo.means)], horiz=T, main="Inaugural Speeches")
 }
+
+#Convert Factor to a Numeric variable
 Factor_to_Numeric=function(df)
 {
   for(i in 3:14)
@@ -16,6 +19,7 @@ Factor_to_Numeric=function(df)
   }
   return(df)
 }
+
 return_short_sentence=function(df=emotion.matrix,Presidents,nwords=8)
 {
   return(df$Sentences[which(df$President==Presidents & df$nword <= nwords)])
@@ -25,6 +29,8 @@ return_long_sentence=function(df=emotion.matrix,Presidents,nwords=60)
 {
   return(df$Sentences[which(df$President==Presidents & df$nword >= nwords)])
 }
+
+#Return Emotional Sentences
 Emotion_Sentences = function(df=emotion.matrix,pop)
 {
   df=tbl_df(emotion.matrix)%>%

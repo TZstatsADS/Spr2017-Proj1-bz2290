@@ -111,7 +111,7 @@ shinyApp(
 
 
 
-```{r, eval=FALSE, include=FALSE}
+```{r, echo=FALSE}
 #Emtion Charged Sentences
 print(speech_selected[1])
 Emotion_Sentences(pop=speech_selected[1])
@@ -205,7 +205,7 @@ shinyApp(
 )
 ```
 
-```{r,warning=FALSE}
+```{r, eval=FALSE, include=FALSE}
 par(mfrow=c(1,2))
 dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[1])]
 dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[1])]
@@ -235,7 +235,7 @@ wordcloud(dtm.term.2, dtm.count.2,
            colors=brewer.pal(7,"Blues"))
 ```
 
-```{r}
+```{r, eval=FALSE, include=FALSE}
 par(mfrow=c(1,2))
 dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[3])]
 dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[3])]
@@ -263,7 +263,7 @@ wordcloud(dtm.term.2, dtm.count.2,
            colors=brewer.pal(7,"Blues"))
 ```
 
-```{r,warning=FALSE}
+```{r, eval=FALSE, include=FALSE}
 par(mfrow=c(1,1))
 dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[5])]
 dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[5])]
@@ -281,7 +281,7 @@ wordcloud(dtm.term.1,
 
 ```
 
-```{r,warning=FALSE}
+```{r, eval=FALSE, include=FALSE}
 par(mfrow=c(1,1))
 dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[6])]
 dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[6])]
@@ -298,7 +298,7 @@ wordcloud(dtm.term.1,
               colors=brewer.pal(7,"Blues"))
 ```
 
-```{r,warning=FALSE}
+```{r, eval=FALSE, include=FALSE}
 par(mfrow=c(1,1))
 dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[7])]
 dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[7])]
@@ -315,7 +315,7 @@ wordcloud(dtm.term.1,
               colors=brewer.pal(7,"Blues"))
 ```
 
-```{r,warning=FALSE}
+```{r, eval=FALSE, include=FALSE}
 par(mfrow=c(1,1))
 dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[8])]
 dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[8])]
@@ -332,7 +332,7 @@ wordcloud(dtm.term.1,
               colors=brewer.pal(7,"Blues"))
 ```
 
-```{r,warning=FALSE}
+```{r, eval=FALSE, include=FALSE}
 par(mfrow=c(1,1))
 dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[9])]
 dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[9])]
@@ -349,7 +349,7 @@ wordcloud(dtm.term.1,
               colors=brewer.pal(7,"Blues"))
 ```
 
-```{r,warning=FALSE}
+```{r, eval=FALSE, include=FALSE}
 par(mfrow=c(1,1))
 dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[10])]
 dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[10])]
