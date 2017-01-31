@@ -218,7 +218,164 @@ shinyApp(
     options = list(height = 300)
 )
 ```
+
+```{r,warning=FALSE}
+par(mfrow=c(1,2))
+dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[1])]
+dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[1])]
+dtm.term.2=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[2])]
+dtm.count.2=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[2])]
+wordcloud(dtm.term.1, 
+          dtm.count.1,
+              scale=c(1,0.3),
+             gridSize=0,
+              max.words=100,
+              min.freq=1,
+              random.order=FALSE,
+              rot.per=0,
+              use.r.layout=FALSE,
+              random.color=FALSE,
+              colors=brewer.pal(7,"Blues"))
+
+wordcloud(dtm.term.2, dtm.count.2,
+          scale=c(1,0.3),
+          gridSize=0,
+          max.words=100,
+          min.freq=1,
+          random.order=FALSE,
+          rot.per=0,
+          use.r.layout=FALSE,
+          random.color=FALSE,
+           colors=brewer.pal(7,"Blues"))
+```
+
 ```{r}
+par(mfrow=c(1,2))
+dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[3])]
+dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[3])]
+dtm.term.2=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[4])]
+dtm.count.2=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[4])]
+wordcloud(dtm.term.1, 
+          dtm.count.1,
+              scale=c(1,0.3),
+              max.words=100,
+              min.freq=1,
+              random.order=FALSE,
+              rot.per=0,
+              use.r.layout=FALSE,
+              random.color=FALSE,
+              colors=brewer.pal(7,"Blues"))
+
+wordcloud(dtm.term.2, dtm.count.2,
+          scale=c(1,0.3),
+          max.words=100,
+          min.freq=1,
+          random.order=FALSE,
+          rot.per=0,
+          use.r.layout=FALSE,
+          random.color=FALSE,
+           colors=brewer.pal(7,"Blues"))
+```
+
+```{r,warning=FALSE}
+par(mfrow=c(1,1))
+dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[5])]
+dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[5])]
+
+wordcloud(dtm.term.1, 
+          dtm.count.1,
+              scale=c(1,0.3),
+              max.words=100,
+              min.freq=1,
+              random.order=FALSE,
+              rot.per=0,
+              use.r.layout=FALSE,
+              random.color=FALSE,
+              colors=brewer.pal(7,"Blues"))
 
 ```
 
+```{r,warning=FALSE}
+par(mfrow=c(1,1))
+dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[6])]
+dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[6])]
+
+wordcloud(dtm.term.1, 
+          dtm.count.1,
+              scale=c(1,0.3),
+              max.words=100,
+              min.freq=1,
+              random.order=FALSE,
+              rot.per=0,
+              use.r.layout=FALSE,
+              random.color=FALSE,
+              colors=brewer.pal(7,"Blues"))
+```
+
+```{r,warning=FALSE}
+par(mfrow=c(1,1))
+dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[7])]
+dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[7])]
+
+wordcloud(dtm.term.1, 
+          dtm.count.1,
+              scale=c(1,0.3),
+              max.words=100,
+              min.freq=1,
+              random.order=FALSE,
+              rot.per=0,
+              use.r.layout=FALSE,
+              random.color=FALSE,
+              colors=brewer.pal(7,"Blues"))
+```
+
+```{r,warning=FALSE}
+par(mfrow=c(1,1))
+dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[8])]
+dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[8])]
+
+wordcloud(dtm.term.1, 
+          dtm.count.1,
+              scale=c(1,0.3),
+              max.words=100,
+              min.freq=1,
+              random.order=FALSE,
+              rot.per=0,
+              use.r.layout=FALSE,
+              random.color=FALSE,
+              colors=brewer.pal(7,"Blues"))
+```
+
+```{r,warning=FALSE}
+par(mfrow=c(1,1))
+dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[9])]
+dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[9])]
+
+wordcloud(dtm.term.1, 
+          dtm.count.1,
+              scale=c(1,0.3),
+              max.words=100,
+              min.freq=1,
+              random.order=FALSE,
+              rot.per=0,
+              use.r.layout=FALSE,
+              random.color=FALSE,
+              colors=brewer.pal(7,"Blues"))
+```
+
+```{r,warning=FALSE}
+par(mfrow=c(1,1))
+dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[10])]
+dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[10])]
+
+wordcloud(dtm.term.1, 
+          dtm.count.1,
+              scale=c(1,0.3),
+              max.words=100,
+              min.freq=1,
+              random.order=FALSE,
+              rot.per=0,
+              use.r.layout=FALSE,
+              random.color=FALSE,
+              colors=brewer.pal(7,"Blues"))
+```
