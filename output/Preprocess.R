@@ -1,9 +1,10 @@
 ##Preprocessing the data##
 
 #Please Change it to your own path when running
-########################
+
+##########################################################################################################################################################
 folder.path="D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/data/InauguralSpeeches"#Replace to your own path
-########################
+##########################################################################################################################################################
 
 speeches=list.files(path = folder.path, pattern = "*.txt")
 prez.out=substr(speeches, 6, nchar(speeches)-4)
@@ -29,7 +30,7 @@ G2=sent_detect(ff.all[[21]]$content,endmarks= c("?", ".", "!", "|",";"))#GeorgeW
 #For peace speech
 C2=sent_detect(ff.all[[53]]$content,endmarks = c("?", ".", "!", "|",";"))#WilliamJClinton-2
 R2=sent_detect(ff.all[[42]]$content,endmarks = c("?", ".", "!", "|",";"))#RonaldReagan-2
-JC1 = sent_detect(ff.all[[33]]$content,endmarks = c("?", ".", "!", "|",";"))#JimmyCarter-1
+JC1=sent_detect(ff.all[[33]]$content,endmarks = c("?", ".", "!", "|",";"))#JimmyCarter-1
 G1=sent_detect(ff.all[[20]]$content,endmarks= c("?", ".", "!", "|",";"))#GeorgeWBush-1
 
 #Create a matrix of these presidents with their sentences
@@ -38,16 +39,21 @@ title.list = c(rep("AbrahamLincoln-1",length(L1)),rep("AbrahamLincoln-2",length(
 emotion.matrix = cbind(title.list,c(L1,L2,W1,W2,F2,F3,F4,J1,R1,G2,C2,R2,JC1,G1))
 colnames(emotion.matrix)=c("President","Sentences")
 
-#Calculate the generate the emotion matrix
+#Calculate and generate the emotion matrix
 interm.matrix = NULL
 for(i in 1 : length(sentence.list))
 {
   emotions=diag(1/(word_count(sentence.list[[i]])+0.01))%*%as.matrix(get_nrc_sentiment(sentence.list[[i]]))
+  
   colnames(emotions)=c( "anger", "anticipation", "disgust", "fear", "joy", "sadness", "surprise", "trust", "negative", "positive")
+  
   interm.matrix = rbind(interm.matrix,cbind(sent.id=as.numeric(1:length(sentence.list[[i]])),nword=word_count(sentence.list[[i]]),as.matrix(emotions)))
 }
 emotion.matrix = as.data.frame(cbind(emotion.matrix,interm.matrix))
 emotion.matrix = Factor_to_Numeric(emotion.matrix)
+
+
+
 
 #Prepare data for the wordcloud
 

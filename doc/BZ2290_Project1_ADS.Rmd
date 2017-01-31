@@ -37,7 +37,7 @@ print(R.version)
 ```
 
 
-```{r, echo=FALSE, fig.height=2.5, fig.width=2}
+```{r, eval=FALSE, fig.height=2.5, fig.width=2, include=FALSE}
 #Sentence Length
 library(shiny)
 shinyApp(
@@ -342,6 +342,7 @@ Emotion_Sentences(pop=speech.selected[10])[4,]
 ```{r, echo=FALSE, message=FALSE}
 print(speech.selected[11])
 Emotion_Sentences(pop=speech.selected[11])[4,]
+table(as.string(Emotion_Sentences(pop=speech.selected[11])[4,2]))
 
 print(speech.selected[12])
 Emotion_Sentences(pop=speech.selected[12])[4,]
@@ -352,3 +353,31 @@ Emotion_Sentences(pop=speech.selected[13])[4,]
 print(speech.selected[14])
 Emotion_Sentences(pop=speech.selected[14])[4,]
 ```
+
+```{r}
+presid.summary=tbl_df(emotion.matrix)%>%
+  filter(President%in%speech.selected)%>%
+  #group_by(paste0(type, File))%>%
+  group_by(President)%>%
+  summarise(
+    anger=mean(anger,na.rm=TRUE),
+    anticipation=mean(anticipation,na.rm=TRUE),
+    disgust=mean(disgust,na.rm=TRUE),
+    fear=mean(fear,na.rm=TRUE),
+    joy=mean(joy,na.rm=TRUE),
+    sadness=mean(sadness,na.rm=TRUE),
+    surprise=mean(surprise,na.rm=TRUE),
+    trust=mean(trust,na.rm=TRUE)
+    #negative=mean(negative),
+    #positive=mean(positive)
+  )
+
+presid.summary=as.data.frame(presid.summary)
+rownames(presid.summary)=as.character((presid.summary[,1]))
+km.res=kmeans(presid.summary[,-1],4,iter.max=200,nstart=5)
+fviz_cluster(km.res, 
+             stand=F, repel= TRUE,
+             data = presid.summary[,-1], xlab="", xaxt="n",
+             show.clust.cent=FALSE)
+```
+
