@@ -127,43 +127,228 @@ shinyApp(
 ```
 
 ```{r}
-#There is no surprise that the emotion
-#When examine the barplot of our selected speeches, we surprisingly see that, except the second speech given by AbrhamLincoln, during which the civil war was about to end, all the other speeches tend to have the trust emotion the most, and relative positive amotion such as joy and anticipation also came second the most. There are only three time when begative emotion such as fear came to the first and the second, and two of which came from Lincoln's two speeches, where the lst one came from FrankdRooselt's second speech. In addition, after the second speech, the postive words went back to be the top 2 emotions from Rooselevt's speech. This rather surprising pattern is interesting, as our general assumption was those speeches should not be very positive during war times.
+#There is no surprise that the top 3 emotions that appear the most in the speeches given during peaceful time are majorityly postive emtions. But, surprisingly,When examine the barplot of our selected speeches given during the war time, we see that, except the second speech given by AbrhamLincoln, during which the civil war was about to end, all the other speeches tend to have the trust emotion the most, and relative positive amotion such as joy and anticipation also came second the most. There are only three time when begative emotion such as fear came to the first and the second, while two tims come from Lincoln's two speeches, and the last one came from FrankdRooselt's second speech. In addition, after the second speech, the postive words went back to be the top 2 emotions from Rooselevt's speech. This rather surprising pattern is interesting, as our general assumption was those speeches should not be very positive during war times. What is more, we can also observe that emtions like Joy,trust,anticipation and fear will come in top 4 every time.This patterns deserve a little bit of digging and we will examine that further in the next part.
 
 #In addition to those, the heatmap reveals that the negative emotion sich as anger was usually related to fear and digust, where posiive emotion such as anticipitian is usually realted to joy.
 ```
 
 
+```{r}
+#Now we want to take a look at the sentence with positive emotions and try to find out more interesting part.
+```
+
+```{r}
+#Joy-War time Speeches#
+```
 
 ```{r, echo=FALSE, message=FALSE}
-#Emtion Charged Sentences
 print(speech.selected[1])
-Emotion_Sentences(pop=speech.selected[1])
+Emotion_Sentences(pop=speech.selected[1])[5,]
 
 print(speech.selected[2])
-Emotion_Sentences(pop=speech.selected[2])
+Emotion_Sentences(pop=speech.selected[2])[5,]
 
 print(speech.selected[3])
-Emotion_Sentences(pop=speech.selected[3])
+Emotion_Sentences(pop=speech.selected[3])[5,]
 
 print(speech.selected[4])
-Emotion_Sentences(pop=speech.selected[4])
+Emotion_Sentences(pop=speech.selected[4])[5,]
 
 print(speech.selected[5])
-Emotion_Sentences(pop=speech.selected[5])
+Emotion_Sentences(pop=speech.selected[5])[5,]
 
 print(speech.selected[6])
-Emotion_Sentences(pop=speech.selected[6])
+Emotion_Sentences(pop=speech.selected[6])[5,]
 
 print(speech.selected[7])
-Emotion_Sentences(pop=speech.selected[7])
+Emotion_Sentences(pop=speech.selected[7])[5,]
 
 print(speech.selected[8])
-Emotion_Sentences(pop=speech.selected[8])
+Emotion_Sentences(pop=speech.selected[8])[5,]
 
 print(speech.selected[9])
-Emotion_Sentences(pop=speech.selected[9])
+Emotion_Sentences(pop=speech.selected[9])[5,]
 
 print(speech.selected[10])
-Emotion_Sentences(pop=speech.selected[10])
+Emotion_Sentences(pop=speech.selected[10])[5,]
+```
+
+```{r}
+#Joy-Peaecful time Speeches#
+```
+
+```{r, echo=FALSE, message=FALSE}
+print(speech.selected[11])
+Emotion_Sentences(pop=speech.selected[11])[5,]
+
+print(speech.selected[12])
+Emotion_Sentences(pop=speech.selected[12])[5,]
+
+print(speech.selected[13])
+Emotion_Sentences(pop=speech.selected[13])[5,]
+
+print(speech.selected[14])
+Emotion_Sentences(pop=speech.selected[14])[5,]
+```
+
+```{r}
+#Trust-War time Speeches#
+```
+
+```{r, echo=FALSE, message=FALSE}
+print(speech.selected[1])
+Emotion_Sentences(pop=speech.selected[1])[8,]
+
+print(speech.selected[2])
+Emotion_Sentences(pop=speech.selected[2])[8,]
+
+print(speech.selected[3])
+Emotion_Sentences(pop=speech.selected[3])[8,]
+
+print(speech.selected[4])
+Emotion_Sentences(pop=speech.selected[4])[8,]
+
+print(speech.selected[5])
+Emotion_Sentences(pop=speech.selected[5])[8,]
+
+print(speech.selected[6])
+Emotion_Sentences(pop=speech.selected[6])[8,]
+
+print(speech.selected[7])
+Emotion_Sentences(pop=speech.selected[7])[8,]
+
+print(speech.selected[8])
+Emotion_Sentences(pop=speech.selected[8])[8,]
+
+print(speech.selected[9])
+Emotion_Sentences(pop=speech.selected[9])[8,]
+
+print(speech.selected[10])
+Emotion_Sentences(pop=speech.selected[10])[8,]
+```
+
+```{r}
+#Trust-Peaecful time Speeches#
+```
+
+```{r, echo=FALSE, message=FALSE}
+print(speech.selected[11])
+Emotion_Sentences(pop=speech.selected[11])[8,]
+
+print(speech.selected[12])
+Emotion_Sentences(pop=speech.selected[12])[8,]
+
+print(speech.selected[13])
+Emotion_Sentences(pop=speech.selected[13])[8,]
+
+print(speech.selected[14])
+Emotion_Sentences(pop=speech.selected[14])[8,]
+```
+
+```{r}
+#Anticipation-War time Speeches#
+```
+
+```{r, echo=FALSE, message=FALSE}
+print(speech.selected[1])
+Emotion_Sentences(pop=speech.selected[1])[2,]
+
+print(speech.selected[2])
+Emotion_Sentences(pop=speech.selected[2])[2,]
+
+print(speech.selected[3])
+Emotion_Sentences(pop=speech.selected[3])[2,]
+
+print(speech.selected[4])
+Emotion_Sentences(pop=speech.selected[4])[2,]
+
+print(speech.selected[5])
+Emotion_Sentences(pop=speech.selected[5])[2,]
+
+print(speech.selected[6])
+Emotion_Sentences(pop=speech.selected[6])[2,]
+
+print(speech.selected[7])
+Emotion_Sentences(pop=speech.selected[7])[2,]
+
+print(speech.selected[8])
+Emotion_Sentences(pop=speech.selected[8])[2,]
+
+print(speech.selected[9])
+Emotion_Sentences(pop=speech.selected[9])[2,]
+
+print(speech.selected[10])
+Emotion_Sentences(pop=speech.selected[10])[2,]
+```
+
+```{r}
+#Anticipation-Peaecful time Speeches#
+```
+
+```{r, echo=FALSE, message=FALSE}
+print(speech.selected[11])
+Emotion_Sentences(pop=speech.selected[11])[2,]
+
+print(speech.selected[12])
+Emotion_Sentences(pop=speech.selected[12])[2,]
+
+print(speech.selected[13])
+Emotion_Sentences(pop=speech.selected[13])[2,]
+
+print(speech.selected[14])
+Emotion_Sentences(pop=speech.selected[14])[2,]
+```
+
+```{r}
+#Fear-War time Speeches#
+```
+
+```{r, echo=FALSE, message=FALSE}
+print(speech.selected[1])
+Emotion_Sentences(pop=speech.selected[1])[4,]
+
+print(speech.selected[2])
+Emotion_Sentences(pop=speech.selected[2])[4,]
+
+print(speech.selected[3])
+Emotion_Sentences(pop=speech.selected[3])[4,]
+
+print(speech.selected[4])
+Emotion_Sentences(pop=speech.selected[4])[4,]
+
+print(speech.selected[5])
+Emotion_Sentences(pop=speech.selected[5])[4,]
+
+print(speech.selected[6])
+Emotion_Sentences(pop=speech.selected[6])[4,]
+
+print(speech.selected[7])
+Emotion_Sentences(pop=speech.selected[7])[4,]
+
+print(speech.selected[8])
+Emotion_Sentences(pop=speech.selected[8])[4,]
+
+print(speech.selected[9])
+Emotion_Sentences(pop=speech.selected[9])[4,]
+
+print(speech.selected[10])
+Emotion_Sentences(pop=speech.selected[10])[4,]
+```
+
+```{r}
+#Fear-Peaecful time Speeches#
+```
+
+```{r, echo=FALSE, message=FALSE}
+print(speech.selected[11])
+Emotion_Sentences(pop=speech.selected[11])[4,]
+
+print(speech.selected[12])
+Emotion_Sentences(pop=speech.selected[12])[4,]
+
+print(speech.selected[13])
+Emotion_Sentences(pop=speech.selected[13])[4,]
+
+print(speech.selected[14])
+Emotion_Sentences(pop=speech.selected[14])[4,]
 ```
