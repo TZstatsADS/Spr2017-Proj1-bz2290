@@ -8,7 +8,7 @@ runtime: shiny
 
 ```{r, message=FALSE, warning=FALSE}
 #NECESSARY PACKAGES
-source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/lib/Package.R")
+source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/doc/Package.R")
 #Functions needed
 source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/lib/Functions.R")
 ```
@@ -17,7 +17,7 @@ source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/
 ##PREPRCESSIONING OF THE DATA##
 
 #Please modify the path within Preprocess.R
-source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/lib/Preprocess.R")
+source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/doc/Preprocess.R")
 ```
 
 ```{r, fig.height=2.5, fig.width=2}
