@@ -27,7 +27,7 @@ G2=sent_detect(ff.all[[21]]$content,endmarks= c("?", ".", "!", "|",";"))#GeorgeW
 
 #Create a matrix of these presidents with their sentences
 sentence.list = list(L1,L2,W1,W2,F2,F3,F4,J1,R1,G2)
-title.list = c(rep("AbrahamLincoln-1",length(L1)),rep("AbrahamLincoln-2",length(L2)),rep("WoodrowWilson-1",length(W1)),rep("WoodrowWilson-2",length(W2)),rep("FranklinDRoosevelt-2",length(F2)),rep("FranklinDRoosevelt-3",length(F3)),rep("FranklinDroosevelt-4",length(F4)),rep("JohnFKennedy-1",length(J1)),rep("RonaldReagan-1",length(R1)),rep("GeorgeWBush-2",length(G2)))
+title.list = c(rep("AbrahamLincoln-1",length(L1)),rep("AbrahamLincoln-2",length(L2)),rep("WoodrowWilson-1",length(W1)),rep("WoodrowWilson-2",length(W2)),rep("FranklinDRoosevelt-2",length(F2)),rep("FranklinDRoosevelt-3",length(F3)),rep("FranklinDRoosevelt-4",length(F4)),rep("JohnFKennedy-1",length(J1)),rep("RonaldReagan-1",length(R1)),rep("GeorgeWBush-2",length(G2)))
 emotion.matrix = cbind(title.list,c(L1,L2,W1,W2,F2,F3,F4,J1,R1,G2))
 colnames(emotion.matrix)=c("President","Sentences")
 

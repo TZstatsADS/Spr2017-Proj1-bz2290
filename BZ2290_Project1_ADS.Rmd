@@ -20,20 +20,6 @@ source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/
 source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/lib/Preprocess.R")
 ```
 
-```{r, eval=FALSE, include=FALSE}
-#Length of Sentences
-sel.comparison=c("AbrahamLincoln-1",
-                 "AbrahamLincoln-2",
-                 "WoodrowWilson-1",
-                 "WoodrowWilson-2",
-                 "FranklinDroosevelt-2",
-                 "FranklinDroosevelt-3",
-                 "FranklinDroosevelt-4",
-                 "JohnFKenndy-1",
-                 "RonaldReagan-1",
-                 "GeorgeWBush-2")
-```
-
 ```{r, fig.height=2.5, fig.width=2}
 #Sentence Length
 library(shiny)
