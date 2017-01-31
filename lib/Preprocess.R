@@ -11,7 +11,7 @@ length.speeches=rep(NA, length(speeches))
 ff.all<-Corpus(DirSource(folder.path))
 
 #Speech selected
-speech_selected=c("AbrahamLincoln-1","AbrahamLincoln-2","WoodrowWilson-1","WoodrowWilson-2","FranklinDRoosevelt-2","FranklinDRoosevelt-3","FranklinDRoosevelt-4","JohnFKennedy-1","RonaldReagan-1","GeorgeWBush-2")
+speech.selected=c("AbrahamLincoln-1","AbrahamLincoln-2","WoodrowWilson-1","WoodrowWilson-2","FranklinDRoosevelt-2","FranklinDRoosevelt-3","FranklinDRoosevelt-4","JohnFKennedy-1","RonaldReagan-1","GeorgeWBush-2")
 
 #Split speech into sentences
 L1=sent_detect(ff.all[[1]]$content,endmarks = c("?", ".", "!", "|",";"))#LINCOLN-1

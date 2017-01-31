@@ -26,7 +26,7 @@ library(shiny)
 shinyApp(
   ui = fluidPage(
       fluidRow(
-      column(12,checkboxGroupInput("POP","President",speech_selected,selected = speech_selected,inline = TRUE))),
+      column(12,checkboxGroupInput("POP","President",speech.selected,selected = speech.selected,inline = TRUE))),
       theme=shinytheme("superhero"),
       fluidRow(
       column(12,plotOutput("beeswarm")))
@@ -76,7 +76,7 @@ shinyApp(
   ui=fluidPage(
     sidebarLayout(
         sidebarPanel(
-   sliderInput("Pop","President",min=1,max=length(speech_selected),value=1,step=1)),
+   sliderInput("Pop","President",min=1,max=length(speech.selected),value=1,step=1)),
     mainPanel(
       tabsetPanel(
       tabPanel("Heatmap",uiOutput("ui_heatmap")),
@@ -90,11 +90,11 @@ shinyApp(
   })
 
   output$heatmap <- renderD3heatmap({ 
-    d3heatmap(cor(emotion.matrix%>%filter(President==speech_selected[input$Pop])%>%select(anger:trust)),Rowv = FALSE, dendrogram = "row",Colv=FALSE,color="Blues") 
+    d3heatmap(cor(emotion.matrix%>%filter(President==speech.selected[input$Pop])%>%select(anger:trust)),Rowv = FALSE, dendrogram = "row",Colv=FALSE,color="Blues") 
   })
       output$Barplot = renderPlot(
       {
-        Emotion_Barplot(speech_selected[input$Pop])
+        Emotion_Barplot(speech.selected[input$Pop])
       }
     )
     
@@ -113,35 +113,35 @@ shinyApp(
 
 ```{r, echo=FALSE}
 #Emtion Charged Sentences
-print(speech_selected[1])
-Emotion_Sentences(pop=speech_selected[1])
+print(speech.selected[1])
+Emotion_Sentences(pop=speech.selected[1])
 
-print(speech_selected[2])
-Emotion_Sentences(pop=speech_selected[2])
+print(speech.selected[2])
+Emotion_Sentences(pop=speech.selected[2])
 
-print(speech_selected[3])
-Emotion_Sentences(pop=speech_selected[3])
+print(speech.selected[3])
+Emotion_Sentences(pop=speech.selected[3])
 
-print(speech_selected[4])
-Emotion_Sentences(pop=speech_selected[4])
+print(speech.selected[4])
+Emotion_Sentences(pop=speech.selected[4])
 
-print(speech_selected[5])
-Emotion_Sentences(pop=speech_selected[5])
+print(speech.selected[5])
+Emotion_Sentences(pop=speech.selected[5])
 
-print(speech_selected[6])
-Emotion_Sentences(pop=speech_selected[6])
+print(speech.selected[6])
+Emotion_Sentences(pop=speech.selected[6])
 
-print(speech_selected[7])
-Emotion_Sentences(pop=speech_selected[7])
+print(speech.selected[7])
+Emotion_Sentences(pop=speech.selected[7])
 
-print(speech_selected[8])
-Emotion_Sentences(pop=speech_selected[8])
+print(speech.selected[8])
+Emotion_Sentences(pop=speech.selected[8])
 
-print(speech_selected[9])
-Emotion_Sentences(pop=speech_selected[9])
+print(speech.selected[9])
+Emotion_Sentences(pop=speech.selected[9])
 
-print(speech_selected[10])
-Emotion_Sentences(pop=speech_selected[10])
+print(speech.selected[10])
+Emotion_Sentences(pop=speech.selected[10])
 ```
 
 ```{r, eval=FALSE, include=FALSE}
@@ -152,10 +152,10 @@ shinyApp(
     ui = fluidPage(
       fluidRow(style = "padding-bottom: 20px;",
         column(4, selectInput('speech1', 'Speech 1',
-                              speech_selected,
-                              selected=speech_selected[1])),
-        column(4, selectInput('speech2', 'Speech 2', speech_selected,
-                              selected=speech_selected[1])),
+                              speech.selected,
+                              selected=speech.selected[1])),
+        column(4, selectInput('speech2', 'Speech 2', speech.selected,
+                              selected=speech.selected[1])),
         column(4, sliderInput('nwords', 'Number of words', 3,
                                min = 100, max = 200, value=150, step = 10))
       ),
@@ -207,10 +207,10 @@ shinyApp(
 
 ```{r, eval=FALSE, include=FALSE}
 par(mfrow=c(1,2))
-dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[1])]
-dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[1])]
-dtm.term.2=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[2])]
-dtm.count.2=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[2])]
+dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[1])]
+dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[1])]
+dtm.term.2=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[2])]
+dtm.count.2=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[2])]
 wordcloud(dtm.term.1, 
           dtm.count.1,
               scale=c(1,0.3),
@@ -237,10 +237,10 @@ wordcloud(dtm.term.2, dtm.count.2,
 
 ```{r, eval=FALSE, include=FALSE}
 par(mfrow=c(1,2))
-dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[3])]
-dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[3])]
-dtm.term.2=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[4])]
-dtm.count.2=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[4])]
+dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[3])]
+dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[3])]
+dtm.term.2=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[4])]
+dtm.count.2=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[4])]
 wordcloud(dtm.term.1, 
           dtm.count.1,
               scale=c(1,0.3),
@@ -265,8 +265,8 @@ wordcloud(dtm.term.2, dtm.count.2,
 
 ```{r, eval=FALSE, include=FALSE}
 par(mfrow=c(1,1))
-dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[5])]
-dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[5])]
+dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[5])]
+dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[5])]
 
 wordcloud(dtm.term.1, 
           dtm.count.1,
@@ -283,8 +283,8 @@ wordcloud(dtm.term.1,
 
 ```{r, eval=FALSE, include=FALSE}
 par(mfrow=c(1,1))
-dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[6])]
-dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[6])]
+dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[6])]
+dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[6])]
 
 wordcloud(dtm.term.1, 
           dtm.count.1,
@@ -300,8 +300,8 @@ wordcloud(dtm.term.1,
 
 ```{r, eval=FALSE, include=FALSE}
 par(mfrow=c(1,1))
-dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[7])]
-dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[7])]
+dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[7])]
+dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[7])]
 
 wordcloud(dtm.term.1, 
           dtm.count.1,
@@ -317,8 +317,8 @@ wordcloud(dtm.term.1,
 
 ```{r, eval=FALSE, include=FALSE}
 par(mfrow=c(1,1))
-dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[8])]
-dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[8])]
+dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[8])]
+dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[8])]
 
 wordcloud(dtm.term.1, 
           dtm.count.1,
@@ -334,8 +334,8 @@ wordcloud(dtm.term.1,
 
 ```{r, eval=FALSE, include=FALSE}
 par(mfrow=c(1,1))
-dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[9])]
-dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[9])]
+dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[9])]
+dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[9])]
 
 wordcloud(dtm.term.1, 
           dtm.count.1,
@@ -351,8 +351,8 @@ wordcloud(dtm.term.1,
 
 ```{r, eval=FALSE, include=FALSE}
 par(mfrow=c(1,1))
-dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[10])]
-dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech_selected[10])]
+dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[10])]
+dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[10])]
 
 wordcloud(dtm.term.1, 
           dtm.count.1,

@@ -8,12 +8,13 @@ This is the first and only *individual* (as opposed to *team*) this semester.
 
 Term: Spring 2017
 
-+ Projec title: War time effect on inauguation Speeches
++ Projec title: The effect of War on inauguation Speeches
 + This project is conducted by [BOXUAN ZHAO]
 
-+ Project summary: The United States of America has been thourgh many wars, from the bloody civil war to the intense cold war. Are these speeches similar to one another? What are the simliaries if there are any? These questions will hopefully be answered by applying text mining techniques on the speeches selected from presidents, under whom the country is at war ,invovled in a war,or the tense of war erupt is widespread through the society.
++ Project summary: The United States of America has been thourgh many wars, from the bloody civil war to the recent war in Iraq. Though inauguration speeches are usually considered to be the place where presidents talk about their plans for the country, will the ongoing war changes it? Will there be any similiarites among these speeches and what are them? These questions will hopefully be answered by applying text mining techniques on the speeches selected from presidents, under whom the country is at war ,invovled in a war,or the tense of war erupt is widespread through the society.
 
-SPEECHES that will be analyzed:
+speeches that will be analyzed:
+
 AbrahamLincoln-1
 AbrahamLincoln-2
 Woodrowwilson-1
@@ -24,7 +25,7 @@ FranklinDroosevelt-4
 JohnFKenndy-1
 
 #Where You can find my work#
-My blog as well as the Html output will be found in the "Doc" folder, while related code will be found in the "lib" folder. In addition, relevant output(pics) will be stored within the "figs" folder
+My blog as well as the Html output will be found in the "Doc" folder, while related source file will be found in the "lib" folder. Please make sure all the paths are adjusted properly and all packages are installed correctly in order to make sure a smooth run of the notebook.
 
 #Contribution Statement#
 This Project is solely done by Boxuan Zhao, including data processing, analysis, as well as the compostion of this repo or any other related part of this project.
