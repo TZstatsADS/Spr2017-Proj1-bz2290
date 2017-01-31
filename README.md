@@ -15,6 +15,7 @@ Term: Spring 2017
 
 speeches that will be analyzed:
 
+War(or tense moments):
 AbrahamLincoln-1
 AbrahamLincoln-2
 Woodrowwilson-1
@@ -23,6 +24,14 @@ FranklinDroosevelt-2
 FranklinDroosevelt-3
 FranklinDroosevelt-4
 JohnFKenndy-1
+RonaldReagan-1
+GeorgeWBush-2
+
+Peace:
+WilliamJClinton-2 53
+RonaldReagan-2 42
+JimmyCarter-1 33
+GeorgeWBush-1 20
 
 #Where You can find my work#
 Data used in this ananlysis can be found in the "data" folder.

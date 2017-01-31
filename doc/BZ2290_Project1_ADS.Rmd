@@ -5,7 +5,6 @@ output:
   html_notebook: default
 runtime: shiny
 ---
-
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 #NECESSARY PACKAGES
 source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/doc/Package.R")
@@ -19,6 +18,24 @@ source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/
 #Please modify the path within Preprocess.R
 source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/output/Preprocess.R")
 ```
+
+```{r}
+#The presidential inauguartion speeches were choosen based on the major war in both US and world history. The analysis applied to those speeches will reveal some interesting patterns and sometimes even surprises to out common understanding of what we think these speeches should be.
+```
+
+```{r}
+#This notebook was prepared with the following environmental settings.
+```
+
+
+```{r, echo=FALSE}
+print(R.version)
+```
+
+```{r}
+#First let us take a look at the sentence length of each speech
+```
+
 
 ```{r, echo=FALSE, fig.height=2.5, fig.width=2}
 #Sentence Length
@@ -61,7 +78,13 @@ shinyApp(
 ```
 
 ```{r}
-#As we can see from each presidential speech, inauguration speeches given during or after major war in our history do not have a distinct difference with regard to the sentence length, from the president we seelcted, we observed that most of the sentences are within 40 characters, within which the majority of the sentences are within 20 characters. There are a few sentences in this graph whose number of words exceds 80, but they are relatively insignificant compared to the major trend.
+#Generally, we see that all speeches have its majority amount of sentences only have smaller than or equal to 20 words.BUt if we start to examine individual speeches, first we find out that most presidents' first and second speech(if there are any), have the similiar distribution of sentence length. Only a small amount of presdeints have their second speech significantly smaller than the first one.
+```
+
+```{r}
+#If we start to compare speeches given in tense moments and speeches given in rather peaceful or even prosper moments:
+
+#We can see that in general, speeches give nin prosper time has a greater hortizonatal spread(namly has more sentences that are close to 20 words) than those are given during war or tense moments.
 ```
 
 
@@ -104,6 +127,7 @@ shinyApp(
 ```
 
 ```{r}
+#There is no surprise that the emotion
 #When examine the barplot of our selected speeches, we surprisingly see that, except the second speech given by AbrhamLincoln, during which the civil war was about to end, all the other speeches tend to have the trust emotion the most, and relative positive amotion such as joy and anticipation also came second the most. There are only three time when begative emotion such as fear came to the first and the second, and two of which came from Lincoln's two speeches, where the lst one came from FrankdRooselt's second speech. In addition, after the second speech, the postive words went back to be the top 2 emotions from Rooselevt's speech. This rather surprising pattern is interesting, as our general assumption was those speeches should not be very positive during war times.
 
 #In addition to those, the heatmap reveals that the negative emotion sich as anger was usually related to fear and digust, where posiive emotion such as anticipitian is usually realted to joy.
@@ -142,226 +166,4 @@ Emotion_Sentences(pop=speech.selected[9])
 
 print(speech.selected[10])
 Emotion_Sentences(pop=speech.selected[10])
-```
-
-```{r, eval=FALSE, include=FALSE}
-#Word cloud
-library(shiny)
-
-shinyApp(
-    ui = fluidPage(
-      fluidRow(style = "padding-bottom: 20px;",
-        column(4, selectInput('speech1', 'Speech 1',
-                              speech.selected,
-                              selected=speech.selected[1])),
-        column(4, selectInput('speech2', 'Speech 2', speech.selected,
-                              selected=speech.selected[1])),
-        column(4, sliderInput('nwords', 'Number of words', 3,
-                               min = 100, max = 200, value=150, step = 10))
-      ),
-      fluidRow(
-        plotOutput('wordclouds', height = "400px")
-      )
-    ),
-
-    server = function(input, output, session) {
-
-      # Combine the selected variables into a new data frame
-      selectedData <- reactive({
-        list(dtm.term1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(input$speech1)],
-             dtm.count1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(input$speech1)],
-             dtm.term2=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(input$speech2)],
-             dtm.count2=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(input$speech2)])
-      })
-
-     output$wordclouds <- renderPlot(height = 400, {
-        par(mfrow=c(1,2), mar = c(0, 0, 3, 0))
-        wordcloud(selectedData()$dtm.term1, 
-                  selectedData()$dtm.count1,
-              scale=c(4,0.5),
-              max.words=input$nwords,
-              min.freq=1,
-              random.order=FALSE,
-              rot.per=0,
-              use.r.layout=FALSE,
-              random.color=FALSE,
-              colors=brewer.pal(10,"Blues"), 
-            main=input$speech1)
-        wordcloud(selectedData()$dtm.term2, 
-                  selectedData()$dtm.count2,
-              scale=c(4,0.5),
-              max.words=input$nwords,
-              min.freq=1,
-              random.order=FALSE,
-              rot.per=0,
-              use.r.layout=FALSE,
-              random.color=FALSE,
-              colors=brewer.pal(10,"Blues"), 
-            main=input$speech2)
-      })
-    },
-
-    options = list(height = 300)
-)
-```
-
-```{r, eval=FALSE, include=FALSE}
-par(mfrow=c(1,2))
-dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[1])]
-dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[1])]
-dtm.term.2=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[2])]
-dtm.count.2=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[2])]
-wordcloud(dtm.term.1, 
-          dtm.count.1,
-              scale=c(1,0.3),
-             gridSize=0,
-              max.words=100,
-              min.freq=1,
-              random.order=FALSE,
-              rot.per=0,
-              use.r.layout=FALSE,
-              random.color=FALSE,
-              colors=brewer.pal(7,"Blues"))
-
-wordcloud(dtm.term.2, dtm.count.2,
-          scale=c(1,0.3),
-          gridSize=0,
-          max.words=100,
-          min.freq=1,
-          random.order=FALSE,
-          rot.per=0,
-          use.r.layout=FALSE,
-          random.color=FALSE,
-           colors=brewer.pal(7,"Blues"))
-```
-
-```{r, eval=FALSE, include=FALSE}
-par(mfrow=c(1,2))
-dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[3])]
-dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[3])]
-dtm.term.2=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[4])]
-dtm.count.2=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[4])]
-wordcloud(dtm.term.1, 
-          dtm.count.1,
-              scale=c(1,0.3),
-              max.words=100,
-              min.freq=1,
-              random.order=FALSE,
-              rot.per=0,
-              use.r.layout=FALSE,
-              random.color=FALSE,
-              colors=brewer.pal(7,"Blues"))
-
-wordcloud(dtm.term.2, dtm.count.2,
-          scale=c(1,0.3),
-          max.words=100,
-          min.freq=1,
-          random.order=FALSE,
-          rot.per=0,
-          use.r.layout=FALSE,
-          random.color=FALSE,
-           colors=brewer.pal(7,"Blues"))
-```
-
-```{r, eval=FALSE, include=FALSE}
-par(mfrow=c(1,1))
-dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[5])]
-dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[5])]
-
-wordcloud(dtm.term.1, 
-          dtm.count.1,
-              scale=c(1,0.3),
-              max.words=100,
-              min.freq=1,
-              random.order=FALSE,
-              rot.per=0,
-              use.r.layout=FALSE,
-              random.color=FALSE,
-              colors=brewer.pal(7,"Blues"))
-
-```
-
-```{r, eval=FALSE, include=FALSE}
-par(mfrow=c(1,1))
-dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[6])]
-dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[6])]
-
-wordcloud(dtm.term.1, 
-          dtm.count.1,
-              scale=c(1,0.3),
-              max.words=100,
-              min.freq=1,
-              random.order=FALSE,
-              rot.per=0,
-              use.r.layout=FALSE,
-              random.color=FALSE,
-              colors=brewer.pal(7,"Blues"))
-```
-
-```{r, eval=FALSE, include=FALSE}
-par(mfrow=c(1,1))
-dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[7])]
-dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[7])]
-
-wordcloud(dtm.term.1, 
-          dtm.count.1,
-              scale=c(1,0.3),
-              max.words=100,
-              min.freq=1,
-              random.order=FALSE,
-              rot.per=0,
-              use.r.layout=FALSE,
-              random.color=FALSE,
-              colors=brewer.pal(7,"Blues"))
-```
-
-```{r, eval=FALSE, include=FALSE}
-par(mfrow=c(1,1))
-dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[8])]
-dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[8])]
-
-wordcloud(dtm.term.1, 
-          dtm.count.1,
-              scale=c(1,0.3),
-              max.words=100,
-              min.freq=1,
-              random.order=FALSE,
-              rot.per=0,
-              use.r.layout=FALSE,
-              random.color=FALSE,
-              colors=brewer.pal(7,"Blues"))
-```
-
-```{r, eval=FALSE, include=FALSE}
-par(mfrow=c(1,1))
-dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[9])]
-dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[9])]
-
-wordcloud(dtm.term.1, 
-          dtm.count.1,
-              scale=c(1,0.3),
-              max.words=100,
-              min.freq=1,
-              random.order=FALSE,
-              rot.per=0,
-              use.r.layout=FALSE,
-              random.color=FALSE,
-              colors=brewer.pal(7,"Blues"))
-```
-
-```{r, eval=FALSE, include=FALSE}
-par(mfrow=c(1,1))
-dtm.term.1=ff.dtm$term[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[10])]
-dtm.count.1=ff.dtm$count[gsub("inaug|.txt","",ff.dtm$document)==as.character(speech.selected[10])]
-
-wordcloud(dtm.term.1, 
-          dtm.count.1,
-              scale=c(1,0.3),
-              max.words=100,
-              min.freq=1,
-              random.order=FALSE,
-              rot.per=0,
-              use.r.layout=FALSE,
-              random.color=FALSE,
-              colors=brewer.pal(7,"Blues"))
 ```
