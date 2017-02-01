@@ -7,76 +7,108 @@ runtime: shiny
 ---
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 #NECESSARY PACKAGES
+
+#Please make sure all package referred in this file are properly loaded
+###################################################################
 source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/doc/Package.R")
+###################################################################
+
 #Functions needed
+###################################################################
 source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/lib/Functions.R")
+###################################################################
 ```
 
 ```{r, include=FALSE}
 ##PREPRCESSIONING OF THE DATA##
 
-#Please modify the path within Preprocess.R
+#Please also modify the path within Preprocess.R
+###################################################################
 source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/output/Preprocess.R")
+###################################################################
 ```
+I. INTRODUCTION
 
-```{r}
-#The presidential inauguartion speeches were choosen based on the major war in both US and world history. The analysis applied to those speeches will reveal some interesting patterns and sometimes even surprises to out common understanding of what we think these speeches should be.
-```
+There are two groups of presidential speeches, while the first group is choosen while U.S.is either involved or there is a major tense moment happening in the internaitonal society. While the second group of speeches are choosen during the time when the U.S. economy is booming. We hope to utilize the sentiment ananlysis and other related techniques to see if there are any differneces betweeen those two groups, or if there are any similiarites withiin each group.  
 
-```{r}
-#This notebook was prepared with the following environmental settings.
-```
-
-
+This notebook was prepared with the following environmental settings:
 ```{r, echo=FALSE}
 print(R.version)
 ```
 
-```{r}
-#First let us take a look at the sentence length of each speech
-```
+II.SENTENCE LENGTH
 
-
-```{r, eval=FALSE, fig.height=2.5, fig.width=2, include=FALSE}
-#Sentence Length
-library(shiny)
-shinyApp(
-  ui = fluidPage(
-      fluidRow(
-      column(12,checkboxGroupInput("POP","President",speech.selected,selected = speech.selected,inline = TRUE))),
-      theme=shinytheme("superhero"),
-      fluidRow(
-      column(12,plotOutput("beeswarm")))
-  ),
-  server = function(input,output,session){
-    selected.data = reactive(
-      {
-        sentence = emotion.matrix[,1:4]
-        sentence = subset(sentence,as.character(sentence$President) %in% input$POP)
-        sentence$Pop = factor(sentence$President)
-        sentence$Ordered=reorder(sentence$Pop,sentence$nword,mean,order=T)
-        return(sentence)
-
-      }
-    )
-    output$beeswarm = renderPlot(
-      {
-        par(mai=c(2.4,0.82,0.82,0.42))
-        beeswarm(nword~Ordered, 
-         data=selected.data(),
+After the data preprocessing(Please refer to "Preprocess.R" for details), we first examine the sentence length of speeches with respect to two groups. What we find first is that from all the speeches I selected, almost all president give a shorter speeches in their second term compared to theris first ones. For example, we observed that from Lincoln's speeches:
+```{r, echo=FALSE}
+sentence=emotion.matrix[,1:4]
+sentence=subset(sentence,as.character(sentence$President) %in% c(speech.selected.war[1],speech.selected.war[2]))
+sentence$Pop = factor(sentence$President)
+sentence$Ordered=reorder(sentence$Pop,sentence$nword,mean,order=T)
+beeswarm(nword~Ordered, 
+         data=sentence,
          horizontal = FALSE, 
-         pch=19, col=alpha(brewer.pal(9, "Set2"), 0.6),
-         cex=1, cex.axis=1.2, cex.lab=1.2,
-         spacing=5/nlevels(selected.data()$Ordered),
+         pch=1, col="blue",
+         cex=0.5, cex.axis=1.1, cex.lab=1.2,
+         spacing=5/nlevels(sentence$Ordered),
          las=2,ylab="Number of words",
          xlab="",
          main="Inauguartion speeches")
-      }
-    )
-  }
-)
 ```
+or for Franklin D. Roosevelt:
+```{r, echo=FALSE}
+par(mfrow=c(1,2))
+sentence=emotion.matrix[,1:4]
+sentence=subset(sentence,as.character(sentence$President) %in% c(speech.selected.war[5],speech.selected.war[6]))
+sentence$Pop = factor(sentence$President)
+sentence$Ordered=reorder(sentence$Pop,sentence$nword,mean,order=T)
+beeswarm(nword~Ordered, 
+         data=sentence,
+         horizontal = FALSE, 
+         pch=10, col="blue",
+         cex=0.3, cex.axis=1.1, cex.lab=1.2,
+         spacing=5/nlevels(sentence$Ordered),
+         las=2,ylab="Number of words",
+         xlab="",
+         main="Inauguartion speeches")
 
+sentence=emotion.matrix[,1:4]
+sentence=subset(sentence,as.character(sentence$President) %in% c(speech.selected.war[6],speech.selected.war[7]))
+sentence$Pop = factor(sentence$President)
+sentence$Ordered=reorder(sentence$Pop,sentence$nword,mean,order=T)
+beeswarm(nword~Ordered, 
+         data=sentence,
+         horizontal = FALSE, 
+         pch=10, col="blue",
+         cex=0.3, cex.axis=1.1, cex.lab=1.2,
+         spacing=5/nlevels(sentence$Ordered),
+         las=2,ylab="Number of words",
+         xlab="",
+         main="Inauguartion speeches")
+```
+We see that from the second to the fourth speeches, the sentences length has decreased from one speech to another.
+
+Despite this pattern, I have also discovered that:
+```{r, echo=FALSE}
+par(mfrow=c(1,1))
+sentence=emotion.matrix[,1:4]
+sentence=subset(sentence,as.character(sentence$President) %in% c(speech.selected.war,speech.selected.peace))
+sentence$Pop = factor(sentence$President)
+sentence$Ordered=reorder(sentence$Pop,sentence$nword,mean,order=T)
+beeswarm(nword~Ordered, 
+         data=sentence,
+         horizontal = FALSE, 
+         pch=1, col="blue",
+         cex=0.5, cex.axis=1.1, cex.lab=1.2,
+         spacing=5/nlevels(sentence$Ordered),
+         las=2,ylab="Number of words",
+         xlab="",
+         main="Inauguartion speeches")
+```
+All speeches I have choosen have majority of their sentences within 20 words, and there are only a few president who gives extremely long sentences.
+
+II.Sentiment Analysis
+
+After we have examined the length of sentence, we turn our attention to a more interesting asepct of ananlysis - sentiment analysis. I performed the analysis by applied nrc sentimet function to sentences, and calculate a weighted score of emotion "anger", "anticipation", "disgust", "fear", "joy", "sadness", "surprise", "trust", "negative", "positive" at each sentence of each presidential speeches I selected
 ```{r}
 #Generally, we see that all speeches have its majority amount of sentences only have smaller than or equal to 20 words.BUt if we start to examine individual speeches, first we find out that most presidents' first and second speech(if there are any), have the similiar distribution of sentence length. Only a small amount of presdeints have their second speech significantly smaller than the first one.
 ```
@@ -339,10 +371,10 @@ Emotion_Sentences(pop=speech.selected[10])[4,]
 #Fear-Peaecful time Speeches#
 ```
 
-```{r, echo=FALSE, message=FALSE}
+```{r, eval=FALSE, message=FALSE, include=FALSE}
 print(speech.selected[11])
 Emotion_Sentences(pop=speech.selected[11])[4,]
-table(as.string(Emotion_Sentences(pop=speech.selected[11])[4,2]))
+#table(as.string(Emotion_Sentences(pop=speech.selected[11])[4,2]))
 
 print(speech.selected[12])
 Emotion_Sentences(pop=speech.selected[12])[4,]

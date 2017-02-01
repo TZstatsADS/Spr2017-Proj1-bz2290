@@ -39,7 +39,11 @@ My blog as well as the Html output will be found in the "Doc" folder along with 
 Function definitions can be found in the "lib" folder.
 Scripts that process the data for analysis can be found in "output" folder.
 
-Please make sure all the paths are adjusted properly and all packages are installed correctly in order to make sure a smooth run of the notebook.
+Please take the following action to ensure a smooth run of my repo:
+Please refer to "Bz2290_project1_ADS.rmd"in "doc" folder to adjust paths(Three of them) properly.
+Please change the path(only one) in "Preprocess.R" in "output" folder
+Please refer to "package.R" in doc to make sure all library are proper installed in your computer
+as well as the notebook source code for more details
 
 #Contribution Statement#
 This Project is solely done by Boxuan Zhao, including data processing, analysis, as well as the compostion of this repo or any other related part of this project.

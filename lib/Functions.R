@@ -20,11 +20,13 @@ Factor_to_Numeric=function(df)
   return(df)
 }
 
+#Return Short Sentences
 return_short_sentence=function(df=emotion.matrix,Presidents,nwords=8)
 {
   return(df$Sentences[which(df$President==Presidents & df$nword <= nwords)])
 }
 
+#Return Long Sentences
 return_long_sentence=function(df=emotion.matrix,Presidents,nwords=60)
 {
   return(df$Sentences[which(df$President==Presidents & df$nword >= nwords)])
