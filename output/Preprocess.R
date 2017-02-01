@@ -80,6 +80,78 @@ emotion.matrix = as.data.frame(cbind(emotion.matrix,interm.matrix))
 emotion.matrix = Factor_to_Numeric(emotion.matrix)
 
 
+#Summary Data set for Cluster analysis
+
+#For war group
+presid.summary.war=tbl_df(emotion.matrix)%>%
+  filter(President%in%c(speech.selected.war))%>%
+  #group_by(paste0(type, File))%>%
+  group_by(President)%>%
+  summarise(
+    anger=mean(anger,na.rm=TRUE),
+    anticipation=mean(anticipation,na.rm=TRUE),
+    disgust=mean(disgust,na.rm=TRUE),
+    fear=mean(fear,na.rm=TRUE),
+    joy=mean(joy,na.rm=TRUE),
+    sadness=mean(sadness,na.rm=TRUE),
+    surprise=mean(surprise,na.rm=TRUE),
+    trust=mean(trust,na.rm=TRUE)
+    #negative=mean(negative),
+    #positive=mean(positive)
+  )
+
+presid.summary.war=as.data.frame(presid.summary.war)
+
+rownames(presid.summary.war)=as.character((presid.summary.war[,1]))
+
+
+#For peace group
+presid.summary.peace=tbl_df(emotion.matrix)%>%
+  filter(President%in%c(speech.selected.peace))%>%
+  #group_by(paste0(type, File))%>%
+  group_by(President)%>%
+  summarise(
+    anger=mean(anger,na.rm=TRUE),
+    anticipation=mean(anticipation,na.rm=TRUE),
+    disgust=mean(disgust,na.rm=TRUE),
+    fear=mean(fear,na.rm=TRUE),
+    joy=mean(joy,na.rm=TRUE),
+    sadness=mean(sadness,na.rm=TRUE),
+    surprise=mean(surprise,na.rm=TRUE),
+    trust=mean(trust,na.rm=TRUE)
+    #negative=mean(negative),
+    #positive=mean(positive)
+  )
+
+presid.summary.peace=as.data.frame(presid.summary.peace)
+
+rownames(presid.summary.peace)=as.character((presid.summary.peace[,1]))
+
+
+#For both group
+presid.summary.all=tbl_df(emotion.matrix)%>%
+  filter(President%in%c(speech.selected.war,speech.selected.peace))%>%
+  #group_by(paste0(type, File))%>%
+  group_by(President)%>%
+  summarise(
+    anger=mean(anger,na.rm=TRUE),
+    anticipation=mean(anticipation,na.rm=TRUE),
+    disgust=mean(disgust,na.rm=TRUE),
+    fear=mean(fear,na.rm=TRUE),
+    joy=mean(joy,na.rm=TRUE),
+    sadness=mean(sadness,na.rm=TRUE),
+    surprise=mean(surprise,na.rm=TRUE),
+    trust=mean(trust,na.rm=TRUE)
+    #negative=mean(negative),
+    #positive=mean(positive)
+  )
+
+presid.summary.all=as.data.frame(presid.summary.all)
+
+rownames(presid.summary.all)=as.character((presid.summary.all[,1]))
+
+
+
 #Prepare data for the wordcloud
 
 #Remove white space

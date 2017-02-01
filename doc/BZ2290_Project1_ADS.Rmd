@@ -3,7 +3,6 @@ title: "R Notebook For Applied Data Science-Project I"
 output:
   html_document: default
   html_notebook: default
-runtime: shiny
 ---
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 #NECESSARY PACKAGES
@@ -108,6 +107,7 @@ All speeches I have choosen have majority of their sentences within 20 words, an
 
 II.Sentiment Analysis
 
+(1)Emotion Barplot analytics
 After we have examined the length of sentence, we turn our attention to a more interesting asepct of ananlysis - sentiment analysis. I performed the analysis by applied nrc sentimet function to sentences, and calculate a weighted score of emotion "anger", "anticipation", "disgust", "fear", "joy", "sadness", "surprise", "trust", "negative", "positive" at each sentence of each presidential speeches I selected.
 
 First of all, let us take a look at the emotion barplots created for presidential speeches in the "peace" group:
@@ -150,292 +150,73 @@ Then, the "fear" sentence from the second speech:
 ```{r, echo=FALSE}
 Emotion_Sentences(pop=speech.selected.war[2])[4,]
 ```
+From these two sentences, we see that the "fearest" sentence is the govenrment will not attack viciously on someone or some group of people, while the sentence of interest in the second speech clearly express his wish for the civil war to end. More historical analysis can possibliy dig in the experiecne he had during the war as well as his feelings to better explain this change of fcous on Lincoln's fear sentences throughout the civil war.
+
+Now let us take a look at the fear sentences from FranklinDRoosevelt's speeches:
+```{r, echo=FALSE}
+Emotion_Sentences(pop=speech.selected.war[5])[4,]
+```
 
 ```{r, echo=FALSE}
-#Heatmap & Barplot
-shinyApp(
-  ui=fluidPage(
-    sidebarLayout(
-        sidebarPanel(
-   sliderInput("Pop","President",min=1,max=length(speech.selected),value=1,step=1)),
-    mainPanel(
-      tabsetPanel(
-      tabPanel("Heatmap",uiOutput("ui_heatmap")),
-      tabPanel("Barplot",plotOutput("Barplot"))
-      ))
-     )
-    ),
-  server = function(input,output){
-    output$ui_heatmap <- renderUI({
-    d3heatmapOutput("heatmap")
-  })
-
-  output$heatmap <- renderD3heatmap({ 
-    d3heatmap(cor(emotion.matrix%>%filter(President==speech.selected[input$Pop])%>%select(anger:trust)),Rowv = FALSE, dendrogram = "row",Colv=FALSE,color="Blues") 
-  })
-      output$Barplot = renderPlot(
-      {
-        Emotion_Barplot(speech.selected[input$Pop])
-      }
-    )
-    
-    
-  }
-)
+Emotion_Sentences(pop=speech.selected.war[6])[4,]
 ```
 
-```{r}
-#There is no surprise that the top 3 emotions that appear the most in the speeches given during peaceful time are majorityly postive emtions. But, surprisingly,When examine the barplot of our selected speeches given during the war time, we see that, except the second speech given by AbrhamLincoln, during which the civil war was about to end, all the other speeches tend to have the trust emotion the most, and relative positive amotion such as joy and anticipation also came second the most. There are only three time when begative emotion such as fear came to the first and the second, while two tims come from Lincoln's two speeches, and the last one came from FrankdRooselt's second speech. In addition, after the second speech, the postive words went back to be the top 2 emotions from Rooselevt's speech. This rather surprising pattern is interesting, as our general assumption was those speeches should not be very positive during war times. What is more, we can also observe that emtions like Joy,trust,anticipation and fear will come in top 4 every time.This patterns deserve a little bit of digging and we will examine that further in the next part.
-
-#In addition to those, the heatmap reveals that the negative emotion sich as anger was usually related to fear and digust, where posiive emotion such as anticipitian is usually realted to joy.
+```{r, echo=FALSE}
+Emotion_Sentences(pop=speech.selected.war[7])[4,]
 ```
+We see that from the first "fear" setence, Roosevelt is certain that some action should be taken to encounter something that cause fear and suffering. He maybe talking about the big depression, or he maybe talking about the tension among countries in the international communities. The second line shows his determinaiton of puting away "evil things", while the last sentence shows his opportunity of achieveing peace.
 
+The focus of Lincoln's fear has been rather focused, while that of Roosevelt has been chaging from one speech to another.
 
-```{r}
-#Now we want to take a look at the sentence with positive emotions and try to find out more interesting part.
-```
+(2) Cluster Plot analytics
+The fact that the speeches from both the war and non-war groups share similar top emotions intrigues me to see whether I can perform a cluster analysis to classify these speeches into different classes base on their emotions. We first take a look at the cluster analysis of war group, and the cluster analysis are based on the emotion scores of each presidential speech and a kmeans cluster algorithm is also deployed.
 
-```{r}
-#Joy-War time Speeches#
-```
-
-```{r, echo=FALSE, message=FALSE}
-print(speech.selected[1])
-Emotion_Sentences(pop=speech.selected[1])[5,]
-
-print(speech.selected[2])
-Emotion_Sentences(pop=speech.selected[2])[5,]
-
-print(speech.selected[3])
-Emotion_Sentences(pop=speech.selected[3])[5,]
-
-print(speech.selected[4])
-Emotion_Sentences(pop=speech.selected[4])[5,]
-
-print(speech.selected[5])
-Emotion_Sentences(pop=speech.selected[5])[5,]
-
-print(speech.selected[6])
-Emotion_Sentences(pop=speech.selected[6])[5,]
-
-print(speech.selected[7])
-Emotion_Sentences(pop=speech.selected[7])[5,]
-
-print(speech.selected[8])
-Emotion_Sentences(pop=speech.selected[8])[5,]
-
-print(speech.selected[9])
-Emotion_Sentences(pop=speech.selected[9])[5,]
-
-print(speech.selected[10])
-Emotion_Sentences(pop=speech.selected[10])[5,]
-```
-
-```{r}
-#Joy-Peaecful time Speeches#
-```
-
-```{r, echo=FALSE, message=FALSE}
-print(speech.selected[11])
-Emotion_Sentences(pop=speech.selected[11])[5,]
-
-print(speech.selected[12])
-Emotion_Sentences(pop=speech.selected[12])[5,]
-
-print(speech.selected[13])
-Emotion_Sentences(pop=speech.selected[13])[5,]
-
-print(speech.selected[14])
-Emotion_Sentences(pop=speech.selected[14])[5,]
-```
-
-```{r}
-#Trust-War time Speeches#
-```
-
-```{r, echo=FALSE, message=FALSE}
-print(speech.selected[1])
-Emotion_Sentences(pop=speech.selected[1])[8,]
-
-print(speech.selected[2])
-Emotion_Sentences(pop=speech.selected[2])[8,]
-
-print(speech.selected[3])
-Emotion_Sentences(pop=speech.selected[3])[8,]
-
-print(speech.selected[4])
-Emotion_Sentences(pop=speech.selected[4])[8,]
-
-print(speech.selected[5])
-Emotion_Sentences(pop=speech.selected[5])[8,]
-
-print(speech.selected[6])
-Emotion_Sentences(pop=speech.selected[6])[8,]
-
-print(speech.selected[7])
-Emotion_Sentences(pop=speech.selected[7])[8,]
-
-print(speech.selected[8])
-Emotion_Sentences(pop=speech.selected[8])[8,]
-
-print(speech.selected[9])
-Emotion_Sentences(pop=speech.selected[9])[8,]
-
-print(speech.selected[10])
-Emotion_Sentences(pop=speech.selected[10])[8,]
-```
-
-```{r}
-#Trust-Peaecful time Speeches#
-```
-
-```{r, echo=FALSE, message=FALSE}
-print(speech.selected[11])
-Emotion_Sentences(pop=speech.selected[11])[8,]
-
-print(speech.selected[12])
-Emotion_Sentences(pop=speech.selected[12])[8,]
-
-print(speech.selected[13])
-Emotion_Sentences(pop=speech.selected[13])[8,]
-
-print(speech.selected[14])
-Emotion_Sentences(pop=speech.selected[14])[8,]
-```
-
-```{r}
-#Anticipation-War time Speeches#
-```
-
-```{r, echo=FALSE, message=FALSE}
-print(speech.selected[1])
-Emotion_Sentences(pop=speech.selected[1])[2,]
-
-print(speech.selected[2])
-Emotion_Sentences(pop=speech.selected[2])[2,]
-
-print(speech.selected[3])
-Emotion_Sentences(pop=speech.selected[3])[2,]
-
-print(speech.selected[4])
-Emotion_Sentences(pop=speech.selected[4])[2,]
-
-print(speech.selected[5])
-Emotion_Sentences(pop=speech.selected[5])[2,]
-
-print(speech.selected[6])
-Emotion_Sentences(pop=speech.selected[6])[2,]
-
-print(speech.selected[7])
-Emotion_Sentences(pop=speech.selected[7])[2,]
-
-print(speech.selected[8])
-Emotion_Sentences(pop=speech.selected[8])[2,]
-
-print(speech.selected[9])
-Emotion_Sentences(pop=speech.selected[9])[2,]
-
-print(speech.selected[10])
-Emotion_Sentences(pop=speech.selected[10])[2,]
-```
-
-```{r}
-#Anticipation-Peaecful time Speeches#
-```
-
-```{r, echo=FALSE, message=FALSE}
-print(speech.selected[11])
-Emotion_Sentences(pop=speech.selected[11])[2,]
-
-print(speech.selected[12])
-Emotion_Sentences(pop=speech.selected[12])[2,]
-
-print(speech.selected[13])
-Emotion_Sentences(pop=speech.selected[13])[2,]
-
-print(speech.selected[14])
-Emotion_Sentences(pop=speech.selected[14])[2,]
-```
-
-```{r}
-#Fear-War time Speeches#
-```
-
-```{r, echo=FALSE, message=FALSE}
-print(speech.selected[1])
-Emotion_Sentences(pop=speech.selected[1])[4,]
-
-print(speech.selected[2])
-Emotion_Sentences(pop=speech.selected[2])[4,]
-
-print(speech.selected[3])
-Emotion_Sentences(pop=speech.selected[3])[4,]
-
-print(speech.selected[4])
-Emotion_Sentences(pop=speech.selected[4])[4,]
-
-print(speech.selected[5])
-Emotion_Sentences(pop=speech.selected[5])[4,]
-
-print(speech.selected[6])
-Emotion_Sentences(pop=speech.selected[6])[4,]
-
-print(speech.selected[7])
-Emotion_Sentences(pop=speech.selected[7])[4,]
-
-print(speech.selected[8])
-Emotion_Sentences(pop=speech.selected[8])[4,]
-
-print(speech.selected[9])
-Emotion_Sentences(pop=speech.selected[9])[4,]
-
-print(speech.selected[10])
-Emotion_Sentences(pop=speech.selected[10])[4,]
-```
-
-```{r}
-#Fear-Peaecful time Speeches#
-```
-
-```{r, eval=FALSE, message=FALSE, include=FALSE}
-print(speech.selected[11])
-Emotion_Sentences(pop=speech.selected[11])[4,]
-#table(as.string(Emotion_Sentences(pop=speech.selected[11])[4,2]))
-
-print(speech.selected[12])
-Emotion_Sentences(pop=speech.selected[12])[4,]
-
-print(speech.selected[13])
-Emotion_Sentences(pop=speech.selected[13])[4,]
-
-print(speech.selected[14])
-Emotion_Sentences(pop=speech.selected[14])[4,]
-```
-
-```{r}
-presid.summary=tbl_df(emotion.matrix)%>%
-  filter(President%in%speech.selected)%>%
-  #group_by(paste0(type, File))%>%
-  group_by(President)%>%
-  summarise(
-    anger=mean(anger,na.rm=TRUE),
-    anticipation=mean(anticipation,na.rm=TRUE),
-    disgust=mean(disgust,na.rm=TRUE),
-    fear=mean(fear,na.rm=TRUE),
-    joy=mean(joy,na.rm=TRUE),
-    sadness=mean(sadness,na.rm=TRUE),
-    surprise=mean(surprise,na.rm=TRUE),
-    trust=mean(trust,na.rm=TRUE)
-    #negative=mean(negative),
-    #positive=mean(positive)
-  )
-
-presid.summary=as.data.frame(presid.summary)
-rownames(presid.summary)=as.character((presid.summary[,1]))
-km.res=kmeans(presid.summary[,-1],4,iter.max=200,nstart=5)
+I first tries two clusters
+```{r, echo=FALSE}
+km.res=kmeans(presid.summary.war[,-1],2,iter.max=200,nstart=5)
 fviz_cluster(km.res, 
              stand=F, repel= TRUE,
-             data = presid.summary[,-1], xlab="", xaxt="n",
+             data = presid.summary.war[,-1], xlab="", xaxt="n",
              show.clust.cent=FALSE)
 ```
+We can generally group these speeches into two groups based on whether they are before of after the thrid speeches given be FranklinDRoosevelt. But I feel like put speech four from Roosevelet into cluster one is a bit of a stretch, so I also performed cluster analysis using three clusters.
+```{r, echo=FALSE}
+km.res=kmeans(presid.summary.war[,-1],3,iter.max=200,nstart=5)
+fviz_cluster(km.res, 
+             stand=F, repel= TRUE,
+             data = presid.summary.war[,-1], xlab="", xaxt="n",
+             show.clust.cent=FALSE)
+```
+The second cluster seems to be better and we see that general emotion from FranklinDRoosevelt speeches changes dramatically, as his three speeches belong to three different clusters seperately.
+
+Similiary, I also performed cluster analysis on the peace group
+```{r, echo=FALSE}
+km.res=kmeans(presid.summary.peace[,-1],2,iter.max=200,nstart=5)
+fviz_cluster(km.res, 
+             stand=F, repel= TRUE,
+             data = presid.summary.peace[,-1], xlab="", xaxt="n",
+             show.clust.cent=FALSE)
+```
+Which do not reveal many interesting results as the number of speeches selected are not big.
+
+At last, I performed cluster analysis on all of them:
+```{r, echo=FALSE}
+km.res=kmeans(presid.summary.all[,-1],4,iter.max=200,nstart=5)
+fviz_cluster(km.res, 
+             stand=F, repel= TRUE,
+             data = presid.summary.all[,-1], xlab="", xaxt="n",
+             show.clust.cent=FALSE)
+```
+
+```{r, echo=FALSE}
+km.res=kmeans(presid.summary.all[,-1],3,iter.max=200,nstart=5)
+fviz_cluster(km.res, 
+             stand=F, repel= TRUE,
+             data = presid.summary.all[,-1], xlab="", xaxt="n",
+             show.clust.cent=FALSE)
+```
+From either the analysis using three clusters or the analysis using four clusters, we can see that we are not be able to distinctly distinguish speeches from war time and non war time, as they coexist in both major clusters.This does not come as a surprise since our emotion barplot shows similiar results.
+
+All in all, speeches given during war time or non-war time does have interesting pattern that surprises us, but there  are also similarities among them, regardless of the time period they are given. I hope you enjoy my blog and thank you for reading!
+
 
