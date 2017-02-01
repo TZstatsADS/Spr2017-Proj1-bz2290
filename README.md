@@ -8,7 +8,7 @@ This is the first and only *individual* (as opposed to *team*) this semester.
 
 Term: Spring 2017
 
-+ Projec title: The effect of War on inauguation Speeches
++ Projec title: A comparision between war time speech and peacful time speech
 + This project is conducted by [BOXUAN ZHAO]
 
 + Project summary: The United States of America has been thourgh many wars, from the bloody civil war to the recent war in Iraq. Though inauguration speeches are usually considered to be the place where presidents talk about their plans for the country, will the ongoing war changes it? Will there be any similiarites among these speeches and what are them? These questions will hopefully be answered by applying text mining techniques on the speeches selected from presidents, under whom the country is at war ,invovled in a war,or the tense of war erupt is widespread through the society.
@@ -35,15 +35,16 @@ GeorgeWBush-1 20
 
 #Where You can find my work#
 Data used in this ananlysis can be found in the "data" folder.
-My blog as well as the Html output will be found in the "Doc" folder along with some support scripts.
-Function definitions can be found in the "lib" folder.
-Scripts that process the data for analysis can be found in "output" folder.
+My blog,"BZ2290_Project1_ADS.Rmd" as well as the Html output will be found in the "Doc" folder along with some supporting scripts.
+Function definitions,"Functions.R", can be found in the "lib" folder.
+Scripts that process the data for analysis,"Preprocess.R", can be found in "output" folder.
+Scripts that contains packages required,"Package.R" can be found in the "doc" folder. 
 
+#Important Notes$
 Please take the following action to ensure a smooth run of my repo:
-Please refer to "Bz2290_project1_ADS.rmd"in "doc" folder to adjust paths(Three of them) properly.
-Please change the path(only one) in "Preprocess.R" in "output" folder
-Please refer to "package.R" in doc to make sure all library are proper installed in your computer
-as well as the notebook source code for more details
+(1)Please refer to "Bz2290_project1_ADS.rmd"in "doc" folder to adjust paths(Three of them) properly.
+(2)Please change the path (only one) in "Preprocess.R" in "output" folder
+(3)Please refer to "package.R" in doc to make sure all library are proper installed in your computer
 
 #Contribution Statement#
 This Project is solely done by Boxuan Zhao, including data processing, analysis, as well as the compostion of this repo or any other related part of this project.
