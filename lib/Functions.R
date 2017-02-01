@@ -7,7 +7,7 @@ Emotion_Barplot= function(pop)
             "chartreuse3", "blueviolet",
             "darkgoldenrod2", "dodgerblue3", 
             "darkgoldenrod1", "darkgoldenrod1")
-  barplot(emo.means[order(emo.means)], las=2, col=col.use[order(emo.means)], horiz=T, main="Inaugural Speeches")
+  barplot(emo.means[order(emo.means)], las=2, col=col.use[order(emo.means)], horiz=T, main=pop)
 }
 
 #Convert Factor to a Numeric variable

@@ -108,21 +108,47 @@ All speeches I have choosen have majority of their sentences within 20 words, an
 
 II.Sentiment Analysis
 
-After we have examined the length of sentence, we turn our attention to a more interesting asepct of ananlysis - sentiment analysis. I performed the analysis by applied nrc sentimet function to sentences, and calculate a weighted score of emotion "anger", "anticipation", "disgust", "fear", "joy", "sadness", "surprise", "trust", "negative", "positive" at each sentence of each presidential speeches I selected
-```{r}
-#Generally, we see that all speeches have its majority amount of sentences only have smaller than or equal to 20 words.BUt if we start to examine individual speeches, first we find out that most presidents' first and second speech(if there are any), have the similiar distribution of sentence length. Only a small amount of presdeints have their second speech significantly smaller than the first one.
+After we have examined the length of sentence, we turn our attention to a more interesting asepct of ananlysis - sentiment analysis. I performed the analysis by applied nrc sentimet function to sentences, and calculate a weighted score of emotion "anger", "anticipation", "disgust", "fear", "joy", "sadness", "surprise", "trust", "negative", "positive" at each sentence of each presidential speeches I selected.
+
+First of all, let us take a look at the emotion barplots created for presidential speeches in the "peace" group:
+```{r, echo=FALSE}
+par(mfrow=c(2,2))
+Emotion_Barplot(speech.selected.peace[1])
+Emotion_Barplot(speech.selected.peace[2])
+Emotion_Barplot(speech.selected.peace[3])
+Emotion_Barplot(speech.selected.peace[4])
 ```
-
-```{r}
-#If we start to compare speeches given in tense moments and speeches given in rather peaceful or even prosper moments:
-
-#We can see that in general, speeches give nin prosper time has a greater hortizonatal spread(namly has more sentences that are close to 20 words) than those are given during war or tense moments.
+There is no doubt that the top three emotions in each of these four speeches are the same, and the rank of other emotions are not very different. This is no surprise at all, and it is in out expectation. BUt when we take a look at the emtion barplot(partial)for speeches in the war group, we observed an intersting pattern:
+```{r, echo=FALSE}
+par(mfrow=c(2,2))
+Emotion_Barplot(speech.selected.war[1])
+Emotion_Barplot(speech.selected.war[3])
+Emotion_Barplot(speech.selected.war[6])
+Emotion_Barplot(speech.selected.war[8])
 ```
+Surprisingly, positive emotions still makes up the top two emotions in these speeches, and there are only one speeches whose top emtion is not positive, which is the second speech given by Lincoln, towards to the end of the civil war.
+```{r, echo=FALSE}
+par(mfrow=c(1,1))
+Emotion_Barplot(speech.selected.war[2])
+```
+Compared to Lincoln's first speech, we see that the rank of  negative emotion actually goes up even the civil war is aabout to end, but another president who has a similiar experience, of course, this time, the second world war, has a differnt change of emotions during his speech:
+```{r, echo=FALSE}
+par(mfrow=c(2,2))
+Emotion_Barplot(speech.selected.war[5])
+Emotion_Barplot(speech.selected.war[6])
+Emotion_Barplot(speech.selected.war[7])
+```
+We see that the rank of the negative emotion is from one speech to another rather than going up.
 
+For now, we observed that the emotion of presidential speeches during war time is surprisingly positive, in addition, we also have two presidents whose speeches were given thorought out wars have differnet change od emotions.In order to shed lights into these patterns, I decided to utlize some more techniques to derive more insights.
 
-```{r}
-#Next we take a look at the heatmap and Barplot of emotion:
-#IN order to ease our comparsion, we use number 1 to 10 to denote the ten speeches we selected.
+I decided to examine the sentences that carry the emotions of interest to see if I can find more interesting things.First,let us examine the "fear" sentences from Lincoln's first speech:
+```{r, echo=FALSE}
+Emotion_Sentences(pop=speech.selected.war[1])[4,]
+```
+Then, the "fear" sentence from the second speech:
+```{r, echo=FALSE}
+Emotion_Sentences(pop=speech.selected.war[2])[4,]
 ```
 
 ```{r, echo=FALSE}
