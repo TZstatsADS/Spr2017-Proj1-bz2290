@@ -180,31 +180,3 @@ rownames(presid.summary.all)=as.character((presid.summary.all[,1]))
 
 
 
-#Prepare data for the wordcloud
-
-#Remove white space
-ff.all<-tm_map(ff.all, stripWhitespace)
-
-#Transform to lower case letters
-ff.all<-tm_map(ff.all, content_transformer(tolower))
-
-#Remove Common stopwords
-ff.all<-tm_map(ff.all, removeWords, stopwords("english"))
-
-#Remove empty characters
-ff.all<-tm_map(ff.all, removeWords, character(0))
-
-#Remove punctions
-ff.all<-tm_map(ff.all, removePunctuation)
-
-#Remove numbers
-ff.all = tm_map(ff.all,removeNumbers)
-
-#Turn into documentTermMatrix
-dtm <- DocumentTermMatrix(ff.all,
-                          control = list(weighting = function(x)
-                            weightTfIdf(x, 
-                                        normalize =FALSE),
-                            stopwords = TRUE))
-ff.dtm=tidy(dtm)
-

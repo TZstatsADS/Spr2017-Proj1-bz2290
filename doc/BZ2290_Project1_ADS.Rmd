@@ -1,5 +1,5 @@
 ---
-title: "A comparision between war time speech and peacful time speech"
+title: "A comparison between war time speech and peaceful time speech"
 output:
   html_document: default
   html_notebook: default
@@ -18,6 +18,7 @@ source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/
 ######################################################################################################################
 
 ##PREPRCESSIONING OF THE DATA##
+
 #Please also modify the path within Preprocess.R
 #########################################################################################################################
 source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/output/Preprocess.R")
@@ -26,7 +27,7 @@ source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/
 
 I. INTRODUCTION
 
-There are two groups of presidential speeches choosen, while the first group is choosen while U.S.is either involved or there is major tense moments happening in the internaitonal community. The second group of speeches are choosen during the time when the U.S. economy is booming. We hope to utilize sentiment ananlysis and other related techniques to see if there are any differneces or similarities betweeen those two groups, or if there are any similiarites within each group.  
+There are two groups of presidential speeches choosen, while the first group is choosen while U.S.is either involved or there is major tense moments happening in the internaitonal community. The second group of speeches are choosen during the time when the U.S. economy is booming. We hope to utilize sentiment ananlysis and other related techniques to see if there are any differences or similarities betweeen those two groups, or if there are any similiarites within each group.  
 
 This notebook was prepared with the following environmental settings:
 ```{r, echo=FALSE}
@@ -84,7 +85,7 @@ beeswarm(nword~Ordered,
          xlab="",las=1,
          main="Inauguartion speeches")
 ```
-We see that from the second to the fourth speeches, the sentences' length has decreased from one speech to another.
+We see that from the second to the fourth speeches, both the sentences' length and the number of sentences have decreased from one speech to another.
 
 In addition to this pattern, I have also discovered that:
 ```{r, echo=FALSE}
@@ -111,7 +112,7 @@ II.SENTIMENT ANALYSIS
 
 1.Emotion Barplot analytics
 
-After we have examined the length of sentences, we turn our attention to a more interesting asepct of text mining ananlysis - sentiment analysis. I performed the analysis by applied nrc sentimet function to sentences, and calculate a weighted score of emotion "anger", "anticipation", "disgust", "fear", "joy", "sadness", "surprise", "trust", "negative", "positive" at each sentence of each presidential speeches I selected (Please refer to "Preprocess.R" for details).
+After we have examined the length of sentences, we turn our attention to a more interesting asepct of text mining ananlysis - sentiment analysis. I performed the analysis by applied NRC sentimet function to sentences, and calculate a weighted score of emotion "anger", "anticipation", "disgust", "fear", "joy", "sadness", "surprise", "trust", "negative", "positive" at each sentence of each presidential speeches I selected (Please refer to "Preprocess.R" for details).
 
 First of all, let us take a look at the emotion barplots created for presidential speeches in the "peace" group:
 ```{r, echo=FALSE}
@@ -122,7 +123,7 @@ Emotion_Barplot(speech.selected.peace[3])
 Emotion_Barplot(speech.selected.peace[4])
 ```
 
-There is no doubt that the top three emotions in each of these four speeches are the same, and the rank of other emotions are not very different.Something else worth noticing is that "fear" always comes in fourth. Having postive emotions in the top is not out of our expectations, but we should dig a little bit deeper of the sentences that express "fear" of the speakers' attitudes. We also observed another interesting pattern when we examined a partial list of barplot from the "war" group:
+There is no doubt that the top three emotions in each of these four speeches are the same, and the rank of other emotions are not very different.What worth mentioning is that "fear" always comes in fourth. Having postive emotions in the top is not out of our expectations, but we should dig a little bit deeper of the sentences that express "fear" attitudes of the speakers. We also observed another interesting pattern when we examined a partial list of barplot from the "war" group:
 ```{r, echo=FALSE}
 par(mfrow=c(2,2))
 Emotion_Barplot(speech.selected.war[1])
@@ -131,13 +132,13 @@ Emotion_Barplot(speech.selected.war[6])
 Emotion_Barplot(speech.selected.war[8])
 ```
 
-Surprisingly, positive emotions still makes up the top two emotions in these speeches, and there are only one speeches whose top emotion is not positive, which is the second speech given by Lincoln, towards to the end of the civil war:
+Surprisingly, positive emotions still makes up the top two emotions in these speeches, and there are only one speeches whose top emotion is not positive, which is the second speech given by Lincoln, during the time when the civil war is about to end:
 ```{r, echo=FALSE}
 par(mfrow=c(1,1))
 Emotion_Barplot(speech.selected.war[2])
 ```
 
-Compared to Lincoln's first speech, we see that the rank of negative emotions actually goes up even the civil war is about to end, but another president who has a similiar experience, of course, this time, the second world war, has a differnt change of emotions during his speech:
+Compared to Lincoln's first speech, we see that the rank of negative emotions actually goes up even the civil war is about to end, but another president who has a similiar experience, of course, this time, the second world war, has a different change of emotions during his speech:
 ```{r, echo=FALSE}
 par(mfrow=c(2,2))
 Emotion_Barplot(speech.selected.war[5])
@@ -147,10 +148,10 @@ Emotion_Barplot(speech.selected.war[7])
 
 We see that the rank of the negative emotion "fear" is decreasing from one speech to another rather than going up.
 
-For now, we have observed that emotion "fear" always comes fourth in our barplot of emotions for the "peace" group, the emotion of presidential speeches during war time is surprisingly positive, and two presidents whose speeches were given thorought out wars have opposite change on emotion "fear".In order to shed lights into these patterns, I decided to utlize some more techniques to derive more insights.
+For now, we have observed that emotion "fear" always comes fourth in our barplot of emotions for the "peace" group, the emotion of presidential speeches during war time is surprisingly positive, and two presidents whose speeches were given thorought out wars have opposite change on emotion "fear".In order to shed lights into these patterns, I decided to utilize some other analysis to derive more insights.
 
 I decided to examine the sentences that carry the emotions of interest to see if I can find more interesting things.
-First, let us examine the "fear" sentences from presiednts in the "peace" group:
+First, let us examine the "fear" sentences from presidents in the "peace" group:
 ```{r, echo=FALSE}
 print(speech.selected.peace[1])
 Emotion_Sentences(pop=speech.selected.peace[1])[4,]
@@ -177,7 +178,7 @@ and the "fear" sentence from the second speech:
 ```{r, echo=FALSE}
 Emotion_Sentences(pop=speech.selected.war[2])[4,]
 ```
-From these two sentences, we see that the "fearest" sentence is the govenrment will not attack viciously on someone or some group of people, while the sentence of interest in the second speech clearly express his wish for the civil war to end. More historical analysis can possibliy dig in the experiecne he had during the war as well as his feelings to better explain this change of fcous on Lincoln's fear sentences throughout the civil war.
+From these two sentences, we see that the "fear" sentence is the govenrment will not attack viciously on someone or some group of people, while the sentence of interest in the second speech clearly express his wish for the civil war to end. More historical analysis can possibliy dig in the experiecne he had during the war as well as his feelings towards it to better explain this change of fcous on Lincoln's fear sentences throughout the civil war.
 
 Now let us take a look at the fear sentences from FranklinDRoosevelt's speeches:
 ```{r, echo=FALSE}
@@ -196,7 +197,7 @@ We see that the first two sentences are mainly focusing on taking actions to att
 
 2.Cluster Plot analytics
 
-The fact that the speeches from both the war and non-war groups share similar top emotions intrigues me to see whether I can perform a cluster analysis to classify these speeches into different classes base on their emotions. We first take a look at the cluster analysis of war group, and the cluster analysis are based on the emotion scores of each presidential speech and a kmeans cluster algorithm is also deployed.
+The fact that the speeches from both the war and non-war groups share similar top emotions intrigues me to see whether I can perform a cluster analysis to classify these speeches into different classes based on their emotions. Cluster analysis are based on the emotion scores of each presidential speech and a kmeans cluster algorithm is also deployed.
 
 I first tries two clusters to analysis the war group:
 
@@ -218,7 +219,7 @@ fviz_cluster(km.res,
              show.clust.cent=FALSE)
 ```
 
-The second cluster plot seems to be better and we see that general emotion from FranklinDRoosevelt speeches changes dramatically, as his three speeches belong to three different clusters seperately.
+The second cluster plot seems to be better and we see that the general emotion from FranklinDRoosevelt speeches changes dramatically, as his three speeches belong to three different clusters seperately.
 
 Similiary, I also performed cluster analysis on the peace group
 ```{r, echo=FALSE}
@@ -248,11 +249,11 @@ fviz_cluster(km.res,
              show.clust.cent=FALSE)
 ```
 
-From either the analysis using three clusters or the analysis using four clusters, we can see that we are not be able to distinctly distinguish speeches from war time and non war time, as they coexist in both major clusters.This does not come as a surprise since our emotion barplot shows similiar results.
+From either the analysis using three clusters or the analysis using four clusters, we can see that we are not be able to distinctly distinguish speeches from war time and non war time, as they coexist in these clusters. This does not come as a surprise since our emotion barplot shows similiar results.
 
 
 IV. END
 
-All in all, speeches given during war time or non-war time does have interesting pattern that surprises us, but there  are also similarities among them, regardless of the time period they are given. I hope you enjoy my blog and thank you for reading!
+All in all, speeches given during war time or non-war time does have interesting pattern that surprises us, but there are also similarities among them, regardless of the time period they are given. I hope you enjoy my blog and thank you for reading!
 
 
