@@ -108,7 +108,7 @@ beeswarm(nword~Ordered,
 All speeches I have choosen have majority of their sentences within 20 words, and there are only a few president who gives extremely long sentences.
 
 
-II.SENTIMENT ANALYSIS
+III.SENTIMENT ANALYSIS
 
 1.Emotion Barplot analytics
 
