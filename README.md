@@ -8,7 +8,7 @@ This is the first and only *individual* (as opposed to *team*) this semester.
 
 Term: Spring 2017
 
-+ Projec title: A comparision between war time speech and peacful time speech
++ Projec title: A comparision between war time speech and peaceful time speech
 + This project is conducted by [BOXUAN ZHAO]
 
 + Project summary: The United States of America has been thourgh many wars, from the bloody civil war to the recent war in Iraq. Though inauguration speeches are usually considered to be the place where presidents talk about their plans for the country, will the ongoing war changes it? Will there be any similiarites among these speeches and what are them? These questions will hopefully be answered by applying text mining techniques on the speeches selected from presidents, under whom the country is at war ,invovled in a war,or the tense of war erupt is widespread through the society.
@@ -69,7 +69,7 @@ Please take the following action to ensure a smooth run of my repo:
 (3)Please refer to "package.R" in doc to make sure all library are proper installed in your computer
 
 #Contribution Statement#
-This Project is solely done by Boxuan Zhao, including data processing, analysis, as well as the compostion of this repo or any other related part of this project.
+This Project is solely done by Boxuan Zhao, including data processing, analysis, as well as the composition of this repo or any other related part of this project.
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 
