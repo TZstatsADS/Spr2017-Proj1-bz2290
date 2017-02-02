@@ -27,7 +27,7 @@ source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/
 
 I. INTRODUCTION
 
-There are two groups of presidential speeches choosen, while the first group is choosen while U.S.is either involved or there is major tense moments happening in the internaitonal community. The second group of speeches are choosen during the time when the U.S. economy is booming. We hope to utilize sentiment ananlysis and other related techniques to see if there are any differences or similarities betweeen those two groups, or if there are any similiarites within each group.  
+There are two groups of presidential speeches choosen, while the first group is choosen while U.S.is either involved or there is major tense moments happening in the internaitonal community. The second group of speeches are choosen during the time when the U.S. economy is booming. We hope to utilize sentiment ananlysis and other related techniques to see if there are any differences or similarities betweeen those two groups, or if there are any similiarites within each group. 
 
 This notebook was prepared with the following environmental settings:
 ```{r, echo=FALSE}
