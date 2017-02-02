@@ -60,13 +60,13 @@ Scripts that process the data for analysis,"Preprocess.R", can be found in "outp
 Scripts that contains packages required,"Package.R" can be found in the "doc" folder. 
 
 #Important Notes#
-Please take the following action to ensure a smooth run of my repo:
+Please take the following actions to ensure a smooth run of my repo:
 
 (1)Please refer to "Bz2290_project1_ADS.rmd"in "doc" folder to adjust paths(Three of them) properly.
 
 (2)Please change the path (only one) in "Preprocess.R" in "output" folder
 
-(3)Please refer to "package.R" in doc to make sure all library are proper installed in your computer
+(3)Please refer to "package.R" in doc to make sure all libraries are properly installed in your computer
 
 #Contribution Statement#
 This Project is solely done by Boxuan Zhao, including data processing, analysis, as well as the composition of this repo or any other related part of this project.
