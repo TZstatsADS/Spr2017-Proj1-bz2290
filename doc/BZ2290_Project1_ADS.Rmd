@@ -57,6 +57,7 @@ beeswarm(nword~Ordered,
          main="Inauguartion speeches")
 abline(h=c(1,24),col="red")
 ```
+
 We see that from all speeches I have choosen, they all have a majority of their sentences within 25 words, and there are only a few president who gives extremely long sentences during his speeches.
 
 Then we take a closer look at individual speeches, we can see that almost all president give a shorter speeches in their second terms compared to theris first ones. For example, we observed that from Lincoln's speeches:
@@ -115,7 +116,8 @@ p.3 = Quantile_plot(c(speech.selected.war[9],speech.selected.peace[2]))
 p.4 =Quantile_plot(c(speech.selected.war[10],speech.selected.peace[4]))
 multiplot(p.1, p.2, p.3, p.4, cols = 2)
 ```
-The Above graphs are plotted based on the sentences whose number of words are below 25, which is the majority sentences' length for presidential speeches I selected. We see from the above four graphs that the presidential speeches from the same speaker, surprisingly have a very similar distribution with regard to the number of words used in the sentences.
+
+The above graphs are plotted based on the sentences whose number of words are below 25, which is the majority sentences' length for presidential speeches I selected. We see from the above four graphs that the presidential speeches from the same speaker, surprisingly have a very similar distribution with regard to the number of words used in the sentences.
 
 III.SENTIMENT ANALYSIS
 
@@ -212,7 +214,7 @@ The fact that the speeches from both the war and non-war groups share similar to
 I first tried two clusters to analyze the war group:
 
 ```{r, echo=FALSE}
-km.res=kmeans(presid.summary.war[,-1],centers=2,iter.max=200,nstart=5)
+km.res=kmeans(presid.summary.war[,-1],2,iter.max=200,nstart=5)
 fviz_cluster(km.res, 
              stand=F, repel= TRUE,
              data = presid.summary.war[,-1], xlab="", xaxt="n",
@@ -233,7 +235,7 @@ fviz_cluster(km.res,
 
 The second cluster plot seems to be better and we see that the general emotion from FranklinDRoosevelt speeches changes dramatically, as his three speeches belong to three different clusters seperately.
 
-Similiary, I also performed cluster analysis on the peace group
+Similiary, I also performed cluster analysis on the peace group:
 ```{r, echo=FALSE}
 km.res=kmeans(presid.summary.peace[,-1],2,iter.max=200,nstart=5)
 fviz_cluster(km.res, 
@@ -266,6 +268,6 @@ From either the analysis using three clusters or the analysis using four cluster
 
 IV. END
 
-All in all, speeches given during war time or non-war time does have interesting pattern that surprises us, but there are also similarities among them, regardless of the time period they are given. I hope you enjoy my blog and thank you for reading!
+We have discussed several intersting patterns in both the "war" speech group and "peace" speech group. The patterns are certainly interesting and there are many of them deserve more digging to better expalin why these patterns exist. I hope you enjoy my blog and thank you for reading!
 
 

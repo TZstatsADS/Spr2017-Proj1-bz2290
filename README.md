@@ -11,33 +11,33 @@ Term: Spring 2017
 + Projec title: A comparision between war time speech and peaceful time speech
 + This project is conducted by [BOXUAN ZHAO]
 
-+ Project summary: The United States of America has been thourgh many wars, from the bloody civil war to the recent war in Iraq. Though inauguration speeches are usually considered to be the place where presidents talk about their plans for the country, will the ongoing war changes it? Will there be any similiarites among these speeches and what are them? These questions will hopefully be answered by applying text mining techniques on the speeches selected from presidents, under whom the country is at war ,invovled in a war,or the tense of war erupt is widespread through the society.
++ Project summary: The United States of America has been thourgh many wars and intense moments.Though inauguration speeches are usually considered to be the place where presidents talk about their plans for the country, will the ongoing war or intense moments changes it? Will there be any similiarites among these speeches and what are them? These questions will hopefully be answered by applying text mining techniques on the two group of speeches selected from presidents, and one goup consists of speeches given through economy booming times, the other group is made of speeches that were given when the country is currently at war, invovled in a war,or the tense of war erupt is widespread through the society.
 
 speeches that will be analyzed:
 
-War(or tense moments):
+War(or tense moments) speeches:
 
-AbrahamLincoln-1
+AbrahamLincoln-1 --- Civil War
 
-AbrahamLincoln-2
+AbrahamLincoln-2 --- Civil War
 
-Woodrowwilson-1
+Woodrowwilson-1 --- World War I
 
-Woodrowwilson-2
+Woodrowwilson-2 --- World War I
 
-FranklinDroosevelt-2
+FranklinDroosevelt-2 --- World War II
 
-FranklinDroosevelt-3
+FranklinDroosevelt-3 --- World War II
 
-FranklinDroosevelt-4
+FranklinDroosevelt-4 --- World War II
 
-JohnFKenndy-1
+JohnFKenndy-1 --- Cold War
 
-RonaldReagan-1
+RonaldReagan-1 --- Cold War
 
-GeorgeWBush-2
+GeorgeWBush-2 --- Iraq War
 
-Peace:
+Peace(Economy Booming):
 
 WilliamJClinton-2 53
 
