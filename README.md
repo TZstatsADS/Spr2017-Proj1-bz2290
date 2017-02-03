@@ -8,10 +8,10 @@ This is the first and only *individual* (as opposed to *team*) this semester.
 
 Term: Spring 2017
 
-+ Projec title: A comparision between war time speech and peaceful time speech
++ Projec title: An inspection of speeches during war times
 + This project is conducted by [BOXUAN ZHAO]
 
-+ Project summary: The United States of America has been thourgh many wars and intense moments. Though inauguration speeches are usually considered to be the place where presidents talk about their plans for the country, will the ongoing war or intense moments changes it? Will there be any similiarites among these speeches and what are them? These questions will hopefully be answered by applying text mining techniques on the two group of speeches selected from presidents, while one goup consists of speeches given through economy booming times, the other group is made of speeches that were given when the country is currently at war, invovled in a war,or the tense of war erupt or current political environment is widespread through the international community.
++ Project summary: The United States of America has been thourgh many wars and intense moments. Though inauguration speeches are usually considered to be the place where presidents talk about their plans for their country, will the ongoing war or intense moments changes it? Will there be any similiarites among these speeches and what are them? These questions will hopefully be answered by applying text mining techniques on the two group of speeches selected from presidents, while one goup consists of speeches given during the economy booming period, the other group is made of speeches that were given when the country was at war, invovled in a war,or the tense of war erupt or the intense political environment has widespread through the international community.
 
 speeches that will be analyzed:
 
@@ -50,8 +50,7 @@ GeorgeWBush-1 20
 #Where You can find my work#
 Data used in this ananlysis can be found in the "data" folder.
 
-My notebook,"BZ2290_Project1_ADS.nb.html",Html output,"BZ2290_Project1_ADS.html" as well as my rmd file,"BZ2290_Project1_ADS.Rmd" will be found in the "Doc" folder along with 
-some supporting scripts.
+My notebook,"BZ2290_Project1_ADS.nb.html",Html output,"BZ2290_Project1_ADS.html" as well as my rmd file,"BZ2290_Project1_ADS.Rmd" will be found in the "Doc" folder along with some supporting scripts.
 
 Function definitions,"Functions.R", can be found in the "lib" folder.
 
@@ -72,11 +71,11 @@ Please take the following actions to ensure a smooth run of my repo:
 
 #Contribution Statement#
 
-Project 1 : A comparision between war time speech and peaceful time speech
+Project 1 : An inspection of speeches during war times
 
 Team members: Boxuan Zhao
 
-Summary: In this report, I applied text mining techniques to derive insights from presidential speeches.
+Summary: In this report, I applied text mining techniques to derive insights from selected presidential speeches.
 
 [Contribution Statement] This Project is solely done by Boxuan Zhao, including data processing, analysis, as well as the composition of this repo or any other related part of this project. I approve my work presented in my GitHub repository including this contribution statement.
 

@@ -1,4 +1,4 @@
-#Please Make sure the following library are properly loaded
+#Please Make sure the following libraries are properly loaded
 library(tm)
 library(RColorBrewer)
 library(dplyr)

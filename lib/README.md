@@ -1,7 +1,7 @@
 # Project: 
 ### Code lib Folder
 
-Following functions are included in this folder:
+Following functions are included in "Functions.R":
 
 1.Emotion_Barplot= function(pop)
 
@@ -13,15 +13,15 @@ This function takes in a data frame and change its factor columns into numeric c
 
 3.return_short_sentence=function(df=emotion.matrix,Presidents,nwords=8)
 
-This function takes in a default data frame "emotion.matrix", the president names as well as a defalut sentence length, and return all sentences spoken by that president whose length is up to "nwords"
+This function takes in a default data frame "emotion.matrix", the president speech title as well as a defalut sentence length, and return all sentences in that speech whose length is up to "nwords"
 
 4.return_long_sentence=function(df=emotion.matrix,Presidents,nwords=60)
 
-This function takes in a default data frame "emotion.matrix", the president names as well as a defalut sentence length, and return all sentences spoken by that president whose length is greater than equal to "nwords"
+This function takes in a default data frame "emotion.matrix", the president speech title as well as a defalut sentence length, and return all sentences in that speech whose length is greater than equal to "nwords"
 
 5.Emotion_Sentences = function(df=emotion.matrix,pop)
 
-This function takes in a default data frame emotion.matrix and and president speech and return the most emotional sentences in this president's speech.
+This function takes in a default data frame emotion.matrix and and president speech title and return the most emotional sentences in this president's speech.
 
 6.multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL)
 
