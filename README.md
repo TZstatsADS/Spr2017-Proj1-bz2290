@@ -8,7 +8,7 @@ This is the first and only *individual* (as opposed to *team*) this semester.
 
 Term: Spring 2017
 
-+ Projec title: An inspection of speeches during war times
++ Project title: An inspection of speeches during war times
 + This project is conducted by [BOXUAN ZHAO]
 
 + Project summary: The United States of America has been thourgh many wars and intense moments. Though inauguration speeches are usually considered to be the place where presidents talk about their plans for their country, will the ongoing war or intense moments changes it? Will there be any similiarites among these speeches and what are them? These questions will hopefully be answered by applying text mining techniques on the two group of speeches selected from presidents, while one goup consists of speeches given during the economy booming period, the other group is made of speeches that were given when the country was at war, invovled in a war,or the tense of war erupt or the intense political environment has widespread through the international community.
