@@ -227,6 +227,8 @@ fviz_cluster(km.res,
              stand=F, repel= TRUE,
              data = presid.summary.war[,-1], xlab="", xaxt="n",
              show.clust.cent=FALSE)
+
+
 ```
 
 The second cluster plot seems to be better and we see that the general emotion from FranklinDRoosevelt speeches changes dramatically, as his three speeches belong to three different clusters seperately.

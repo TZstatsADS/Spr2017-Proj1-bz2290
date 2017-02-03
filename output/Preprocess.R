@@ -89,7 +89,7 @@ nword.all = nword.all[!is.na(nword.all$nword),]
 #For war group
 presid.summary.war=tbl_df(emotion.matrix)%>%
   
-  filter(President%in%c(speech.selected.war))%>%
+  filter(President %in% c(speech.selected.war))%>%
   
   group_by(President)%>%
   
