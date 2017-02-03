@@ -21,13 +21,16 @@ source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/
 
 ##PREPRCESSIONING OF THE DATA##
 
-#Please also modify the path within Preprocess.R too
+#Please also modify the path (only one) within Preprocess.R too
 #########################################################################################################################
 source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/output/Preprocess.R")
 #########################################################################################################################
 ```
 
+
+
 I. INTRODUCTION
+
 
 There are two groups of presidential speeches chosen, while the first group is chosen while U.S. has either directly or indirectly involved in a war, or there is tense moments happening in the international community. The second group of speeches is chosen during the time when the U.S. economy is booming. We hope to utilize sentiment analysis and other related techniques to see if there are any differences or similarities between those two groups, or if there are any similarites within each group. 
 
@@ -37,7 +40,9 @@ print(R.version)
 ```
 
 
+
 II.SENTENCE LENGTH ANALYSIS
+
 
 After the data preprocessing (Please refer to "Preprocess.R" for details) process, we first examine the sentence length of speeches with respect to two groups. We first take a look at the general sentence length for each of the speakers:
 ```{r, echo=FALSE}
@@ -76,6 +81,7 @@ beeswarm(nword~Ordered,
          xlab="",las=1,
          main="Inauguartion speeches")
 ```
+
 The number of sentences as well as their length are all significantly smaller compared to his first one.
 We can also check Franklin D. Roosevelt:
 ```{r, echo=FALSE,fig.height = 5,fig.width = 10}
@@ -108,6 +114,7 @@ beeswarm(nword~Ordered,
          xlab="",las=1,
          main="Inauguartion speeches")
 ```
+
 We see that from the second to the fourth speeches, both the sentences' lengths and the number of sentences have decreased from one speech to another. However, if we examine the distribution of their sentence's length distribution, we will find something interesting:
 ```{r, echo=FALSE}
 p.1 = Quantile_plot(c(speech.selected.war[3],speech.selected.war[4]))
@@ -119,9 +126,14 @@ multiplot(p.1, p.2, p.3, p.4, cols = 2)
 
 The above graphs are plotted based on the sentences whose number of words are below 25, which is the majority sentences' length for presidential speeches I selected. We see from the above four graphs that the presidential speeches from the same speaker, surprisingly have a very similar distribution with regard to the number of words used in the sentences.
 
+
+
+
 III.SENTIMENT ANALYSIS
 
+
 1.Emotion barplot analytics
+
 
 After we have examined the length of sentences, we turn our attention to a more interesting aspect of text mining analysis - sentiment analysis. I performed the analysis by applying NRC sentiment function to sentences, and calculate a weighted score of emotion "anger", "anticipation", "disgust", "fear", "joy", "sadness", "surprise", "trust", "negative", "positive" at each sentence of each presidential speeches I selected (Please refer to "Preprocess.R" for details).
 
@@ -133,7 +145,6 @@ Emotion_Barplot(speech.selected.peace[2])
 Emotion_Barplot(speech.selected.peace[3])
 Emotion_Barplot(speech.selected.peace[4])
 ```
-
 
 There is no doubt that the top three emotions in each of these four speeches plotted here are positive, and the ranks of the emotions are not very different from one speech to another. What worth mentioning is that "fear" always comes in fourth. Having positive emotions in the top is not out of our expectations, but we should dig a little bit deeper of the sentences that express "fear" attitudes of the speakers. We also observed another interesting pattern when we examined a partial list of barplot from the "war" group:
 ```{r, echo=FALSE}
@@ -180,16 +191,19 @@ Emotion_Sentences(pop=speech.selected.peace[3])[4,]
 print(speech.selected.peace[4])
 Emotion_Sentences(pop=speech.selected.peace[4])[4,]
 ```
+
 We can conclude that three of the four sentences above show that the presidents who give out these speeches is afraid of activities that are not compatible with the Universal values.
 
 Then, let us examine the "fear" sentences from Lincoln's first speech:
 ```{r, echo=FALSE}
 Emotion_Sentences(pop=speech.selected.war[1])[4,]
 ```
+
 and the "fear" sentence from the second speech:
 ```{r, echo=FALSE}
 Emotion_Sentences(pop=speech.selected.war[2])[4,]
 ```
+
 From these two sentences, we see that the "fear" sentence is the government will not attack viciously on someone or some group of people, while the sentence of interest in the second speech clearly express speaker's wish for the civil war to end. More historical analysis can possibly dig in the experience he had during the war as well as his feelings towards it to better explain this change of focus on Lincoln's fear sentences throughout the civil war.
 
 Now let us take a look at the fear sentences from FranklinDRoosevelt's speeches:
@@ -204,6 +218,7 @@ Emotion_Sentences(pop=speech.selected.war[6])[4,]
 ```{r, echo=FALSE}
 Emotion_Sentences(pop=speech.selected.war[7])[4,]
 ```
+
 We see that the first two sentences are mainly focusing on taking actions to attack or counter negative situations. There are many events happened during his two speeches, so there are many possibilities of what he is referring to. The last sentence kind of shows his optimism towards gaining victory in the war.
 
 
@@ -212,7 +227,6 @@ We see that the first two sentences are mainly focusing on taking actions to att
 The fact that the speeches from both the war and non-war groups share similar top emotions intrigues me to see whether I can perform a cluster analysis to classify these speeches into different classes based on their emotions. The Cluster analysis is based on the emotion scores of each presidential speech and a k-means cluster algorithm is also deployed.
 
 I first tried two clusters to analyze the war group:
-
 ```{r, echo=FALSE}
 km.res=kmeans(presid.summary.war[,-1],2,iter.max=200,nstart=5)
 fviz_cluster(km.res, 
@@ -264,6 +278,7 @@ fviz_cluster(km.res,
 ```
 
 From either the analysis using three clusters or the analysis using four clusters, we can see that we are not able to distinctly distinguish speeches from war group and the other group, as most of them coexist in these clusters. However, we are able to do that to Reagan's speeches though, as we see that his two speeches, which belong to the "war" group and "peace" group separately, are being classified into different clusters.
+
 
 
 IV. END
