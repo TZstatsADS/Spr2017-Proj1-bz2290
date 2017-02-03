@@ -57,7 +57,9 @@ Function definitions,"Functions.R", can be found in the "lib" folder.
 
 Scripts that process the data for analysis,"Preprocess.R", can be found in "output" folder.
 
-Scripts that contains packages required,"Package.R" can be found in the "doc" folder. 
+Scripts that contains packages required,"Package.R" can be found in the "doc" folder.
+
+Figures used in this project can be found in the "figs" folder.
 
 #Important Notes#
 Please take the following actions to ensure a smooth run of my repo:
