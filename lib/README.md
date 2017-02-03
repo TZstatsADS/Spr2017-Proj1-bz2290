@@ -1,6 +1,8 @@
 # Project: 
 ### Code lib Folder
 
+Multiple source codes for functions utlized in this project are stored here.
+
 Following functions are included in "Functions.R":
 
 1.Emotion_Barplot= function(pop)

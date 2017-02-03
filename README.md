@@ -15,7 +15,7 @@ Term: Spring 2017
 
 speeches that will be analyzed:
 
-War(or tense moments) speeches:
+War time speeches:
 
 AbrahamLincoln-1 --- Civil War
 
@@ -37,6 +37,7 @@ RonaldReagan-1 --- Cold War
 
 GeorgeWBush-2 --- Iraq War
 
+
 Peace(Economy Booming):
 
 WilliamJClinton-2 53
@@ -50,7 +51,7 @@ GeorgeWBush-1 20
 #Where You can find my work#
 Data used in this ananlysis can be found in the "data" folder.
 
-My notebook,"BZ2290_Project1_ADS.nb.html",Html output,"BZ2290_Project1_ADS.html" as well as my rmd file,"BZ2290_Project1_ADS.Rmd" will be found in the "Doc" folder along with some supporting scripts.
+My html files,"BZ2290_Project1_ADS.nb.html","BZ2290_Project1_ADS.html" as well as my rmd file,"BZ2290_Project1_ADS.Rmd" will be found in the "Doc" folder along with some supporting scripts.
 
 Function definitions,"Functions.R", can be found in the "lib" folder.
 
