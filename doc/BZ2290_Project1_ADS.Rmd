@@ -5,9 +5,11 @@ output:
   html_notebook: default
 ---
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
+#Please modify the following paths:
+
 #NECESSARY PACKAGES
 
-#Please make sure all package referred in this file are properly loaded
+#Please make sure all package referred in this file are properly loaded too
 ######################################################################################################################
 source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/doc/Package.R")
 ######################################################################################################################
@@ -19,7 +21,7 @@ source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/
 
 ##PREPRCESSIONING OF THE DATA##
 
-#Please also modify the path within Preprocess.R
+#Please also modify the path within Preprocess.R too
 #########################################################################################################################
 source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/Spr2017-Proj1-bz2290/output/Preprocess.R")
 #########################################################################################################################
@@ -27,7 +29,7 @@ source("D:/Columbia University/Spring2017-Applied Data Science/Project_1_Bz2290/
 
 I. INTRODUCTION
 
-There are two groups of presidential speeches choosen, while the first group is choosen while U.S.is either involved or there is major tense moments happening in the internaitonal community. The second group of speeches are choosen during the time when the U.S. economy is booming. We hope to utilize sentiment ananlysis and other related techniques to see if there are any differences or similarities betweeen those two groups, or if there are any similiarites within each group. 
+There are two groups of presidential speeches chosen, while the first group is chosen while U.S.has either directly or undirectly invovled, or there is tense moments happening in the internaitonal community. The second group of speeches are choosen during the time when the U.S. economy is booming. We hope to utilize sentiment ananlysis and other related techniques to see if there are any differences or similarities betweeen those two groups, or if there are any similiarites within each group. 
 
 This notebook was prepared with the following environmental settings:
 ```{r, echo=FALSE}
@@ -35,9 +37,29 @@ print(R.version)
 ```
 
 
-II.SENTENCE LENGTH COMPARISON
+II.SENTENCE LENGTH ANALYSIS
 
-After the data preprocessing (Please refer to "Preprocess.R" for details), we first examine the sentence length of speeches with respect to two groups. What we find first is that from all the speeches I selected, almost all president give a shorter speeches in their second terms compared to theris first ones. For example, we observed that from Lincoln's speeches:
+After the data preprocessing (Please refer to "Preprocess.R" for details), we first examine the sentence length of speeches with respect to two groups. We first take a look at the general sentence length for each of the speakers:
+```{r, echo=FALSE}
+par(mfrow=c(1,1),mar = c(9, 5, 2, 0))
+sentence=emotion.matrix[,1:4]
+sentence=subset(sentence,as.character(sentence$President) %in% c(speech.selected.war,speech.selected.peace))
+sentence$Pop = factor(sentence$President)
+sentence$Ordered=reorder(sentence$Pop,sentence$nword,mean,order=T)
+beeswarm(nword~Ordered, 
+         data=sentence,
+         horizontal = FALSE, 
+         pch=1, col="purple",
+         cex=0.5, cex.axis=0.8, cex.lab=0.8,
+         spacing=5/nlevels(sentence$Ordered),
+         las=2,ylab="Number of words",
+         xlab="",
+         main="Inauguartion speeches")
+abline(h=c(1,24),col="red")
+```
+We see that from all speeches I have choosen, they all have a majority of their sentences within 25 words, and there are only a few president who gives extremely long sentences during his speeches.
+
+Then we take a closer look at individual speeches, we can see that almost all president give a shorter speeches in their second terms compared to theris first ones. For example, we observed that from Lincoln's speeches:
 ```{r, echo=FALSE,fig.height = 5,fig.width = 10}
 sentence=emotion.matrix[,1:4]
 sentence=subset(sentence,as.character(sentence$President) %in% c(speech.selected.war[1],speech.selected.war[2]))
@@ -85,34 +107,21 @@ beeswarm(nword~Ordered,
          xlab="",las=1,
          main="Inauguartion speeches")
 ```
-We see that from the second to the fourth speeches, both the sentences' length and the number of sentences have decreased from one speech to another.
-
-In addition to this pattern, I have also discovered that:
+We see that from the second to the fourth speeches, both the sentences' lengths and the number of sentences have decreased from one speech to another. However, if we examine the distribution of their sentence's length distribution, we will find something interesting:
 ```{r, echo=FALSE}
-par(mfrow=c(1,1),mar = c(9, 5, 2, 0))
-sentence=emotion.matrix[,1:4]
-sentence=subset(sentence,as.character(sentence$President) %in% c(speech.selected.war,speech.selected.peace))
-sentence$Pop = factor(sentence$President)
-sentence$Ordered=reorder(sentence$Pop,sentence$nword,mean,order=T)
-beeswarm(nword~Ordered, 
-         data=sentence,
-         horizontal = FALSE, 
-         pch=1, col="purple",
-         cex=0.5, cex.axis=0.8, cex.lab=0.8,
-         spacing=5/nlevels(sentence$Ordered),
-         las=2,ylab="Number of words",
-         xlab="",
-         main="Inauguartion speeches")
+p.1 = Quantile_plot(c(speech.selected.war[3],speech.selected.war[4]))
+p.2 = Quantile_plot(c(speech.selected.war[5],speech.selected.war[6]))
+p.3 = Quantile_plot(c(speech.selected.war[9],speech.selected.peace[2]))
+p.4 =Quantile_plot(c(speech.selected.war[10],speech.selected.peace[4]))
+multiplot(p.1, p.2, p.3, p.4, cols = 2)
 ```
-
-All speeches I have choosen have majority of their sentences within 20 words, and there are only a few president who gives extremely long sentences.
-
+The Above graphs are plotted based on the sentences whose number of words are below 25, which is the majority sentences' length for presidential speeches I selected. We see from the above four graphs that the presidential speeches from the same speaker, surprisingly have a very similar distribution with regard to the number of words used in the sentences.
 
 III.SENTIMENT ANALYSIS
 
 1.Emotion Barplot analytics
 
-After we have examined the length of sentences, we turn our attention to a more interesting asepct of text mining ananlysis - sentiment analysis. I performed the analysis by applied NRC sentimet function to sentences, and calculate a weighted score of emotion "anger", "anticipation", "disgust", "fear", "joy", "sadness", "surprise", "trust", "negative", "positive" at each sentence of each presidential speeches I selected (Please refer to "Preprocess.R" for details).
+After we have examined the length of sentences, we turn our attention to a more interesting asepct of text mining ananlysis - sentiment analysis. I performed the analysis by appling NRC sentimet function to sentences, and calculate a weighted score of emotion "anger", "anticipation", "disgust", "fear", "joy", "sadness", "surprise", "trust", "negative", "positive" at each sentence of each presidential speeches I selected (Please refer to "Preprocess.R" for details).
 
 First of all, let us take a look at the emotion barplots created for presidential speeches in the "peace" group:
 ```{r, echo=FALSE}
@@ -122,6 +131,7 @@ Emotion_Barplot(speech.selected.peace[2])
 Emotion_Barplot(speech.selected.peace[3])
 Emotion_Barplot(speech.selected.peace[4])
 ```
+
 
 There is no doubt that the top three emotions in each of these four speeches are the same, and the rank of other emotions are not very different.What worth mentioning is that "fear" always comes in fourth. Having postive emotions in the top is not out of our expectations, but we should dig a little bit deeper of the sentences that express "fear" attitudes of the speakers. We also observed another interesting pattern when we examined a partial list of barplot from the "war" group:
 ```{r, echo=FALSE}
@@ -148,7 +158,7 @@ Emotion_Barplot(speech.selected.war[7])
 
 We see that the rank of the negative emotion "fear" is decreasing from one speech to another rather than going up.
 
-For now, we have observed that emotion "fear" always comes fourth in our barplot of emotions for the "peace" group, the emotion of presidential speeches during war time is surprisingly positive, and two presidents whose speeches were given thorought out wars have opposite change on emotion "fear".In order to shed lights into these patterns, I decided to utilize some other analysis to derive more insights.
+For now, we have observed that emotion "fear" always comes fourth in our barplot of emotions for the "peace" group, the emotion of presidential speeches during war time is surprisingly positive, and two presidents whose speeches were given thorought out wars have opposite change on emotion "fear".In order to shed lights into these patterns, I decided to utilize other analysis to derive more insights.
 
 I decided to examine the sentences that carry the emotions of interest to see if I can find more interesting things.
 First, let us examine the "fear" sentences from presidents in the "peace" group:
@@ -197,12 +207,12 @@ We see that the first two sentences are mainly focusing on taking actions to att
 
 2.Cluster Plot analytics
 
-The fact that the speeches from both the war and non-war groups share similar top emotions intrigues me to see whether I can perform a cluster analysis to classify these speeches into different classes based on their emotions. Cluster analysis are based on the emotion scores of each presidential speech and a kmeans cluster algorithm is also deployed.
+The fact that the speeches from both the war and non-war groups share similar top emotions intrigues me to see whether I can perform a cluster analysis to classify these speeches into different classes based on their emotions. Cluster analysis are based on the emotion scores of each presidential speech and a k-means cluster algorithm is also deployed.
 
-I first tries two clusters to analysis the war group:
+I first tried two clusters to analyze the war group:
 
 ```{r, echo=FALSE}
-km.res=kmeans(presid.summary.war[,-1],2,iter.max=200,nstart=5)
+km.res=kmeans(presid.summary.war[,-1],centers=2,iter.max=200,nstart=5)
 fviz_cluster(km.res, 
              stand=F, repel= TRUE,
              data = presid.summary.war[,-1], xlab="", xaxt="n",

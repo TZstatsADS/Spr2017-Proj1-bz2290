@@ -79,6 +79,10 @@ emotion.matrix = as.data.frame(cbind(emotion.matrix,interm.matrix))
 
 emotion.matrix = Factor_to_Numeric(emotion.matrix)
 
+#Prepare Data for QQplot
+nword.all = emotion.matrix[emotion.matrix$President %in% c(speech.selected.war,speech.selected.peace),c(1,3,4)]
+
+nword.all = nword.all[!is.na(nword.all$nword),]
 
 #Summary Data set for Cluster analysis
 
@@ -86,6 +90,7 @@ emotion.matrix = Factor_to_Numeric(emotion.matrix)
 presid.summary.war=tbl_df(emotion.matrix)%>%
   
   filter(President%in%c(speech.selected.war))%>%
+  
   group_by(President)%>%
   
   summarise(

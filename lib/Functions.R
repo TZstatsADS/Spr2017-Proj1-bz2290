@@ -38,8 +38,8 @@ Emotion_Sentences = function(df=emotion.matrix,pop)
   df=tbl_df(emotion.matrix)%>%
     filter(President==pop,nword>=4)%>%
     select(Sentences, anger:trust)
-  df=as.data.frame(df)
-  index=apply(df[,-1], 2, which.max)
+    df=as.data.frame(df)
+    index=apply(df[,-1], 2, which.max)
   result = NULL
   for(i in 1:length(index))
   {
@@ -47,4 +47,41 @@ Emotion_Sentences = function(df=emotion.matrix,pop)
   }
   result = cbind(c("anger","anticipation","disgust","fear","joy","sadness","surprise","trust"),result)
   return(result)
+}
+
+#Plot Multiple Plots of "ggplot"
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  
+  plots <- c(list(...), plotlist)
+  numPlots = length(plots)
+    if (is.null(layout)) {
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                     ncol = cols, nrow = ceiling(numPlots/cols))
+   }
+    if (numPlots==1) {
+    print(plots[[1]])
+   } 
+  else {
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+    for (i in 1:numPlots) {
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
+
+#QQ plot for presidential Speeches
+Quantile_plot = function(President)
+{
+  quantile.theoretical = c()
+  quantile.actual = NULL
+  quantile.theoretical = quantile(nword.all[nword.all$President == President[1],3], probs = seq(0,1,0.01))
+  quantile.actual = quantile(nword.all[nword.all$President == President[2],3], probs = seq(0,1,0.01))
+  plot.data = data.frame(actual = quantile.actual,theoretical = quantile.theoretical)
+  p = ggplot(plot.data,aes(x=theoretical,y=actual))+
+    geom_point()+
+    labs(x=President[1],y=President[2],title=paste("QQplot for",substr(President[1],start=1,stop=nchar(President[1])-2)))
+  return(p)
 }

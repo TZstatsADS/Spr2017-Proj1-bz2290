@@ -62,7 +62,7 @@ Scripts that contains packages required,"Package.R" can be found in the "doc" fo
 #Important Notes#
 Please take the following actions to ensure a smooth run of my repo:
 
-(1)Please refer to "Bz2290_project1_ADS.rmd"in "doc" folder to adjust paths(Three of them) properly.
+(1)Please refer to "Bz2290_project1_ADS.rmd"in "doc" folder to adjust paths(Three of them at top) properly.
 
 (2)Please change the path (only one) in "Preprocess.R" in "output" folder
 
