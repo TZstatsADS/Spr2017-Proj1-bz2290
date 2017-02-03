@@ -1,8 +1,8 @@
 ---
 title: "A comparison between war time speech and peaceful time speech"
 output:
-  html_document: default
   html_notebook: default
+  html_document: default
 ---
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 #Please modify the following paths:
