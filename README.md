@@ -69,7 +69,15 @@ Please take the following actions to ensure a smooth run of my repo:
 (3)Please refer to "package.R" in doc to make sure all libraries are properly installed in your computer
 
 #Contribution Statement#
-This Project is solely done by Boxuan Zhao, including data processing, analysis, as well as the composition of this repo or any other related part of this project.
+
+Project 1 : A comparision between war time speech and peaceful time speech
+
+Team members: Boxuan Zhao
+
+Summary: In this report, I applied text mining techniques to derive insights from presidential speeches.
+
+[Contribution Statement] This Project is solely done by Boxuan Zhao, including data processing, analysis, as well as the composition of this repo or any other related part of this project. I approve my work presented in my GitHub repository including this contribution statement.
+
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 
