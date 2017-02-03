@@ -11,7 +11,7 @@ Term: Spring 2017
 + Projec title: A comparision between war time speech and peaceful time speech
 + This project is conducted by [BOXUAN ZHAO]
 
-+ Project summary: The United States of America has been thourgh many wars and intense moments.Though inauguration speeches are usually considered to be the place where presidents talk about their plans for the country, will the ongoing war or intense moments changes it? Will there be any similiarites among these speeches and what are them? These questions will hopefully be answered by applying text mining techniques on the two group of speeches selected from presidents, while one goup consists of speeches given through economy booming times, the other group is made of speeches that were given when the country is currently at war, invovled in a war,or the tense of war erupt or current political environment is widespread through the international community.
++ Project summary: The United States of America has been thourgh many wars and intense moments. Though inauguration speeches are usually considered to be the place where presidents talk about their plans for the country, will the ongoing war or intense moments changes it? Will there be any similiarites among these speeches and what are them? These questions will hopefully be answered by applying text mining techniques on the two group of speeches selected from presidents, while one goup consists of speeches given through economy booming times, the other group is made of speeches that were given when the country is currently at war, invovled in a war,or the tense of war erupt or current political environment is widespread through the international community.
 
 speeches that will be analyzed:
 

@@ -2,7 +2,6 @@
 library(tm)
 library(RColorBrewer)
 library(dplyr)
-library(tidytext)
 library(RCurl)
 library(rvest)
 library(tibble)
